@@ -1,0 +1,440 @@
+Trying to create GL 4.8 context with debug= True ...Failed
+Trying to create GL 4.8 context with debug= False ...Failed
+Trying to create GL 4.7 context with debug= True ...Failed
+Trying to create GL 4.7 context with debug= False ...Failed
+Trying to create GL 4.6 context with debug= True ...Success
+Renderer: GeForce GTX 1050 Ti with Max-Q Design/PCIe/SSE2
+Vendor:  NVIDIA Corporation
+Version:  4.6.0 NVIDIA 436.02
+MAX_3D_TEXTURE_SIZE : 16384
+MAX_ARRAY_TEXTURE_LAYERS : 2048
+MAX_COLOR_ATTACHMENTS : 8
+MAX_CUBE_MAP_TEXTURE_SIZE : 32768
+MAX_DRAW_BUFFERS : 8
+MAX_FRAGMENT_ATOMIC_COUNTER_BUFFERS : 8
+MAX_FRAGMENT_INPUT_COMPONENTS : 128
+MAX_SHADER_STORAGE_BLOCK_SIZE : 2147483647
+MAX_TEXTURE_BUFFER_SIZE : 134217728
+MAX_TEXTURE_SIZE : 32768
+MAX_UNIFORM_BLOCK_SIZE : 65536
+MAX_VERTEX_ATTRIBS : 16
+MAX_VERTEX_ATTRIB_BINDINGS : 16
+MAX_VERTEX_OUTPUT_COMPONENTS : 128
+MAX_VERTEX_SHADER_STORAGE_BLOCKS : 16
+MAX_VERTEX_TEXTURE_IMAGE_UNITS : 32
+MAX_VERTEX_UNIFORM_COMPONENTS : 4096
+GLSL:  4.60 NVIDIA
+GLSL 0 : 460 core
+GLSL 1 : 460 compatibility
+GLSL 2 : 450 core
+GLSL 3 : 450 compatibility
+GLSL 4 : 440 core
+GLSL 5 : 440 compatibility
+GLSL 6 : 430 core
+GLSL 7 : 430 compatibility
+GLSL 8 : 420 core
+GLSL 9 : 420 compatibility
+GLSL 10 : 410 core
+GLSL 11 : 410 compatibility
+GLSL 12 : 400 core
+GLSL 13 : 400 compatibility
+GLSL 14 : 330 core
+GLSL 15 : 330 compatibility
+GLSL 16 : 320 es
+GLSL 17 : 310 es
+GLSL 18 : 300 es
+GLSL 19 : 150 core
+GLSL 20 : 150 compatibility
+GLSL 21 : 140
+GLSL 22 : 130
+GLSL 23 : 120
+GLSL 24 : 100
+GLSL 25 : 
+Extension 0 : GL_AMD_multi_draw_indirect
+Extension 1 : GL_AMD_seamless_cubemap_per_texture
+Extension 2 : GL_AMD_vertex_shader_layer
+Extension 3 : GL_AMD_vertex_shader_viewport_index
+Extension 4 : GL_ARB_ES2_compatibility
+Extension 5 : GL_ARB_ES3_1_compatibility
+Extension 6 : GL_ARB_ES3_2_compatibility
+Extension 7 : GL_ARB_ES3_compatibility
+Extension 8 : GL_ARB_arrays_of_arrays
+Extension 9 : GL_ARB_base_instance
+Extension 10 : GL_ARB_bindless_texture
+Extension 11 : GL_ARB_blend_func_extended
+Extension 12 : GL_ARB_buffer_storage
+Extension 13 : GL_ARB_clear_buffer_object
+Extension 14 : GL_ARB_clear_texture
+Extension 15 : GL_ARB_clip_control
+Extension 16 : GL_ARB_color_buffer_float
+Extension 17 : GL_ARB_compressed_texture_pixel_storage
+Extension 18 : GL_ARB_compute_shader
+Extension 19 : GL_ARB_compute_variable_group_size
+Extension 20 : GL_ARB_conditional_render_inverted
+Extension 21 : GL_ARB_conservative_depth
+Extension 22 : GL_ARB_copy_buffer
+Extension 23 : GL_ARB_copy_image
+Extension 24 : GL_ARB_cull_distance
+Extension 25 : GL_ARB_debug_output
+Extension 26 : GL_ARB_depth_buffer_float
+Extension 27 : GL_ARB_depth_clamp
+Extension 28 : GL_ARB_depth_texture
+Extension 29 : GL_ARB_derivative_control
+Extension 30 : GL_ARB_direct_state_access
+Extension 31 : GL_ARB_draw_buffers
+Extension 32 : GL_ARB_draw_buffers_blend
+Extension 33 : GL_ARB_draw_elements_base_vertex
+Extension 34 : GL_ARB_draw_indirect
+Extension 35 : GL_ARB_draw_instanced
+Extension 36 : GL_ARB_enhanced_layouts
+Extension 37 : GL_ARB_explicit_attrib_location
+Extension 38 : GL_ARB_explicit_uniform_location
+Extension 39 : GL_ARB_fragment_coord_conventions
+Extension 40 : GL_ARB_fragment_layer_viewport
+Extension 41 : GL_ARB_fragment_program
+Extension 42 : GL_ARB_fragment_program_shadow
+Extension 43 : GL_ARB_fragment_shader
+Extension 44 : GL_ARB_fragment_shader_interlock
+Extension 45 : GL_ARB_framebuffer_no_attachments
+Extension 46 : GL_ARB_framebuffer_object
+Extension 47 : GL_ARB_framebuffer_sRGB
+Extension 48 : GL_ARB_geometry_shader4
+Extension 49 : GL_ARB_get_program_binary
+Extension 50 : GL_ARB_get_texture_sub_image
+Extension 51 : GL_ARB_gl_spirv
+Extension 52 : GL_ARB_gpu_shader5
+Extension 53 : GL_ARB_gpu_shader_fp64
+Extension 54 : GL_ARB_gpu_shader_int64
+Extension 55 : GL_ARB_half_float_pixel
+Extension 56 : GL_ARB_half_float_vertex
+Extension 57 : GL_ARB_imaging
+Extension 58 : GL_ARB_indirect_parameters
+Extension 59 : GL_ARB_instanced_arrays
+Extension 60 : GL_ARB_internalformat_query
+Extension 61 : GL_ARB_internalformat_query2
+Extension 62 : GL_ARB_invalidate_subdata
+Extension 63 : GL_ARB_map_buffer_alignment
+Extension 64 : GL_ARB_map_buffer_range
+Extension 65 : GL_ARB_multi_bind
+Extension 66 : GL_ARB_multi_draw_indirect
+Extension 67 : GL_ARB_multisample
+Extension 68 : GL_ARB_multitexture
+Extension 69 : GL_ARB_occlusion_query
+Extension 70 : GL_ARB_occlusion_query2
+Extension 71 : GL_ARB_parallel_shader_compile
+Extension 72 : GL_ARB_pipeline_statistics_query
+Extension 73 : GL_ARB_pixel_buffer_object
+Extension 74 : GL_ARB_point_parameters
+Extension 75 : GL_ARB_point_sprite
+Extension 76 : GL_ARB_polygon_offset_clamp
+Extension 77 : GL_ARB_post_depth_coverage
+Extension 78 : GL_ARB_program_interface_query
+Extension 79 : GL_ARB_provoking_vertex
+Extension 80 : GL_ARB_query_buffer_object
+Extension 81 : GL_ARB_robust_buffer_access_behavior
+Extension 82 : GL_ARB_robustness
+Extension 83 : GL_ARB_sample_locations
+Extension 84 : GL_ARB_sample_shading
+Extension 85 : GL_ARB_sampler_objects
+Extension 86 : GL_ARB_seamless_cube_map
+Extension 87 : GL_ARB_seamless_cubemap_per_texture
+Extension 88 : GL_ARB_separate_shader_objects
+Extension 89 : GL_ARB_shader_atomic_counter_ops
+Extension 90 : GL_ARB_shader_atomic_counters
+Extension 91 : GL_ARB_shader_ballot
+Extension 92 : GL_ARB_shader_bit_encoding
+Extension 93 : GL_ARB_shader_clock
+Extension 94 : GL_ARB_shader_draw_parameters
+Extension 95 : GL_ARB_shader_group_vote
+Extension 96 : GL_ARB_shader_image_load_store
+Extension 97 : GL_ARB_shader_image_size
+Extension 98 : GL_ARB_shader_objects
+Extension 99 : GL_ARB_shader_precision
+Extension 100 : GL_ARB_shader_storage_buffer_object
+Extension 101 : GL_ARB_shader_subroutine
+Extension 102 : GL_ARB_shader_texture_image_samples
+Extension 103 : GL_ARB_shader_texture_lod
+Extension 104 : GL_ARB_shader_viewport_layer_array
+Extension 105 : GL_ARB_shading_language_100
+Extension 106 : GL_ARB_shading_language_420pack
+Extension 107 : GL_ARB_shading_language_include
+Extension 108 : GL_ARB_shading_language_packing
+Extension 109 : GL_ARB_shadow
+Extension 110 : GL_ARB_sparse_buffer
+Extension 111 : GL_ARB_sparse_texture
+Extension 112 : GL_ARB_sparse_texture2
+Extension 113 : GL_ARB_sparse_texture_clamp
+Extension 114 : GL_ARB_spirv_extensions
+Extension 115 : GL_ARB_stencil_texturing
+Extension 116 : GL_ARB_sync
+Extension 117 : GL_ARB_tessellation_shader
+Extension 118 : GL_ARB_texture_barrier
+Extension 119 : GL_ARB_texture_border_clamp
+Extension 120 : GL_ARB_texture_buffer_object
+Extension 121 : GL_ARB_texture_buffer_object_rgb32
+Extension 122 : GL_ARB_texture_buffer_range
+Extension 123 : GL_ARB_texture_compression
+Extension 124 : GL_ARB_texture_compression_bptc
+Extension 125 : GL_ARB_texture_compression_rgtc
+Extension 126 : GL_ARB_texture_cube_map
+Extension 127 : GL_ARB_texture_cube_map_array
+Extension 128 : GL_ARB_texture_env_add
+Extension 129 : GL_ARB_texture_env_combine
+Extension 130 : GL_ARB_texture_env_crossbar
+Extension 131 : GL_ARB_texture_env_dot3
+Extension 132 : GL_ARB_texture_filter_anisotropic
+Extension 133 : GL_ARB_texture_filter_minmax
+Extension 134 : GL_ARB_texture_float
+Extension 135 : GL_ARB_texture_gather
+Extension 136 : GL_ARB_texture_mirror_clamp_to_edge
+Extension 137 : GL_ARB_texture_mirrored_repeat
+Extension 138 : GL_ARB_texture_multisample
+Extension 139 : GL_ARB_texture_non_power_of_two
+Extension 140 : GL_ARB_texture_query_levels
+Extension 141 : GL_ARB_texture_query_lod
+Extension 142 : GL_ARB_texture_rectangle
+Extension 143 : GL_ARB_texture_rg
+Extension 144 : GL_ARB_texture_rgb10_a2ui
+Extension 145 : GL_ARB_texture_stencil8
+Extension 146 : GL_ARB_texture_storage
+Extension 147 : GL_ARB_texture_storage_multisample
+Extension 148 : GL_ARB_texture_swizzle
+Extension 149 : GL_ARB_texture_view
+Extension 150 : GL_ARB_timer_query
+Extension 151 : GL_ARB_transform_feedback2
+Extension 152 : GL_ARB_transform_feedback3
+Extension 153 : GL_ARB_transform_feedback_instanced
+Extension 154 : GL_ARB_transform_feedback_overflow_query
+Extension 155 : GL_ARB_transpose_matrix
+Extension 156 : GL_ARB_uniform_buffer_object
+Extension 157 : GL_ARB_vertex_array_bgra
+Extension 158 : GL_ARB_vertex_array_object
+Extension 159 : GL_ARB_vertex_attrib_64bit
+Extension 160 : GL_ARB_vertex_attrib_binding
+Extension 161 : GL_ARB_vertex_buffer_object
+Extension 162 : GL_ARB_vertex_program
+Extension 163 : GL_ARB_vertex_shader
+Extension 164 : GL_ARB_vertex_type_10f_11f_11f_rev
+Extension 165 : GL_ARB_vertex_type_2_10_10_10_rev
+Extension 166 : GL_ARB_viewport_array
+Extension 167 : GL_ARB_window_pos
+Extension 168 : GL_ATI_draw_buffers
+Extension 169 : GL_ATI_texture_float
+Extension 170 : GL_ATI_texture_mirror_once
+Extension 171 : GL_EXTX_framebuffer_mixed_formats
+Extension 172 : GL_EXT_Cg_shader
+Extension 173 : GL_EXT_abgr
+Extension 174 : GL_EXT_bgra
+Extension 175 : GL_EXT_bindable_uniform
+Extension 176 : GL_EXT_blend_color
+Extension 177 : GL_EXT_blend_equation_separate
+Extension 178 : GL_EXT_blend_func_separate
+Extension 179 : GL_EXT_blend_minmax
+Extension 180 : GL_EXT_blend_subtract
+Extension 181 : GL_EXT_compiled_vertex_array
+Extension 182 : GL_EXT_depth_bounds_test
+Extension 183 : GL_EXT_direct_state_access
+Extension 184 : GL_EXT_draw_buffers2
+Extension 185 : GL_EXT_draw_instanced
+Extension 186 : GL_EXT_draw_range_elements
+Extension 187 : GL_EXT_fog_coord
+Extension 188 : GL_EXT_framebuffer_blit
+Extension 189 : GL_EXT_framebuffer_multisample
+Extension 190 : GL_EXT_framebuffer_multisample_blit_scaled
+Extension 191 : GL_EXT_framebuffer_object
+Extension 192 : GL_EXT_framebuffer_sRGB
+Extension 193 : GL_EXT_geometry_shader4
+Extension 194 : GL_EXT_gpu_program_parameters
+Extension 195 : GL_EXT_gpu_shader4
+Extension 196 : GL_EXT_import_sync_object
+Extension 197 : GL_EXT_memory_object
+Extension 198 : GL_EXT_memory_object_win32
+Extension 199 : GL_EXT_multi_draw_arrays
+Extension 200 : GL_EXT_multiview_texture_multisample
+Extension 201 : GL_EXT_multiview_timer_query
+Extension 202 : GL_EXT_packed_depth_stencil
+Extension 203 : GL_EXT_packed_float
+Extension 204 : GL_EXT_packed_pixels
+Extension 205 : GL_EXT_pixel_buffer_object
+Extension 206 : GL_EXT_point_parameters
+Extension 207 : GL_EXT_polygon_offset_clamp
+Extension 208 : GL_EXT_post_depth_coverage
+Extension 209 : GL_EXT_provoking_vertex
+Extension 210 : GL_EXT_raster_multisample
+Extension 211 : GL_EXT_rescale_normal
+Extension 212 : GL_EXT_secondary_color
+Extension 213 : GL_EXT_semaphore
+Extension 214 : GL_EXT_semaphore_win32
+Extension 215 : GL_EXT_separate_shader_objects
+Extension 216 : GL_EXT_separate_specular_color
+Extension 217 : GL_EXT_shader_image_load_formatted
+Extension 218 : GL_EXT_shader_image_load_store
+Extension 219 : GL_EXT_shader_integer_mix
+Extension 220 : GL_EXT_shadow_funcs
+Extension 221 : GL_EXT_sparse_texture2
+Extension 222 : GL_EXT_stencil_two_side
+Extension 223 : GL_EXT_stencil_wrap
+Extension 224 : GL_EXT_texture3D
+Extension 225 : GL_EXT_texture_array
+Extension 226 : GL_EXT_texture_buffer_object
+Extension 227 : GL_EXT_texture_compression_dxt1
+Extension 228 : GL_EXT_texture_compression_latc
+Extension 229 : GL_EXT_texture_compression_rgtc
+Extension 230 : GL_EXT_texture_compression_s3tc
+Extension 231 : GL_EXT_texture_cube_map
+Extension 232 : GL_EXT_texture_edge_clamp
+Extension 233 : GL_EXT_texture_env_add
+Extension 234 : GL_EXT_texture_env_combine
+Extension 235 : GL_EXT_texture_env_dot3
+Extension 236 : GL_EXT_texture_filter_anisotropic
+Extension 237 : GL_EXT_texture_filter_minmax
+Extension 238 : GL_EXT_texture_integer
+Extension 239 : GL_EXT_texture_lod
+Extension 240 : GL_EXT_texture_lod_bias
+Extension 241 : GL_EXT_texture_mirror_clamp
+Extension 242 : GL_EXT_texture_object
+Extension 243 : GL_EXT_texture_sRGB
+Extension 244 : GL_EXT_texture_sRGB_R8
+Extension 245 : GL_EXT_texture_sRGB_decode
+Extension 246 : GL_EXT_texture_shared_exponent
+Extension 247 : GL_EXT_texture_storage
+Extension 248 : GL_EXT_texture_swizzle
+Extension 249 : GL_EXT_timer_query
+Extension 250 : GL_EXT_transform_feedback2
+Extension 251 : GL_EXT_vertex_array
+Extension 252 : GL_EXT_vertex_array_bgra
+Extension 253 : GL_EXT_vertex_attrib_64bit
+Extension 254 : GL_EXT_win32_keyed_mutex
+Extension 255 : GL_EXT_window_rectangles
+Extension 256 : GL_IBM_rasterpos_clip
+Extension 257 : GL_IBM_texture_mirrored_repeat
+Extension 258 : GL_KHR_blend_equation_advanced
+Extension 259 : GL_KHR_blend_equation_advanced_coherent
+Extension 260 : GL_KHR_context_flush_control
+Extension 261 : GL_KHR_debug
+Extension 262 : GL_KHR_no_error
+Extension 263 : GL_KHR_parallel_shader_compile
+Extension 264 : GL_KHR_robust_buffer_access_behavior
+Extension 265 : GL_KHR_robustness
+Extension 266 : GL_KHR_shader_subgroup
+Extension 267 : GL_KTX_buffer_region
+Extension 268 : GL_NVX_blend_equation_advanced_multi_draw_buffers
+Extension 269 : GL_NVX_conditional_render
+Extension 270 : GL_NVX_gpu_memory_info
+Extension 271 : GL_NVX_gpu_multicast2
+Extension 272 : GL_NVX_linked_gpu_multicast
+Extension 273 : GL_NVX_multigpu_info
+Extension 274 : GL_NVX_nvenc_interop
+Extension 275 : GL_NVX_progress_fence
+Extension 276 : GL_NV_ES1_1_compatibility
+Extension 277 : GL_NV_ES3_1_compatibility
+Extension 278 : GL_NV_alpha_to_coverage_dither_control
+Extension 279 : GL_NV_bindless_multi_draw_indirect
+Extension 280 : GL_NV_bindless_multi_draw_indirect_count
+Extension 281 : GL_NV_bindless_texture
+Extension 282 : GL_NV_blend_equation_advanced
+Extension 283 : GL_NV_blend_equation_advanced_coherent
+Extension 284 : GL_NV_blend_minmax_factor
+Extension 285 : GL_NV_blend_square
+Extension 286 : GL_NV_clip_space_w_scaling
+Extension 287 : GL_NV_command_list
+Extension 288 : GL_NV_compute_program5
+Extension 289 : GL_NV_conditional_render
+Extension 290 : GL_NV_conservative_raster
+Extension 291 : GL_NV_conservative_raster_dilate
+Extension 292 : GL_NV_conservative_raster_pre_snap_triangles
+Extension 293 : GL_NV_copy_depth_to_color
+Extension 294 : GL_NV_copy_image
+Extension 295 : GL_NV_depth_buffer_float
+Extension 296 : GL_NV_depth_clamp
+Extension 297 : GL_NV_draw_texture
+Extension 298 : GL_NV_draw_vulkan_image
+Extension 299 : GL_NV_explicit_multisample
+Extension 300 : GL_NV_feature_query
+Extension 301 : GL_NV_fence
+Extension 302 : GL_NV_fill_rectangle
+Extension 303 : GL_NV_float_buffer
+Extension 304 : GL_NV_fog_distance
+Extension 305 : GL_NV_fragment_coverage_to_color
+Extension 306 : GL_NV_fragment_program
+Extension 307 : GL_NV_fragment_program2
+Extension 308 : GL_NV_fragment_program_option
+Extension 309 : GL_NV_fragment_shader_interlock
+Extension 310 : GL_NV_framebuffer_mixed_samples
+Extension 311 : GL_NV_framebuffer_multisample_coverage
+Extension 312 : GL_NV_geometry_shader4
+Extension 313 : GL_NV_geometry_shader_passthrough
+Extension 314 : GL_NV_gpu_multicast
+Extension 315 : GL_NV_gpu_program4
+Extension 316 : GL_NV_gpu_program4_1
+Extension 317 : GL_NV_gpu_program5
+Extension 318 : GL_NV_gpu_program5_mem_extended
+Extension 319 : GL_NV_gpu_program_fp64
+Extension 320 : GL_NV_gpu_shader5
+Extension 321 : GL_NV_half_float
+Extension 322 : GL_NV_internalformat_sample_query
+Extension 323 : GL_NV_light_max_exponent
+Extension 324 : GL_NV_memory_attachment
+Extension 325 : GL_NV_multisample_coverage
+Extension 326 : GL_NV_multisample_filter_hint
+Extension 327 : GL_NV_occlusion_query
+Extension 328 : GL_NV_packed_depth_stencil
+Extension 329 : GL_NV_parameter_buffer_object
+Extension 330 : GL_NV_parameter_buffer_object2
+Extension 331 : GL_NV_path_rendering
+Extension 332 : GL_NV_path_rendering_shared_edge
+Extension 333 : GL_NV_pixel_data_range
+Extension 334 : GL_NV_point_sprite
+Extension 335 : GL_NV_primitive_restart
+Extension 336 : GL_NV_query_resource
+Extension 337 : GL_NV_query_resource_tag
+Extension 338 : GL_NV_register_combiners
+Extension 339 : GL_NV_register_combiners2
+Extension 340 : GL_NV_sample_locations
+Extension 341 : GL_NV_sample_mask_override_coverage
+Extension 342 : GL_NV_shader_atomic_counters
+Extension 343 : GL_NV_shader_atomic_float
+Extension 344 : GL_NV_shader_atomic_float64
+Extension 345 : GL_NV_shader_atomic_fp16_vector
+Extension 346 : GL_NV_shader_atomic_int64
+Extension 347 : GL_NV_shader_buffer_load
+Extension 348 : GL_NV_shader_storage_buffer_object
+Extension 349 : GL_NV_shader_subgroup_partitioned
+Extension 350 : GL_NV_shader_thread_group
+Extension 351 : GL_NV_shader_thread_shuffle
+Extension 352 : GL_NV_stereo_view_rendering
+Extension 353 : GL_NV_texgen_reflection
+Extension 354 : GL_NV_texture_barrier
+Extension 355 : GL_NV_texture_compression_vtc
+Extension 356 : GL_NV_texture_env_combine4
+Extension 357 : GL_NV_texture_multisample
+Extension 358 : GL_NV_texture_rectangle
+Extension 359 : GL_NV_texture_rectangle_compressed
+Extension 360 : GL_NV_texture_shader
+Extension 361 : GL_NV_texture_shader2
+Extension 362 : GL_NV_texture_shader3
+Extension 363 : GL_NV_transform_feedback
+Extension 364 : GL_NV_transform_feedback2
+Extension 365 : GL_NV_uniform_buffer_unified_memory
+Extension 366 : GL_NV_vertex_array_range
+Extension 367 : GL_NV_vertex_array_range2
+Extension 368 : GL_NV_vertex_attrib_integer_64bit
+Extension 369 : GL_NV_vertex_buffer_unified_memory
+Extension 370 : GL_NV_vertex_program
+Extension 371 : GL_NV_vertex_program1_1
+Extension 372 : GL_NV_vertex_program2
+Extension 373 : GL_NV_vertex_program2_option
+Extension 374 : GL_NV_vertex_program3
+Extension 375 : GL_NV_viewport_array2
+Extension 376 : GL_NV_viewport_swizzle
+Extension 377 : GL_OVR_multiview
+Extension 378 : GL_OVR_multiview2
+Extension 379 : GL_S3_s3tc
+Extension 380 : GL_SGIS_generate_mipmap
+Extension 381 : GL_SGIS_texture_lod
+Extension 382 : GL_SGIX_depth_texture
+Extension 383 : GL_SGIX_shadow
+Extension 384 : GL_SUN_slice_accum
+Extension 385 : GL_WIN_swap_hint
+Extension 386 : WGL_EXT_swap_control
+End of report
