@@ -5,6 +5,8 @@ from gl import *
 from glconstants import *
 from Buffer import *
 from Program import *
+from globals import *
+import random
 
 
 def setup(pointArray):
@@ -57,9 +59,18 @@ def update():
             print("mouse move:", ev.motion.x, ev.motion.y)
 
 
-def draw():
+def draw(numToDraw):
     glClear(GL_COLOR_BUFFER_BIT)
-    glDrawArrays(GL_POINTS, 0, 4)
+    glDrawArrays(GL_POINTS, 0, numToDraw)
+
+def addStars(array, numToAdd):
+    i = 0
+    while i < numToAdd:
+        array.append(random.uniform(-1,1))
+        array.append(random.uniform(-1,1))
+        i += 1
+
+    return array
 
 
 def main():
@@ -87,15 +98,15 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    #Need to randomly add 2d points to array to pass to be buffer and pass num of 2d points to draw
-    starArray = array.array("f", [0, 0, 1, 1, .5, .5, -.5, -.5])
-    print(len(starArray)/2)
-
+    #seed random, initialize array, populate with random stars by num wanted
+    random.seed()
+    starArray = array.array("f")
+    starArray = addStars(starArray, numStars)
     setup(starArray)
 
     while 1:
         update()
-        draw()
+        draw(numStars)
         SDL_GL_SwapWindow(win)
 
 main()
