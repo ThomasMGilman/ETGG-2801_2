@@ -7,11 +7,11 @@ from Buffer import *
 from Program import *
 
 
-def setup(starArray):
+def setup(pointArray):
     glEnable(GL_MULTISAMPLE)
     glClearColor(0, 0, 0, 1.0)
 
-    my_buffer = Buffer(array.array("f", [0, 0]))
+    my_buffer = Buffer(pointArray)#array.array("f", [0, 0]))
     # GenerateVAO
     tmp = array.array("I", [0])
     glGenVertexArrays(1, tmp)
@@ -59,7 +59,7 @@ def update():
 
 def draw():
     glClear(GL_COLOR_BUFFER_BIT)
-    glDrawArrays(GL_POINTS, 0, 1)
+    glDrawArrays(GL_POINTS, 0, 4)
 
 
 def main():
@@ -87,7 +87,11 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    setup()
+    #Need to randomly add 2d points to array to pass to be buffer and pass num of 2d points to draw
+    starArray = array.array("f", [0, 0, 1, 1, .5, .5, -.5, -.5])
+    print(len(starArray)/2)
+
+    setup(starArray)
 
     while 1:
         update()
