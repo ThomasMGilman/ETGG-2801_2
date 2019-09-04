@@ -6,14 +6,24 @@ from glconstants import *
 from Buffer import *
 from Program import *
 from globals import *
-import random
+import Shapes
 
-
-def setup(pointArray):
+def setup(vertexBuff, indexBuff = None):
     glEnable(GL_MULTISAMPLE)
     glClearColor(0, 0, 0, 1.0)
 
-    my_buffer = Buffer(pointArray)#array.array("f", [0, 0]))
+    bindVao(vertexBuff)
+
+    #Bind index buffer to point at vertexbuffers indicies if available
+    if indexBuff != None and len(indexBuff) != 0:
+        ibuff = Buffer(indexBuff)
+        ibuff.bind(GL_ELEMENT_ARRAY_BUFFER)
+
+    prog = Program("vs.txt", "fs.txt")
+    prog.use()
+
+def bindVao(vArray):
+    vBuff = Buffer(vArray)  # array.array("f", [0, 0]))
     # GenerateVAO
     tmp = array.array("I", [0])
     glGenVertexArrays(1, tmp)
@@ -21,18 +31,13 @@ def setup(pointArray):
     glBindVertexArray(vao)
 
     # Tell GL about buffer layout and use the buffer
-    my_buffer.bind(GL_ARRAY_BUFFER)
-    glEnableVertexAttribArray(0)
+    vBuff.bind(GL_ARRAY_BUFFER)
     # which pipe, items per vertex, type per item, auto-normalize, data size per item in bytes, start in buffer
     # numPoints = len(arrayOfPoints)
+    glEnableVertexAttribArray(0)
     glVertexAttribPointer(0, 2, GL_FLOAT, False, 2 * 4, 0)
-
     # unbind
-    # glBindVertexArray(0)
-
-    prog = Program("vs.txt", "fs.txt")
-    prog.use()
-
+    glBindVertexArray(0)
 
 def update():
     ev = SDL_Event()
@@ -59,21 +64,15 @@ def update():
             print("mouse move:", ev.motion.x, ev.motion.y)
 
 
-def draw(numToDraw):
+def draw(numToDraw, array):
     glClear(GL_COLOR_BUFFER_BIT)
-    glEnable(GL_PROGRAM_POINT_SIZE)
-    glPointSize(100)
+    bindVao(array)
     glDrawArrays(GL_POINTS, 0, numToDraw)
 
-def addStars(array, numToAdd):
-    i = 0
-    while i < numToAdd:
-        array.append(random.uniform(-1,1))
-        array.append(random.uniform(-1,1))
-        i += 1
-
-    return array
-
+def drawElement(mode, numToDraw, array):
+    glClear(GL_COLOR_BUFFER_BIT)
+    bindVao(array)
+    glDrawElements(mode, numToDraw, GL_UNSIGNED_INT, 0)
 
 def main():
     SDL_Init(SDL_INIT_VIDEO)
@@ -101,14 +100,23 @@ def main():
         raise RuntimeError()
 
     #seed random, initialize array, populate with random stars by num wanted
-    random.seed()
+    Shapes.seedRandom()
     starArray = array.array("f")
-    starArray = addStars(starArray, numStars)
+    starArray = Shapes.createRandPoints(starArray, numStars)
     setup(starArray)
+
+    #Hexagon
+    hexagonArray        = array.array("f")
+    Shapes.createRandHexagon(hexagonArray, .25)
+    hexagonIndexArray   = array.array("I")
+    Shapes.createHexIndexArray(hexagonIndexArray)
+
+    setup(hexagonArray, hexagonIndexArray)
 
     while 1:
         update()
-        draw(numStars)
+        draw(numStars, starArray)
+        drawElement(GL_TRIANGLES, len(hexagonArray), hexagonArray)
         SDL_GL_SwapWindow(win)
 
 main()
