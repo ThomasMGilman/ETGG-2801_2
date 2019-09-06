@@ -1,5 +1,4 @@
 import random
-import array
 
 def seedRandom():
     random.seed()
@@ -25,22 +24,40 @@ def createRandPoints(array, numPoints):
 
 #size cant be any larger than 1 as the size of the screen is from -1 to 1
 #Hexagon is made of 6 triangles, so needs 7 points
-def createRandHexagon(array, size):
+def createHexagon(array, size, x=0, y=0):
     if size > 1:
         return False
-    centerX = random.uniform(-1 + size, 1 - size)
-    centerY = random.uniform(-1 + size, 1 - size)
+    midPointDis = size# * 1.25
+    cornerDis = size * .60
 
-    appendVec2(array, centerX, centerY)                        #Center
-    mirrorAppendVec2(array, centerX + size/2, centerY + size)  #TopRight BottomLeft
-    mirrorAppendVec2(array, centerX + size, centerY)           #Right Left
-    mirrorAppendVec2(array, centerX + size/2, centerY - size)  #BottomRight TopLeft
+    centerX = x
+    centerY = y
+    #if x==None: centerX = random.uniform(-1 + midPointDis, 1 - midPointDis)
+    #if y==None: centerY = random.uniform(-1 + midPointDis, 1 - midPointDis)
 
-#Hexagon vArray is size 7
+    appendVec2(array, centerX, centerY)                         #Center
+    mirrorAppendVec2(array, centerX + cornerDis, centerY + size)     #TopRight BottomLeft
+    appendVec2(array, centerX + midPointDis, centerY)           #Right
+    appendVec2(array, centerX - midPointDis, centerY)           #Left
+    mirrorAppendVec2(array, centerX + cornerDis, centerY - size)     #BottomRight TopLeft
+
+""" Hexagon vArray is size 7
+      6 ____________ 1
+      //\\       // \\
+     //  \\     //   \\
+    //    \\   //     \\
+4  //______\\ //_______\\  3
+  //________ 0 _________\\
+   \\      // \\       //
+    \\    //   \\     //
+     \\  //     \\   //
+    2 \\//_______\\ // 5
+      
+"""
 def createHexIndexArray(Iarray):
-        appendVec3(Iarray, 0, 1, 6)
-        appendVec3(Iarray, 0, 3, 1)
-        appendVec3(Iarray, 0, 5, 3)
-        appendVec3(Iarray, 0, 2, 5)
-        appendVec3(Iarray, 0, 4, 2)
-        appendVec3(Iarray, 0, 6, 4)
+        appendVec3(Iarray, 0, 1, 6) #TopTriangle
+        appendVec3(Iarray, 0, 3, 1) #TopRight
+        appendVec3(Iarray, 0, 5, 3) #BottomRight
+        appendVec3(Iarray, 0, 2, 5) #Bottom
+        appendVec3(Iarray, 0, 4, 2) #BottomLeft
+        appendVec3(Iarray, 0, 6, 4) #TopLeft
