@@ -1,4 +1,5 @@
 import random
+import math
 
 def seedRandom():
     random.seed()
@@ -22,24 +23,41 @@ def createRandPoints(array, numPoints):
         i += 1
     return array
 
+#create circle points surrounding the center point
+def createCircle(array, radius, cx=None, cy=None):
+    if cx==None: centerX = random.uniform(-1 + radius, 1 - radius)
+    else: centerX = cx
+    if cy==None: centerY = random.uniform(-1 + radius, 1 - radius)
+    else: centerY = cy
+    appendVec2(array, centerX, centerY)
+    for i in range(359):
+        x = centerX + radius * math.cos(i)
+        y = centerY + radius * math.sin(i)
+        appendVec2(array, x, y)
+
+def createCircleIndexArray(array):
+    for i in range(358):
+        appendVec3(array, 0, i+2, i+1)
+
+
 #size cant be any larger than 1 as the size of the screen is from -1 to 1
 #Hexagon is made of 6 triangles, so needs 7 points
-def createHexagon(array, size, x=0, y=0):
-    if size > 1:
-        return False
+def createHexagon(array, size, x=None, y=None):
     midPointDis = size# * 1.25
     cornerDis = size * .60
 
     centerX = x
     centerY = y
-    #if x==None: centerX = random.uniform(-1 + midPointDis, 1 - midPointDis)
-    #if y==None: centerY = random.uniform(-1 + midPointDis, 1 - midPointDis)
+    if x==None: centerX = random.uniform(-1 + midPointDis, 1 - midPointDis)
+    if y==None: centerY = random.uniform(-1 + midPointDis, 1 - midPointDis)
 
     appendVec2(array, centerX, centerY)                         #Center
-    mirrorAppendVec2(array, centerX + cornerDis, centerY + size)     #TopRight BottomLeft
+    appendVec2(array, centerX + cornerDis, centerY + size)      #TopRight
+    appendVec2(array, centerX - cornerDis, centerY - size)      #BottomLeft
     appendVec2(array, centerX + midPointDis, centerY)           #Right
     appendVec2(array, centerX - midPointDis, centerY)           #Left
-    mirrorAppendVec2(array, centerX + cornerDis, centerY - size)     #BottomRight TopLeft
+    appendVec2(array, centerX + cornerDis, centerY - size)      #BottomRight
+    appendVec2(array, centerX - cornerDis, centerY + size)      #TopLeft
 
 """ Hexagon vArray is size 7
       6 ____________ 1

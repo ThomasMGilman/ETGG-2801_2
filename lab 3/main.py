@@ -64,19 +64,23 @@ def main():
 
     #Hexagon
     hexagonArray        = array.array("f")          #Vertices array
-    Shapes.createHexagon(hexagonArray, .25)
+    Shapes.createHexagon(hexagonArray, .25, -.5, -.5)
     hexagonIndexArray   = array.array("I")          #point indicies array
     Shapes.createHexIndexArray(hexagonIndexArray)
     glCmd.setup(hexagonArray, hexagonIndexArray)
-    print("ArrayBuff Size: {0}\n{1}".format(len(hexagonArray), hexagonArray))
-    print("indexBuff Size: {0}\n{1}".format(len(hexagonIndexArray), hexagonIndexArray))
+
+    circleArray         = array.array("f")
+    Shapes.createCircle(circleArray, .25, .5, .5)
+    circleIndexArray    = array.array("I")
+    Shapes.createCircleIndexArray(circleIndexArray)
+    glCmd.setup(circleArray, circleIndexArray)
 
     while 1:
         update()
         glCmd.clear()
         glCmd.draw(GL_POINTS, numStars, starArray)
-        glCmd.draw(GL_POINTS, len(hexagonArray), hexagonArray)
         glCmd.drawElement(GL_TRIANGLES, len(hexagonIndexArray), hexagonArray, hexagonIndexArray, 0)
+        glCmd.drawElement(GL_TRIANGLES, len(circleIndexArray), circleArray, circleIndexArray, 0)
         SDL_GL_SwapWindow(win)
 
 main()
