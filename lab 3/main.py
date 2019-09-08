@@ -63,12 +63,13 @@ def main():
     glCmd.setup(starArray)
 
     #Hexagon
-    hexagonArray        = array.array("f")          #Vertices array
+    hexagonArray        = array.array("f")
     Shapes.createHexagon(hexagonArray, .25, -.5, -.5)
-    hexagonIndexArray   = array.array("I")          #point indicies array
+    hexagonIndexArray   = array.array("I")
     Shapes.createHexIndexArray(hexagonIndexArray)
     glCmd.setup(hexagonArray, hexagonIndexArray)
 
+    #Circle
     circleArray         = array.array("f")
     Shapes.createCircle(circleArray, .25, .5, .5)
     circleIndexArray    = array.array("I")
