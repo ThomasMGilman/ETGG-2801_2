@@ -1,10 +1,15 @@
 from sdl2 import *
 from sdl2.keycode import *
+from sdl2.sdlmixer import *
 from Program import *
-import globals
+import os.path
+import globs
 import glCommands
 import sys, traceback
 import Shapes
+
+background = None
+objectsToDraw = []
 
 def debugCallback( source, msgType, msgId, severity, length, message, param ):
     print(msgId,":",message)
@@ -23,7 +28,9 @@ def enableDebugging(enabled = False):
         glEnable(GL_DEBUG_OUTPUT)
 
 def setupWindow():
-    SDL_Init(SDL_INIT_VIDEO)
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)
+    Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3)
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 4096)
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE)
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24)
@@ -39,11 +46,12 @@ def setupWindow():
 
 """Setup Desired FrameRate in Globals"""
 def setupFrameRateGlobals(fps):
-    globals.DESIRED_SEC_PER_FRAME = 1/fps
-    globals.DESIRED_MSEC_PER_FRAME = int(globals.DESIRED_SEC_PER_FRAME * 1000)
-    globals.TICKS_PER_SECOND = SDL_GetPerformanceFrequency()
+    globs.DESIRED_SEC_PER_FRAME = 1 / fps
+    globs.DESIRED_MSEC_PER_FRAME = int(globs.DESIRED_SEC_PER_FRAME * 1000)
+    globs.TICKS_PER_SECOND = SDL_GetPerformanceFrequency()
+    globs.UPDATE_QUANTUM_MSEC = 5
 
-def update(elapsedMsec):
+def update(elapsedMsec, glCmd, bulletV_array, bulletI_array):
     ev = SDL_Event()
     while 1:
         if not SDL_PollEvent(byref(ev)):
@@ -53,13 +61,25 @@ def update(elapsedMsec):
             sys.exit(0)
         elif ev.type == SDL_KEYDOWN:
             k = ev.key.keysym.sym
+            globs.keyset.add(k)
             print("key down:", k)
             if k == SDLK_q:
                 SDL_Quit()
                 sys.exit(0)
+            if SDLK_SPACE in globs.keyset:
+                if globs.RED < 1:
+                    globs.RED += .01
+                glClearColor(globs.RED, globs.GREEN, globs.BLUE, globs.ALPHA)   #Set render color to new color
         elif ev.type == SDL_KEYUP:
             k = ev.key.keysym.sym
             print("key up:", k)
+            if SDLK_SPACE in globs.keyset:                                      #Fire BULLET and go back to black
+                newBullet = Shapes.Bullet(0, 0, bulletV_array, bulletI_array)
+                objectsToDraw.append(newBullet)
+                globs.RED = 0.0
+                glClearColor(globs.RED, globs.GREEN, globs.BLUE, globs.ALPHA)   #Set render color to black
+
+            globs.keyset.discard(k)
         elif ev.type == SDL_MOUSEBUTTONDOWN:
             print("mouse down:", ev.button.button, ev.button.x, ev.button.y)
         elif ev.type == SDL_MOUSEBUTTONUP:
@@ -67,8 +87,20 @@ def update(elapsedMsec):
         elif ev.type == SDL_MOUSEMOTION:
             print("mouse move:", ev.motion.x, ev.motion.y)
 
-def main():
+def draw(elapsedMSec, glCmd, window):
+    glCmd.clear()
+    background.draw(glCmd)
+    if len(objectsToDraw) > 0:
+        for i in range(len(objectsToDraw)):
+            obj = objectsToDraw[i]
+            obj.update(elapsedMSec)
+            if obj.alive():
+                obj.draw(glCmd)
+            else:
+                objectsToDraw.remove(obj)
+    SDL_GL_SwapWindow(window)
 
+def main():
     win = setupWindow()                 #Setup SDL_GL_Attributes and get SDL_Window
     print("running");
     if not win:
@@ -82,51 +114,49 @@ def main():
 
     enableDebugging()                  #enables debugging messages, DISABLED BY DEFAULT for performance
 
-    setupFrameRateGlobals(globals.DESIRED_FRAMES_PER_SEC)
+    setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
 
     # create glCmd object for drawing
     glCmd = glCommands.glCommands()
 
+    starV_array = array.array("f")
+    bulletV_array = array.array("f")
+    bulletI_array = array.array("I")
+
     #seed random, initialize array, populate with random stars by num wanted
     Shapes.seedRandom()
-    starArray = array.array("f")
-    starArray = Shapes.createRandPoints(starArray, globals.numStars)
-    glCmd.setup(starArray)
+    starV_array = Shapes.createRandPoints(starV_array, globs.numStars)
+    glCmd.setup(starV_array)
 
-    #Hexagon
-    hexagonArray        = array.array("f")
-    Shapes.createHexagon(hexagonArray, .25, -.5, -.5)
-    hexagonIndexArray   = array.array("I")
-    Shapes.createHexIndexArray(hexagonIndexArray)
-    glCmd.setup(hexagonArray, hexagonIndexArray)
+    global background
+    background = Shapes.StarBackground(starV_array)
 
-    #Circle
-    circleArray         = array.array("f")
-    Shapes.createCircle(circleArray, .25, .5, .5)
-    circleIndexArray    = array.array("I")
-    Shapes.createCircleIndexArray(circleIndexArray)
-    glCmd.setup(circleArray, circleIndexArray)
+    # create bullet vertex array and index array
+    Shapes.createCircle(bulletV_array, .25, 0, 0)
+    Shapes.createCircleIndexArray(bulletI_array)
+    # Setup vao and indexbuff
+    glCmd.setup(bulletV_array, bulletI_array)
 
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
     lastTicks = SDL_GetPerformanceCounter()
+    accumElapsedMsec = 0
     while 1:
         nowTicks = SDL_GetPerformanceCounter()                                      #Get ticks at start of loop
         elapsedTicks = nowTicks - lastTicks                                         #Ticks since lastTick
         lastTicks = nowTicks                                                        #lastTick is now
-        elapsedMsec = int(1000 * elapsedTicks / globals.TICKS_PER_SECOND)           #convert lastTicks to Msec
-        update(elapsedMsec)
+        elapsedMsec = int(1000 * elapsedTicks / globs.TICKS_PER_SECOND)           #convert lastTicks to Msec
+        accumElapsedMsec += elapsedMsec
+        while accumElapsedMsec >= globs.UPDATE_QUANTUM_MSEC:
+            update(elapsedMsec, glCmd, bulletV_array, bulletI_array)
+            accumElapsedMsec -= globs.UPDATE_QUANTUM_MSEC
 
-        glCmd.clear()
-        glCmd.draw(GL_POINTS, globals.numStars, starArray)
-        glCmd.drawElement(GL_TRIANGLES, len(hexagonIndexArray), hexagonArray, hexagonIndexArray, 0)
-        glCmd.drawElement(GL_TRIANGLES, len(circleIndexArray), circleArray, circleIndexArray, 0)
-        SDL_GL_SwapWindow(win)
+        draw(elapsedMsec, glCmd, win)
 
         endTicks = SDL_GetPerformanceCounter()                                      #Get finale tick
         frameTicks = endTicks - nowTicks                                            #Get num ticks for frame
-        frameMsec = int(frameTicks / globals.TICKS_PER_SECOND * 1000)               #convert ticks for frame to Msec
-        leftoverMsec = globals.DESIRED_MSEC_PER_FRAME - frameMsec                   #calculate numTicks for desired frameRate left
+        frameMsec = int(frameTicks / globs.TICKS_PER_SECOND * 1000)               #convert ticks for frame to Msec
+        leftoverMsec = globs.DESIRED_MSEC_PER_FRAME - frameMsec                   #calculate numTicks for desired frameRate left
         if leftoverMsec > 0:
             SDL_Delay(leftoverMsec)                                                 #delay to meet frameRate if frame doesnt take to long
 

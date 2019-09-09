@@ -1,4 +1,6 @@
+from glCommands import *
 import random
+import array
 import math
 
 def seedRandom():
@@ -122,3 +124,31 @@ def createHexIndexArray(Iarray):
         appendVec3(Iarray, 0, 2, 5) #Bottom
         appendVec3(Iarray, 0, 4, 2) #BottomLeft
         appendVec3(Iarray, 0, 6, 4) #TopLeft
+
+class StarBackground:
+    def __init__(self, vArray):
+        self.V_Array = vArray
+
+    def draw(self, glCmd):
+        glCmd.draw(GL_POINTS, len(self.V_Array), self.V_Array)
+
+
+class Bullet:
+    def __init__(self, x, y, vArray, iArray):
+        self.x = x
+        self.y = y
+        self.life = 750
+        self.V_Array = vArray
+        self.I_Array = iArray
+
+    def alive(self):
+        if self.life > 0:
+            return True
+        else:
+            return False
+
+    def update(self, timePassed):
+        self.life -= timePassed
+
+    def draw(self, glCmd):
+        glCmd.drawElement(GL_TRIANGLES, len(self.I_Array), self.V_Array, self.I_Array, 0)
