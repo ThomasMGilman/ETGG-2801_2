@@ -13,7 +13,8 @@ numStars = 100
 keyset = set()
 
 #Sounds
-spaceBarSound = "organ.ogg"
+pulseSound          = "Pulse-gun-07.wav"    #http://www.soundescapestudios.com/SESAudio/SES%20Site%20Sounds/Laser%20Sci%20Fi/Pulse-gun-07.wav
+pulseSoundTime      = 1000
 
 #Window RGBA
 RED     = 0.0

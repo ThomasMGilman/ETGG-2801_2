@@ -8,8 +8,9 @@ import glCommands
 import sys, traceback
 import Shapes
 
-background = None
 objectsToDraw = []
+
+soundTime = 0               #in milSec
 
 def debugCallback( source, msgType, msgId, severity, length, message, param ):
     print(msgId,":",message)
@@ -51,7 +52,23 @@ def setupFrameRateGlobals(fps):
     globs.TICKS_PER_SECOND = SDL_GetPerformanceFrequency()
     globs.UPDATE_QUANTUM_MSEC = 5
 
-def update(elapsedMsec, glCmd, bulletV_array, bulletI_array):
+def draw(elapsedMSec, glCmd, window):
+    glCmd.clear()
+    objectsToDraw[0].draw(glCmd)  # draw background
+    numObjects = len(objectsToDraw)
+    if numObjects >= 1:
+        i = numObjects - 1
+        while i > 0:
+            obj = objectsToDraw[i]
+            obj.update(elapsedMSec)
+            if obj.alive():
+                obj.draw(glCmd)
+            else:
+                objectsToDraw.remove(obj)
+            i -= 1;
+    SDL_GL_SwapWindow(window)
+
+def update(elapsedMsec, glCmd, bulletV_array, bulletI_array, sound, soundTime):
     ev = SDL_Event()
     while 1:
         if not SDL_PollEvent(byref(ev)):
@@ -62,7 +79,7 @@ def update(elapsedMsec, glCmd, bulletV_array, bulletI_array):
         elif ev.type == SDL_KEYDOWN:
             k = ev.key.keysym.sym
             globs.keyset.add(k)
-            print("key down:", k)
+            #print("key down:", k)
             if k == SDLK_q:
                 SDL_Quit()
                 sys.exit(0)
@@ -72,8 +89,9 @@ def update(elapsedMsec, glCmd, bulletV_array, bulletI_array):
                 glClearColor(globs.RED, globs.GREEN, globs.BLUE, globs.ALPHA)   #Set render color to new color
         elif ev.type == SDL_KEYUP:
             k = ev.key.keysym.sym
-            print("key up:", k)
+            #print("key up:", k)
             if SDLK_SPACE in globs.keyset:                                      #Fire BULLET and go back to black
+                rv = Mix_FadeInChannelTimed(-1, sound, 0, 0, soundTime)         #sounds found in globs.py
                 newBullet = Shapes.Bullet(0, 0, bulletV_array, bulletI_array)
                 objectsToDraw.append(newBullet)
                 globs.RED = 0.0
@@ -86,19 +104,6 @@ def update(elapsedMsec, glCmd, bulletV_array, bulletI_array):
             print("mouse up:", ev.button.button, ev.button.x, ev.button.y)
         elif ev.type == SDL_MOUSEMOTION:
             print("mouse move:", ev.motion.x, ev.motion.y)
-
-def draw(elapsedMSec, glCmd, window):
-    glCmd.clear()
-    background.draw(glCmd)
-    if len(objectsToDraw) > 0:
-        for i in range(len(objectsToDraw)):
-            obj = objectsToDraw[i]
-            obj.update(elapsedMSec)
-            if obj.alive():
-                obj.draw(glCmd)
-            else:
-                objectsToDraw.remove(obj)
-    SDL_GL_SwapWindow(window)
 
 def main():
     win = setupWindow()                 #Setup SDL_GL_Attributes and get SDL_Window
@@ -113,6 +118,8 @@ def main():
         raise RuntimeError()
 
     enableDebugging()                  #enables debugging messages, DISABLED BY DEFAULT for performance
+
+    globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode()) # load PulseSound file
 
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
 
@@ -129,7 +136,7 @@ def main():
     glCmd.setup(starV_array)
 
     global background
-    background = Shapes.StarBackground(starV_array)
+    objectsToDraw.append(Shapes.StarBackground(starV_array))
 
     # create bullet vertex array and index array
     Shapes.createCircle(bulletV_array, .25, 0, 0)
@@ -148,7 +155,7 @@ def main():
         elapsedMsec = int(1000 * elapsedTicks / globs.TICKS_PER_SECOND)           #convert lastTicks to Msec
         accumElapsedMsec += elapsedMsec
         while accumElapsedMsec >= globs.UPDATE_QUANTUM_MSEC:
-            update(elapsedMsec, glCmd, bulletV_array, bulletI_array)
+            update(elapsedMsec, glCmd, bulletV_array, bulletI_array, globs.pulseSound, globs.pulseSoundTime)
             accumElapsedMsec -= globs.UPDATE_QUANTUM_MSEC
 
         draw(elapsedMsec, glCmd, win)
