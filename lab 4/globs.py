@@ -6,8 +6,12 @@ DESIRED_MSEC_PER_FRAME = 0
 TICKS_PER_SECOND = 0
 UPDATE_QUANTUM_MSEC = 0
 
-#point count for stars
+#point count for stars and starObject
 numStars = 100
+StarBackground = None;
+
+win = None
+objectsToDraw = []
 
 #keys input
 keyset = set()

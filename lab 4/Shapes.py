@@ -1,7 +1,9 @@
-from glCommands import *
+import glCommands
+from sdl2.sdlmixer import *
 import random
 import array
 import math
+import globs
 
 def seedRandom():
     random.seed()
@@ -126,29 +128,46 @@ def createHexIndexArray(Iarray):
         appendVec3(Iarray, 0, 6, 4) #TopLeft
 
 class StarBackground:
-    def __init__(self, vArray):
-        self.V_Array = vArray
+    vbuff = None
+    def __init__(self):
+        if StarBackground.vbuff == None:
+            StarBackground.vbuff = array.array("f")
+            StarBackground.vbuff = createRandPoints(StarBackground.vbuff, globs.numStars)
+            glCommands.setup(StarBackground.vbuff)
 
-    def draw(self, glCmd):
-        glCmd.draw(GL_POINTS, len(self.V_Array), self.V_Array)
+    def draw(self):
+        glCommands.draw(glCommands.GL_POINTS, len(StarBackground.vbuff), StarBackground.vbuff)
+
+    def alive(self):
+        return True
 
 
 class Bullet:
-    def __init__(self, x, y, vArray, iArray):
+    vbuff = None
+    ibuff = None
+    def __init__(self, x, y):
         self.x = x
         self.y = y
         self.life = 750
-        self.V_Array = vArray
-        self.I_Array = iArray
 
-    def alive(self):
-        if self.life > 0:
-            return True
-        else:
-            return False
+        if Bullet.vbuff == None and Bullet.ibuff == None:
+            Bullet.vbuff = array.array("f")
+            Bullet.ibuff = array.array("I")
+            createCircle(Bullet.vbuff, .25, 0, 0)
+            createCircleIndexArray(Bullet.ibuff)
+            glCommands.setup(Bullet.vbuff, Bullet.ibuff)
+
+        self.playSound()
 
     def update(self, timePassed):
         self.life -= timePassed
 
-    def draw(self, glCmd):
-        glCmd.drawElement(GL_TRIANGLES, len(self.I_Array), self.V_Array, self.I_Array, 0)
+
+    def draw(self):
+        glCommands.drawElement(glCommands.GL_TRIANGLES, len(Bullet.ibuff), Bullet.vbuff, Bullet.ibuff, 0)
+
+    def alive(self):
+        return self.life > 0
+
+    def playSound(self):
+        Mix_FadeInChannelTimed(-1, globs.pulseSound, 0, 0, globs.pulseSoundTime)  #sounds found in globs.py

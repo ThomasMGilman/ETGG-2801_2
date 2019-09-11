@@ -1,16 +1,11 @@
 from sdl2 import *
 from sdl2.keycode import *
-from sdl2.sdlmixer import *
-from Program import *
+from glCommands import *
+from Shapes import *
 import os.path
 import globs
-import glCommands
 import sys, traceback
-import Shapes
 
-objectsToDraw = []
-
-soundTime = 0               #in milSec
 
 def debugCallback( source, msgType, msgId, severity, length, message, param ):
     print(msgId,":",message)
@@ -52,23 +47,35 @@ def setupFrameRateGlobals(fps):
     globs.TICKS_PER_SECOND = SDL_GetPerformanceFrequency()
     globs.UPDATE_QUANTUM_MSEC = 5
 
-def draw(elapsedMSec, glCmd, window):
-    glCmd.clear()
-    objectsToDraw[0].draw(glCmd)  # draw background
-    numObjects = len(objectsToDraw)
-    if numObjects >= 1:
-        i = numObjects - 1
-        while i > 0:
-            obj = objectsToDraw[i]
-            obj.update(elapsedMSec)
-            if obj.alive():
-                obj.draw(glCmd)
-            else:
-                objectsToDraw.remove(obj)
-            i -= 1;
-    SDL_GL_SwapWindow(window)
+def setupGlobals():
+    seedRandom()
+    globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
+    globs.StarBackground = StarBackground()
+    setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
 
-def update(elapsedMsec, glCmd, bulletV_array, bulletI_array, sound, soundTime):
+def buryTheDead(List):
+    index = 0
+    while index < len(List):
+        if not List[index].alive():
+            x = List.pop()
+            if index < len(List):
+                List[index] = x
+        else:
+            index += 1
+    return List
+
+def draw(elapsedMSec):
+    clear()
+    globs.StarBackground.draw()  # draw background
+
+    for obj in globs.objectsToDraw:
+        obj.draw()
+        obj.update(elapsedMSec)
+
+    buryTheDead(globs.objectsToDraw)
+    SDL_GL_SwapWindow(globs.win)
+
+def update(elapsedMsec):
     ev = SDL_Event()
     while 1:
         if not SDL_PollEvent(byref(ev)):
@@ -91,9 +98,7 @@ def update(elapsedMsec, glCmd, bulletV_array, bulletI_array, sound, soundTime):
             k = ev.key.keysym.sym
             #print("key up:", k)
             if SDLK_SPACE in globs.keyset:                                      #Fire BULLET and go back to black
-                rv = Mix_FadeInChannelTimed(-1, sound, 0, 0, soundTime)         #sounds found in globs.py
-                newBullet = Shapes.Bullet(0, 0, bulletV_array, bulletI_array)
-                objectsToDraw.append(newBullet)
+                globs.objectsToDraw.append(Bullet(0,0))
                 globs.RED = 0.0
                 glClearColor(globs.RED, globs.GREEN, globs.BLUE, globs.ALPHA)   #Set render color to black
 
@@ -106,44 +111,19 @@ def update(elapsedMsec, glCmd, bulletV_array, bulletI_array, sound, soundTime):
             print("mouse move:", ev.motion.x, ev.motion.y)
 
 def main():
-    win = setupWindow()                 #Setup SDL_GL_Attributes and get SDL_Window
+    globs.win = setupWindow()                 #Setup SDL_GL_Attributes and get SDL_Window
     print("running");
-    if not win:
+    if not globs.win:
         print("Could not create window")
         return
 
-    rc = SDL_GL_CreateContext(win)
+    rc = SDL_GL_CreateContext(globs.win)
     if not rc:
         print("Cannot create GL context")
         raise RuntimeError()
 
     enableDebugging()                  #enables debugging messages, DISABLED BY DEFAULT for performance
-
-    globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode()) # load PulseSound file
-
-    setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
-
-    # create glCmd object for drawing
-    glCmd = glCommands.glCommands()
-
-    starV_array = array.array("f")
-    bulletV_array = array.array("f")
-    bulletI_array = array.array("I")
-
-    #seed random, initialize array, populate with random stars by num wanted
-    Shapes.seedRandom()
-    starV_array = Shapes.createRandPoints(starV_array, globs.numStars)
-    glCmd.setup(starV_array)
-
-    global background
-    objectsToDraw.append(Shapes.StarBackground(starV_array))
-
-    # create bullet vertex array and index array
-    Shapes.createCircle(bulletV_array, .25, 0, 0)
-    Shapes.createCircleIndexArray(bulletI_array)
-    # Setup vao and indexbuff
-    glCmd.setup(bulletV_array, bulletI_array)
-
+    setupGlobals()
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
     lastTicks = SDL_GetPerformanceCounter()
@@ -155,10 +135,10 @@ def main():
         elapsedMsec = int(1000 * elapsedTicks / globs.TICKS_PER_SECOND)           #convert lastTicks to Msec
         accumElapsedMsec += elapsedMsec
         while accumElapsedMsec >= globs.UPDATE_QUANTUM_MSEC:
-            update(elapsedMsec, glCmd, bulletV_array, bulletI_array, globs.pulseSound, globs.pulseSoundTime)
+            update(elapsedMsec)
             accumElapsedMsec -= globs.UPDATE_QUANTUM_MSEC
 
-        draw(elapsedMsec, glCmd, win)
+        draw(elapsedMsec)
 
         endTicks = SDL_GetPerformanceCounter()                                      #Get finale tick
         frameTicks = endTicks - nowTicks                                            #Get num ticks for frame
