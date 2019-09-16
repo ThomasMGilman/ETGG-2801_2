@@ -1,8 +1,8 @@
 from sdl2 import *
 from sdl2.keycode import *
 from glCommands import *
-from Shapes import *
-from collections import *
+from GameObjects import *
+import math3d
 import os.path
 import globs
 import sys, traceback
@@ -77,16 +77,7 @@ def draw(elapsedMSec):
     SDL_GL_SwapWindow(globs.win)
 
 
-translation = vec2(0,0)
-translationSign = vec2(1,1)
 def update(elapsedMsec):
-    translation.x += translationSign.x * .5 * elapsedMsec
-    if translation.x > 1:
-        translationSign.x = -abs(translationSign.x)
-    if translation.x < -1:
-        translationSign.x = abs(translationSign.x)
-    Program.setUniform("translation", translation)
-    Program.updateUniforms()
     ev = SDL_Event()
     while 1:
         if not SDL_PollEvent(byref(ev)):

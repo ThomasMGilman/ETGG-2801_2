@@ -74,10 +74,10 @@ class Program:
         glGetProgramiv(prog, GL_ACTIVE_UNIFORMS, tmp)
         numUniforms = tmp[0]
 
-        tmp = []
+        tmp2 = []
         for i in range(numUniforms):
             tmp.append(i)
-        uniformsToQuery = array.array("I", tmp)
+        uniformsToQuery = array.array("I", tmp2)
 
         offsets = array.array("I", [0] * numUniforms)
         sizes = array.array("I", [0] * numUniforms)
@@ -89,7 +89,7 @@ class Program:
         nameBytes = bytearray(256)
         Program.totalUniformBytes = 0
         for i in range(numUniforms):
-            glGetActiveUniformName(prog, i, len(nameBytes), tmp, nameBytes)
+            glGetActiveUniformName(prog, i, len(nameBytes), tmp, nameBytes) #def glGetActiveUniformName (program, uniformIndex, bufSize, length, uniformName)
             nameLen = tmp[0]
             name = nameBytes[:nameLen].decode()
 
@@ -104,7 +104,7 @@ class Program:
         Program.uboBackingMemory = ctypes.create_string_buffer(Program.totalUniformBytes)
         Program.uboBackingAddress = ctypes.addressof(Program.uboBackingMemory)
         Program.ubo = Buffer.Buffer(None, GL_DYNAMIC_DRAW, Program.totalUniformBytes)
-        Program.ubo.bind(GL_UNIFORM_BUFFER)
+        Program.ubo.bindBase(GL_UNIFORM_BUFFER, 0)
 
     @staticmethod
     def setUniform(name, value):

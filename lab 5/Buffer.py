@@ -23,3 +23,6 @@ class Buffer:
 
     def bind(self, bindingPoint):
         glBindBuffer(bindingPoint, self.buffID)
+
+    def bindBase(self, bindingPoint, index):
+        glBindBufferBase(bindingPoint, index, self.buffID)
