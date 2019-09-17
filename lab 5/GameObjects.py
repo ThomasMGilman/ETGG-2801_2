@@ -10,8 +10,9 @@ FALLING = 2
 FACING_LEFT = 3
 FACING_RIGHT = 4
 
-def changeUniform(translationVec):
+def changeUniform(translationVec, scalingVec = math3d.vec2(1,1)):
     Program.setUniform("translation", translationVec)
+    Program.setUniform("scaling", scalingVec)
     Program.updateUniforms()
 
 class StarBackground:
@@ -71,6 +72,8 @@ class Bullet:
 class Player:
     def __init__(self, x, y, size):
         self.pos = math3d.vec2(x, y)    #set players start position
+        self.crouchScale = math3d.vec2(1, .5)
+        self.crouching = False
         self.direction = 0              #-1:Left, 1:Right
         self.lastFired = 0
         self.state = ON_GROUND
@@ -83,7 +86,10 @@ class Player:
         glCommands.setup(self.vbuff, self.ibuff)
 
     def draw(self):
-        changeUniform(self.pos)
+        if self.crouching:
+            changeUniform(self.pos, self.crouchScale)
+        else:
+            changeUniform(self.pos)
         glCommands.drawElement(glCommands.GL_TRIANGLES, len(self.ibuff), self.vbuff, self.ibuff, 0)
 
     def update(self, elapsedTime):
@@ -94,6 +100,11 @@ class Player:
         if (SDLK_a or SDLK_LEFT) in globs.keyset:
             self.direction = FACING_LEFT
             self.pos[0] -= globs.playerSpeed * elapsedTime
+
+        if (SDLK_s or SDLK_DOWN) in globs.keyset:
+            self.crouching = True
+        else:
+            self.crouching = False
 
         if self.state == RISING:
             self.pos[1] += globs.playerSpeed * elapsedTime
