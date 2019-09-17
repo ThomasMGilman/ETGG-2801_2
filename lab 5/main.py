@@ -1,8 +1,6 @@
 from sdl2 import *
-from sdl2.keycode import *
 from glCommands import *
 from GameObjects import *
-import math3d
 import os.path
 import globs
 import sys, traceback
@@ -51,7 +49,7 @@ def setupFrameRateGlobals(fps):
 def setupGlobals():
     seedRandom()
     globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
-    globs.StarBackground = StarBackground()
+    globs.StarBackground = StarBackground(0, 0)
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
 
 def buryTheDead(List):
@@ -71,6 +69,7 @@ def draw(elapsedMSec):
 
     for obj in globs.objectsToDraw:
         obj.draw()
+        #print("Objects Pos: "+str(obj.pos))
         obj.update(elapsedMSec)
 
     buryTheDead(globs.objectsToDraw)
@@ -91,18 +90,9 @@ def update(elapsedMsec):
             if k == SDLK_q:
                 SDL_Quit()
                 sys.exit(0)
-            if SDLK_SPACE in globs.keyset:
-                if globs.RED < 1:
-                    globs.RED += .01
-                glClearColor(globs.RED, globs.GREEN, globs.BLUE, globs.ALPHA)   #Set render color to new color
 
         elif ev.type == SDL_KEYUP:
             k = ev.key.keysym.sym
-            #print("key up:", k)
-            if SDLK_SPACE in globs.keyset:                                      #Fire BULLET and go back to black
-                globs.objectsToDraw.append(Bullet(0,0))
-                globs.RED = 0.0
-                glClearColor(globs.RED, globs.GREEN, globs.BLUE, globs.ALPHA)   #Set render color to black
             globs.keyset.discard(k)
 
         elif ev.type == SDL_MOUSEBUTTONDOWN:
@@ -129,6 +119,8 @@ def main():
     enableDebugging()                  #enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+
+    globs.objectsToDraw.append(Player(0, 0, .25))
 
     lastTicks = SDL_GetPerformanceCounter()
     accumElapsedMsec = 0

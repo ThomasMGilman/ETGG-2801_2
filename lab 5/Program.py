@@ -1,23 +1,12 @@
 from gl import *
 from glconstants import *
-import Buffer
+from Buffer import *
 import array, os
-import ctypes
-
-sizeForType = {
-    GL_FLOAT_VEC4: 4*4,
-    GL_FLOAT_VEC3: 3*4,
-    GL_FLOAT_VEC2: 2*4,
-    GL_FLOAT: 1*4,
-    GL_INT: 1*4
-}
 
 class Program:
     uniforms            = {}
     ubo                 = None
-    totalUniformBytes   = None
-    uboBackingMemory    = None
-    uboBackingAddress   = None
+
     def __init__(self, vsfname, fsfname):
         vs = self.compile(vsfname, GL_VERTEX_SHADER)
         fs = self.compile(fsfname, GL_FRAGMENT_SHADER)
@@ -39,6 +28,7 @@ class Program:
 
     def compile(self, fname, shaderType):
         s = glCreateShader(shaderType)
+
         shaderdata = open(os.path.join("shaders", fname)).read()
         uniformData = open(os.path.join("shaders", "uniforms.txt")).read()
         src = ["#version 430\n",
@@ -70,29 +60,29 @@ class Program:
 
     @staticmethod
     def setupUniforms(prog):
+        sizeForType = {
+            GL_FLOAT_VEC4: 4 * 4,
+            GL_FLOAT_VEC3: 3 * 4,
+            GL_FLOAT_VEC2: 2 * 4,
+            GL_FLOAT: 1 * 4,
+            GL_INT: 1 * 4
+        }
         tmp = array.array("I", [0])
-        glGetProgramiv(prog, GL_ACTIVE_UNIFORMS, tmp)
-        numUniforms = tmp[0]
-
-        tmp2 = []
-        for i in range(numUniforms):
-            tmp.append(i)
-        uniformsToQuery = array.array("I", tmp2)
-
-        offsets = array.array("I", [0] * numUniforms)
-        sizes = array.array("I", [0] * numUniforms)
-        types = array.array("I", [0] * numUniforms)
-        glGetActiveUniformsiv(prog, numUniforms, uniformsToQuery, GL_UNIFORM_OFFSET, offsets)
-        glGetActiveUniformsiv(prog, numUniforms, uniformsToQuery, GL_UNIFORM_SIZE, sizes)
-        glGetActiveUniformsiv(prog, numUniforms, uniformsToQuery, GL_UNIFORM_TYPE, types)
-
+        glGetProgramiv(prog, GL_ACTIVE_UNIFORMS, tmp);
+        numuniforms = tmp[0]
+        uniformsToQuery = array.array("I", range(numuniforms))
+        offsets = array.array("I", [0] * numuniforms)
+        sizes = array.array("I", [0] * numuniforms)
+        types = array.array("I", [0] * numuniforms)
+        glGetActiveUniformsiv(prog, numuniforms, uniformsToQuery, GL_UNIFORM_OFFSET, offsets);
+        glGetActiveUniformsiv(prog, numuniforms, uniformsToQuery, GL_UNIFORM_SIZE, sizes);
+        glGetActiveUniformsiv(prog, numuniforms, uniformsToQuery, GL_UNIFORM_TYPE, types);
         nameBytes = bytearray(256)
         Program.totalUniformBytes = 0
-        for i in range(numUniforms):
-            glGetActiveUniformName(prog, i, len(nameBytes), tmp, nameBytes) #def glGetActiveUniformName (program, uniformIndex, bufSize, length, uniformName)
+        for i in range(numuniforms):
+            glGetActiveUniformName(prog, i, len(nameBytes), tmp, nameBytes);
             nameLen = tmp[0]
             name = nameBytes[:nameLen].decode()
-
             if offsets[i] != 0xffffffff:
                 assert sizes[i] == 1
                 numBytes = sizeForType[types[i]]
@@ -101,9 +91,11 @@ class Program:
                 if end > Program.totalUniformBytes:
                     Program.totalUniformBytes = end
 
-        Program.uboBackingMemory = ctypes.create_string_buffer(Program.totalUniformBytes)
-        Program.uboBackingAddress = ctypes.addressof(Program.uboBackingMemory)
-        Program.ubo = Buffer.Buffer(None, GL_DYNAMIC_DRAW, Program.totalUniformBytes)
+        Program.uboBackingMemory = create_string_buffer(Program.totalUniformBytes)
+        Program.uboBackingAddress = addressof(Program.uboBackingMemory)
+        Program.ubo = Buffer(data=None,
+                             size=Program.totalUniformBytes,
+                             usage=GL_DYNAMIC_DRAW)
         Program.ubo.bindBase(GL_UNIFORM_BUFFER, 0)
 
     @staticmethod
@@ -115,6 +107,7 @@ class Program:
         elif typ == GL_INT:
             value = array.array("I", [value])
 
+        print(str(value))
         b = value.tobytes()
         if len(b) != numBytes:
             raise RuntimeError("Type mismatch when setting uniform '"+name+"' : Got "+str(type(value)))

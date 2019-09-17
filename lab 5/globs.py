@@ -27,4 +27,8 @@ ALPHA   = 1.0
 
 #player parameters
 jumpPeak = .3
-playerSpeed = .2
+playerSpeed = .002
+playerFireRate = 500
+
+#bullet parameters
+bulletSpeed = 0.002 + playerSpeed
