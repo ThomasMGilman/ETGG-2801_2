@@ -107,7 +107,6 @@ class Program:
         elif typ == GL_INT:
             value = array.array("I", [value])
 
-        print(str(value))
         b = value.tobytes()
         if len(b) != numBytes:
             raise RuntimeError("Type mismatch when setting uniform '"+name+"' : Got "+str(type(value)))

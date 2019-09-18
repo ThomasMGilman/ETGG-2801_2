@@ -35,7 +35,7 @@ class StarBackground:
 class Bullet:
     vbuff = None
     ibuff = None
-    def __init__(self, x, y, direction, size = .2):
+    def __init__(self, x, y, direction, size = .05):
         self.pos = math3d.vec2(x, y)
         self.dir = direction
         self.life = 750
@@ -43,7 +43,7 @@ class Bullet:
         if Bullet.vbuff == None and Bullet.ibuff == None:
             Bullet.vbuff = array.array("f")
             Bullet.ibuff = array.array("I")
-            createCircle(Bullet.vbuff, size, 0, 0)
+            createCircle(Bullet.vbuff, size, 0, 0+size)
             createCircleIndexArray(Bullet.ibuff)
             glCommands.setup(Bullet.vbuff, Bullet.ibuff)
 
@@ -58,7 +58,6 @@ class Bullet:
         self.life -= elapsedTime
 
     def draw(self):
-        print("bullet call this draw")
         changeUniform(self.pos)
         glCommands.drawElement(glCommands.GL_TRIANGLES, len(Bullet.ibuff), Bullet.vbuff, Bullet.ibuff, 0)
 
@@ -79,6 +78,7 @@ class Player:
         self.state = ON_GROUND
         self.life = 10
         self.size = size
+        self.halfSize = size / 2
         self.vbuff = array.array("f")
         self.ibuff = array.array("I")
         createSquare(self.vbuff, size, size, x, y)
@@ -113,7 +113,9 @@ class Player:
             self.pos[1] -= globs.playerSpeed * elapsedTime
 
         if SDLK_SPACE in globs.keyset and self.lastFired <= 0:               #fireBullet
-            globs.objectsToDraw.append(Bullet(self.pos[0], self.pos[1], self.direction))
+            bulletPosY = self.pos[1]+self.halfSize
+            if self.crouching: bulletPosY *= .5
+            globs.objectsToDraw.append(Bullet(self.pos[0], bulletPosY, self.direction))
             self.lastFired = globs.playerFireRate
 
         if SDLK_w in globs.keyset and self.state == ON_GROUND:

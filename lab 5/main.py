@@ -69,7 +69,6 @@ def draw(elapsedMSec):
 
     for obj in globs.objectsToDraw:
         obj.draw()
-        #print("Objects Pos: "+str(obj.pos))
         obj.update(elapsedMSec)
 
     buryTheDead(globs.objectsToDraw)
@@ -116,7 +115,7 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    enableDebugging()                  #enables debugging messages, DISABLED BY DEFAULT for performance
+    enableDebugging()#True)                  #enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 

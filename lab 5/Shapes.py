@@ -29,10 +29,8 @@ def createRandPoints(array, numPoints):
 
 """create circle points surrounding the center point"""
 def createCircle(array, radius, cx=None, cy=None):
-    centerX = cx
-    centerY = cy
-    if cx == None: centerX = random.uniform(-1 + radius, 1 - radius)
-    if cy == None: centerY = random.uniform(-1 + radius, 1 - radius)
+    centerX = cx if cx != None else random.uniform(-1 + radius, 1 - radius)
+    centerY = cy if cy != None else random.uniform(-1 + radius, 1 - radius)
     appendVec2(array, centerX, centerY)
     for i in range(359):
         x = centerX + radius * math.cos(i)
@@ -45,18 +43,13 @@ def createCircleIndexArray(array):
 
 """create triangle"""
 def createTriangle(array, ax = None, ay = None, bx = None, by = None, cx = None, cy = None):
-    Ax = ax
-    Ay = ay
-    Bx = bx
-    By = by
-    Cx = cx
-    Cy = cy
-    if ax == None: Ax = random.uniform(-1, 1)
-    if ay == None: Ay = random.uniform(-1, 1)
-    if bx == None: Bx = random.uniform(-1, 1)
-    if by == None: By = random.uniform(-1, 1)
-    if cx == None: Cx = random.uniform(-1, 1)
-    if cy == None: Cy = random.uniform(-1, 1)
+    Ax = ax if ax != None else random.uniform(-1, 1)
+    Ay = ay if ay != None else random.uniform(-1, 1)
+    Bx = bx if bx != None else random.uniform(-1, 1)
+    By = by if by != None else random.uniform(-1, 1)
+    Cx = cx if cx != None else random.uniform(-1, 1)
+    Cy = cy if cy != None else random.uniform(-1, 1)
+
     appendVec2(array, Ax, Ay)
     appendVec2(array, Bx, By)
     appendVec2(array, Cx, Cy)
@@ -70,16 +63,13 @@ def createSquare(array, Height, Width = None, cx = None, cy = None):
         Width = Height
     halfHeight = Height * .5
     halfWidth = Width * .5
-    centerX = cx
-    centerY = cy
-    if cx == None: centerX = random.uniform(-1 + halfWidth, 1 - halfWidth)
-    if cy == None: centerY = random.uniform(-1 + halfHeight, 1 - halfHeight)
+    originX = cx if cx != None else random.uniform(-1 + halfWidth, 1 - halfWidth)
+    originY = cy if cy != None else random.uniform(-1 + halfHeight, 1 - halfHeight)
 
-
-    appendVec2(array, centerX + halfWidth, centerY + halfHeight) #TopRight Corner
-    appendVec2(array, centerX + halfWidth, centerY - halfHeight) #BottomRight Corner
-    appendVec2(array, centerX - halfWidth, centerY - halfHeight) #BottomLeft Corner
-    appendVec2(array, centerX - halfWidth, centerY + halfHeight) #TopLeft Corner
+    appendVec2(array, originX, originY)  # Bottom Left corner
+    appendVec2(array, originX + Width, originY)  # Bottom Right cornera
+    appendVec2(array, originX + Width, originY + Height)  # TopRight corner
+    appendVec2(array, originX, originY + Height)  # TopLeft corner
 
 """Square/Rectangle is comprised of two triangles which is made up of 4 vertices"""
 def createSquareIndexArray(array):
