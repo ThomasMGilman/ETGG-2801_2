@@ -52,7 +52,7 @@ def setupGlobals():
     globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
     globs.StarBackground = StarBackground(0, 0)
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
-    samp = Sampler()
+    samp = Sampler.Sampler()
     samp.bind(0)
 
 def buryTheDead(List):

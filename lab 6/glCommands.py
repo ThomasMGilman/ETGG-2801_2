@@ -26,7 +26,7 @@ def bindVao(vArray, iArray = None, tArray = None):
 
     # If a texture is passed, apply it to be associated to the vbuff
     if tArray != None:
-        tbuff = Buffer(tArray)
+        tbuff = Buffer.Buffer(tArray)
         tbuff.bind(GL_ARRAY_BUFFER)
         glEnableVertexAttribArray(1)
         glVertexAttribPointer(1, 2, GL_FLOAT, False, 2*4, 0)
@@ -34,11 +34,11 @@ def bindVao(vArray, iArray = None, tArray = None):
 
 
 
-def setup(vertexBuff, indexBuff=None):
+def setup(vertexBuff, indexBuff = None, textureBuff = None):
     glEnable(GL_MULTISAMPLE)
     glClearColor(0, 0, 0, 1.0)
 
-    bindVao(vertexBuff)
+    bindVao(vertexBuff, indexBuff, textureBuff)
 
     prog = Program("vs.txt", "fs.txt")
     prog.use()

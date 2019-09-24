@@ -5,7 +5,6 @@ import image
 import zipfile
 import io
 
-
 class Texture:
     def __init__(self, typ):
         self.type = typ;
@@ -28,25 +27,25 @@ class Texture2DArray(Texture):
 
 class ImageTexture2DArray(Texture2DArray):
     def __init__(self, *files):
-        self.membuf = io.BytesIO()
-        self.width = None
-        self.height = None
-        self.slices = 0
+        membuf = io.BytesIO()
+        width = None
+        height = None
+        slices = 0
 
         for fname in files:
             if fname.endswith(".png") or fname.endswith(".jpg"):
                 tmp = open(os.path.join("assets", fname), "rb").read()
                 pw, ph, fmt, pix = image.decode(tmp)
                 pix = image.flipY(pw, ph, pix)
-                if self.width == None:
-                    self.width = pw;
-                    self.height = ph;
+                if width == None:
+                    width = pw;
+                    height = ph;
                 else:
-                    if self.width != pw or self.height != ph:
+                    if width != pw or height != ph:
                         raise RuntimeError("Size mismatch"+
-                                           str((self.width, self.height)) + " " + str((pw, ph)))
-                self.slices += 1
-                self.membuf.write(pix)
+                                           str((width, height)) + " " + str((pw, ph)))
+                slices += 1
+                membuf.write(pix)
 
             elif fname.endswith(".ora") or fname.endswith(".zip"):
                 z = zipfile.ZipFile(os.path.join("assets"), fname)
@@ -57,24 +56,24 @@ class ImageTexture2DArray(Texture2DArray):
                         tmp = z.open(n).read()
                         pw, ph, fmt, pix = image.decode(tmp)
                         pix = image.flipY(pw, ph, pix)
-                        if self.width == None:
-                            self.width = pw;
-                            self.height = ph
+                        if width == None:
+                            width = pw;
+                            height = ph
                         else:
-                            if self.width != pw or self.height != ph:
+                            if width != pw or height != ph:
                                 raise RuntimeError("Size mismatch"+
-                                                    str((self.width, self.height)) + " " + str((pw, ph)))
-                        self.slices += 1
-                        self.membuf.write(pix)
+                                                    str((width, height)) + " " + str((pw, ph)))
+                        slices += 1
+                        membuf.write(pix)
             else:
                 raise RuntimeError("Cannot read file: " + fname)
 
-        Texture2DArray.__init__(self, self.width, self.height, self.slices)
+        Texture2DArray.__init__(self, width, height, slices)
         tmp = array.array("I", [0])
         glGenTextures(1, tmp)
         self.tex = tmp[0]
         self.bind(0)            #set superclass tex as the active tex object
 
-        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, self.width, self.height, self.slices,
-                     0, GL_RGBA, GL_UNSIGNED_BYTE, self.membuf.getbuffer())
+        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, width, height, slices,
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, membuf.getbuffer())
         self.unbind(0)

@@ -1,6 +1,7 @@
 from Shapes import *
 from sdl2.keycode import *
 from Program import *
+from Textures import *
 import math3d
 
 ON_GROUND = 0
@@ -34,7 +35,9 @@ class StarBackground:
 
 class Bullet:
     vbuff = None
+    tbuff = None
     ibuff = None
+    tex = None
     def __init__(self, x, y, direction, size = .05):
         self.pos = math3d.vec2(x, y)
         self.dir = direction
@@ -42,10 +45,12 @@ class Bullet:
 
         if Bullet.vbuff == None and Bullet.ibuff == None:
             Bullet.vbuff = array.array("f")
+            Bullet.tbuff = array.array("f")
             Bullet.ibuff = array.array("I")
+            Bullet.tex = ImageTexture2DArray("Bullet.png")
             createCircle(Bullet.vbuff, size, 0, 0+size)
             createCircleIndexArray(Bullet.ibuff)
-            glCommands.setup(Bullet.vbuff, Bullet.ibuff)
+            glCommands.setup(Bullet.vbuff, Bullet.ibuff, Bullet.tbuff)
 
         self.playSound()
 
@@ -58,6 +63,7 @@ class Bullet:
         self.life -= elapsedTime
 
     def draw(self):
+        Bullet.tex.bind(0)
         changeUniform(self.pos)
         glCommands.drawElement(glCommands.GL_TRIANGLES, len(Bullet.ibuff), Bullet.vbuff, Bullet.ibuff, 0)
 
@@ -69,7 +75,7 @@ class Bullet:
 
 
 class Player:
-    def __init__(self, x, y, size, texture):
+    def __init__(self, x, y, size):
         self.pos = math3d.vec2(x, y)    #set players start position
         self.crouchScale = math3d.vec2(1, .5)
         self.crouching = False
@@ -82,12 +88,12 @@ class Player:
         self.vbuff = array.array("f")
         self.tbuff = array.array("f")
         self.ibuff = array.array("I")
-        self.tex = texture;
+        self.tex = ImageTexture2DArray("Player.png");
 
         createSquare(self.vbuff, size, size, x, y)
         createSquareTextureArray(self.tbuff)
         createSquareIndexArray(self.ibuff)
-        glCommands.setup(self.vbuff, self.ibuff)
+        glCommands.setup(self.vbuff, self.ibuff, self.tbuff)
 
     def draw(self):
         self.tex.bind(0)
