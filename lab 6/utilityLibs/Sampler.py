@@ -1,5 +1,5 @@
-from gl import *
-from glconstants import *
+from glLibs.gl import *
+from glLibs.glconstants import *
 
 class Sampler:
     def __init__(self):

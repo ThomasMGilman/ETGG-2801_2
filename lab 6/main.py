@@ -1,7 +1,7 @@
 from sdl2 import *
-from glCommands import *
+from utilityLibs import Sampler
+from utilityLibs.glCommands import *
 from GameObjects import *
-import Sampler
 import os.path
 import globs
 import sys, traceback
@@ -23,6 +23,7 @@ def enableDebugging(enabled = False):
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS)
         glEnable(GL_DEBUG_OUTPUT)
 
+
 def setupWindow():
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)
     Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3)
@@ -40,6 +41,7 @@ def setupWindow():
 
     return SDL_CreateWindow(b"ETGG", 20, 20, 512, 512, SDL_WINDOW_OPENGL)
 
+
 """Setup Desired FrameRate in Globals"""
 def setupFrameRateGlobals(fps):
     globs.DESIRED_SEC_PER_FRAME = 1 / fps
@@ -47,13 +49,20 @@ def setupFrameRateGlobals(fps):
     globs.TICKS_PER_SECOND = SDL_GetPerformanceFrequency()
     globs.UPDATE_QUANTUM_MSEC = 5
 
+
 def setupGlobals():
     seedRandom()
     globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
-    globs.StarBackground = StarBackground(0, 0)
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
-    samp = Sampler.Sampler()
-    samp.bind(0)
+    if(globs.sampler == None):
+        globs.sampler = Sampler.Sampler()
+    globs.sampler.bind(0)
+
+
+def initObjects():
+    globs.StarBackground = StarBackground(0, 0)
+    globs.objectsToDraw.append(Player(0, 0, .25))
+
 
 def buryTheDead(List):
     index = 0
@@ -65,6 +74,7 @@ def buryTheDead(List):
         else:
             index += 1
     return List
+
 
 def draw(elapsedMSec):
     clear()
@@ -106,6 +116,7 @@ def update(elapsedMsec):
         elif ev.type == SDL_MOUSEMOTION:
             print("mouse move:", ev.motion.x, ev.motion.y)
 
+
 def main():
     globs.win = setupWindow()                 #Setup SDL_GL_Attributes and get SDL_Window
     print("running");
@@ -120,9 +131,8 @@ def main():
 
     enableDebugging()#True)                  #enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
+    initObjects()
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-
-    globs.objectsToDraw.append(Player(0, 0, .25))
 
     lastTicks = SDL_GetPerformanceCounter()
     accumElapsedMsec = 0
@@ -130,7 +140,7 @@ def main():
         nowTicks = SDL_GetPerformanceCounter()                                      #Get ticks at start of loop
         elapsedTicks = nowTicks - lastTicks                                         #Ticks since lastTick
         lastTicks = nowTicks                                                        #lastTick is now
-        elapsedMsec = int(1000 * elapsedTicks / globs.TICKS_PER_SECOND)           #convert lastTicks to Msec
+        elapsedMsec = int(1000 * elapsedTicks / globs.TICKS_PER_SECOND)             #convert lastTicks to Msec
         accumElapsedMsec += elapsedMsec
         while accumElapsedMsec >= globs.UPDATE_QUANTUM_MSEC:
             update(elapsedMsec)
@@ -140,8 +150,8 @@ def main():
 
         endTicks = SDL_GetPerformanceCounter()                                      #Get finale tick
         frameTicks = endTicks - nowTicks                                            #Get num ticks for frame
-        frameMsec = int(frameTicks / globs.TICKS_PER_SECOND * 1000)               #convert ticks for frame to Msec
-        leftoverMsec = globs.DESIRED_MSEC_PER_FRAME - frameMsec                   #calculate numTicks for desired frameRate left
+        frameMsec = int(frameTicks / globs.TICKS_PER_SECOND * 1000)                 #convert ticks for frame to Msec
+        leftoverMsec = globs.DESIRED_MSEC_PER_FRAME - frameMsec                     #calculate numTicks for desired frameRate left
         if leftoverMsec > 0:
             SDL_Delay(leftoverMsec)                                                 #delay to meet frameRate if frame doesnt take to long
 

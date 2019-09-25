@@ -1,8 +1,9 @@
 from Shapes import *
 from sdl2.keycode import *
 from Program import *
-from Textures import *
-import math3d
+from utilityLibs import Textures
+from utilityLibs import glCommands
+from toolLibs import math3d
 
 ON_GROUND = 0
 RISING = 1
@@ -44,10 +45,10 @@ class Bullet:
         self.life = 750
 
         if Bullet.vbuff == None and Bullet.ibuff == None:
-            Bullet.vbuff = array.array("f")
-            Bullet.tbuff = array.array("f")
-            Bullet.ibuff = array.array("I")
-            Bullet.tex = ImageTexture2DArray("Bullet.png")
+            Bullet.vbuff    = array.array("f")
+            Bullet.tbuff    = array.array("f")
+            Bullet.ibuff    = array.array("I")
+            Bullet.tex      = Textures.ImageTexture2DArray("Bullet.png")
             createCircle(Bullet.vbuff, size, 0, 0+size)
             createCircleIndexArray(Bullet.ibuff)
             glCommands.setup(Bullet.vbuff, Bullet.ibuff, Bullet.tbuff)

@@ -25,6 +25,9 @@ GREEN   = 0.0
 BLUE    = 0.0
 ALPHA   = 1.0
 
+#Sampler Object
+sampler = None
+
 #player parameters
 jumpPeak = .3
 playerSpeed = .002

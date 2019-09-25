@@ -1,6 +1,6 @@
-from gl import *
-from glconstants import *
-from Buffer import *
+from glLibs.gl import *
+from glLibs.glconstants import *
+from utilityLibs import Buffer
 import array, os
 
 class Program:
@@ -93,7 +93,7 @@ class Program:
 
         Program.uboBackingMemory = create_string_buffer(Program.totalUniformBytes)
         Program.uboBackingAddress = addressof(Program.uboBackingMemory)
-        Program.ubo = Buffer(data=None,
+        Program.ubo = Buffer.Buffer(data=None,
                              size=Program.totalUniformBytes,
                              usage=GL_DYNAMIC_DRAW)
         Program.ubo.bindBase(GL_UNIFORM_BUFFER, 0)

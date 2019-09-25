@@ -1,5 +1,5 @@
 from sdl2.sdlmixer import *
-import glCommands
+from utilityLibs import  glCommands
 import random
 import array
 import math

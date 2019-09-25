@@ -1,5 +1,5 @@
 from Program import *
-import Buffer
+from utilityLibs import Buffer
 import array
 
 def bindVao(vArray, iArray = None, tArray = None):

@@ -1,7 +1,7 @@
-from gl import *
-from glconstants import *
+from glLibs.gl import *
+from glLibs.glconstants import *
+from toolLibs import image
 import os.path
-import image
 import zipfile
 import io
 

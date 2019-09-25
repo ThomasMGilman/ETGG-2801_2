@@ -1,5 +1,5 @@
-from gl import *
-from glconstants import *
+from glLibs.gl import *
+from glLibs.glconstants import *
 import array
 
 class Buffer:
