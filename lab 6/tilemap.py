@@ -1,6 +1,4 @@
-
 import os.path
-
 
 class Map:
     def __init__(self):
@@ -20,6 +18,7 @@ class Map:
                 [int(q) for q in line.split(",")]
              )
         self.tileList = outputList
+
         ...load textures to a list called self.texList...
         ...create a vao for a square...
     def draw(self):

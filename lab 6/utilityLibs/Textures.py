@@ -9,9 +9,11 @@ class Texture:
     def __init__(self, typ):
         self.type = typ;
         self.tex = None
+
     def bind(self, unit):
         glActiveTexture(GL_TEXTURE0 + unit)
         glBindTexture(self.type, self.tex)
+
     def unbind(self, unit):
         glActiveTexture(GL_TEXTURE0 + unit)
         glBindTexture(self.type, 0)
@@ -32,11 +34,14 @@ class ImageTexture2DArray(Texture2DArray):
         height = None
         slices = 0
 
+        print(str(files))
         for fname in files:
             if fname.endswith(".png") or fname.endswith(".jpg"):
                 tmp = open(os.path.join("assets", fname), "rb").read()
                 pw, ph, fmt, pix = image.decode(tmp)
                 pix = image.flipY(pw, ph, pix)
+
+                print(fname + " imageW: " + str(pw) + " imageH: " + str(ph))
                 if width == None:
                     width = pw;
                     height = ph;
@@ -76,4 +81,5 @@ class ImageTexture2DArray(Texture2DArray):
 
         glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, width, height, slices,
                      0, GL_RGBA, GL_UNSIGNED_BYTE, membuf.getbuffer())
+
         self.unbind(0)

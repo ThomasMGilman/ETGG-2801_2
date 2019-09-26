@@ -9,6 +9,10 @@ UPDATE_QUANTUM_MSEC = 0
 numStars = 100
 StarBackground = None;
 
+#textures
+mapTextures = []
+playerTextures = []
+
 win = None
 objectsToDraw = []
 
@@ -28,7 +32,7 @@ ALPHA   = 1.0
 #Sampler Object
 sampler = None
 
-#player parameters
+#playerImages parameters
 jumpPeak = .3
 playerSpeed = .002
 playerFireRate = 500

@@ -17,6 +17,7 @@ def changeUniform(translationVec, scalingVec = math3d.vec2(1,1)):
     Program.setUniform("scaling", scalingVec)
     Program.updateUniforms()
 
+
 class StarBackground:
     vbuff = None
     def __init__(self, x, y):
@@ -32,6 +33,23 @@ class StarBackground:
 
     def alive(self):
         return True
+
+class mapSquare:
+    vbuff = None
+    tbuff = None
+    ibuff = None
+    tex = None
+    def __init__(self, x, y, size):
+        self.pos = math3d.vec2(x, y)
+        self.size = size
+        if mapSquare.vbuff == None or mapSquare.tbuff == None or mapSquare.ibuff == None:
+            mapSquare.vbuff     = array.array("f")
+            mapSquare.tbuff     = array.array("f")
+            mapSquare.ibuff     = array.array("I")
+            mapSquare.tex = Textures.ImageTexture2DArray(globs.mapTextures)
+            createSquare(mapSquare.vbuff, self.size, self.pox.x, self.pos.y)
+            createSquareIndexArray(mapSquare.ibuff)
+            glCommands.setup(mapSquare.vbuff, mapSquare.ibuff, mapSquare.tbuff)
 
 
 class Bullet:
@@ -89,14 +107,17 @@ class Player:
         self.vbuff = array.array("f")
         self.tbuff = array.array("f")
         self.ibuff = array.array("I")
-        self.tex = ImageTexture2DArray("Player.png");
+        self.tex = Textures.ImageTexture2DArray(*globs.playerTextures);
 
         createSquare(self.vbuff, size, size, x, y)
         createSquareTextureArray(self.tbuff)
         createSquareIndexArray(self.ibuff)
         glCommands.setup(self.vbuff, self.ibuff, self.tbuff)
 
+        print("NumSLices to texture: "+str(self.tex.slices))
+
     def draw(self):
+        #print(str(self.pos))
         self.tex.bind(0)
         if self.crouching:
             changeUniform(self.pos, self.crouchScale)

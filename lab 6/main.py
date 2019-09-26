@@ -2,6 +2,7 @@ from sdl2 import *
 from utilityLibs import Sampler
 from utilityLibs.glCommands import *
 from GameObjects import *
+from os import listdir
 import os.path
 import globs
 import sys, traceback
@@ -50,10 +51,20 @@ def setupFrameRateGlobals(fps):
     globs.UPDATE_QUANTUM_MSEC = 5
 
 
+def setupTextures():
+    mapTexturesFolder = listdir(os.path.join("assets", "mapTextures"))
+    for texName in mapTexturesFolder:
+        globs.mapTextures.append(os.path.join("mapTextures",texName))
+
+    playerTexturesFolder = listdir(os.path.join("assets", "playerTextures"))
+    for texName in playerTexturesFolder:
+        globs.playerTextures.append(os.path.join("playerTextures",texName))
+
 def setupGlobals():
     seedRandom()
     globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
+    setupTextures()
     if(globs.sampler == None):
         globs.sampler = Sampler.Sampler()
     globs.sampler.bind(0)
