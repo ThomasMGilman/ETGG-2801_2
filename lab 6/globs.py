@@ -32,6 +32,13 @@ ALPHA   = 1.0
 #Sampler Object
 sampler = None
 
+#playerStates
+ON_GROUND = 0
+RISING = 1
+FALLING = 2
+FACING_LEFT = 3
+FACING_RIGHT = 4
+
 #playerImages parameters
 jumpPeak = .3
 playerSpeed = .002

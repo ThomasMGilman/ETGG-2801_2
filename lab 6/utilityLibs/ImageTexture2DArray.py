@@ -1,47 +1,21 @@
-from glLibs.gl import *
-from glLibs.glconstants import *
+from utilityLibs.Texture2DArray import *
 from toolLibs import image
-import os.path
-import zipfile
-import io
-
-class Texture:
-    def __init__(self, typ):
-        self.type = typ;
-        self.tex = None
-
-    def bind(self, unit):
-        glActiveTexture(GL_TEXTURE0 + unit)
-        glBindTexture(self.type, self.tex)
-
-    def unbind(self, unit):
-        glActiveTexture(GL_TEXTURE0 + unit)
-        glBindTexture(self.type, 0)
-
-
-class Texture2DArray(Texture):
-    def __init__(self, w, h, slices):
-        Texture.__init__(self, GL_TEXTURE_2D_ARRAY)
-        self.width = w
-        self.height = h
-        self.slices = slices
-
+import os.path, zipfile, io
 
 class ImageTexture2DArray(Texture2DArray):
     def __init__(self, *files):
         membuf = io.BytesIO()
-        width = None
-        height = None
+        width, height = None
         slices = 0
 
-        print(str(files))
+        #print(str(files))
         for fname in files:
             if fname.endswith(".png") or fname.endswith(".jpg"):
                 tmp = open(os.path.join("assets", fname), "rb").read()
                 pw, ph, fmt, pix = image.decode(tmp)
                 pix = image.flipY(pw, ph, pix)
 
-                print(fname + " imageW: " + str(pw) + " imageH: " + str(ph))
+                #print(fname + " imageW: " + str(pw) + " imageH: " + str(ph))
                 if width == None:
                     width = pw;
                     height = ph;
@@ -73,6 +47,7 @@ class ImageTexture2DArray(Texture2DArray):
             else:
                 raise RuntimeError("Cannot read file: " + fname)
 
+        #Push texture data to gpu
         Texture2DArray.__init__(self, width, height, slices)
         tmp = array.array("I", [0])
         glGenTextures(1, tmp)

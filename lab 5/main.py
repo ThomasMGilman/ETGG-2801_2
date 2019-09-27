@@ -49,8 +49,11 @@ def setupFrameRateGlobals(fps):
 def setupGlobals():
     seedRandom()
     globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
-    globs.StarBackground = StarBackground(0, 0)
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
+
+def initializeObjects():
+    globs.StarBackground = StarBackground(0, 0)
+    globs.objectsToDraw.append(Player(0, 0, .25))
 
 def buryTheDead(List):
     index = 0
@@ -73,7 +76,6 @@ def draw(elapsedMSec):
 
     buryTheDead(globs.objectsToDraw)
     SDL_GL_SwapWindow(globs.win)
-
 
 def update(elapsedMsec):
     ev = SDL_Event()
@@ -115,11 +117,12 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    enableDebugging()#True)                  #enables debugging messages, DISABLED BY DEFAULT for performance
+    enableDebugging()#True)                     #enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
+    initializeObjects()                         #Create objects for drawing
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
-    globs.objectsToDraw.append(Player(0, 0, .25))
+
 
     lastTicks = SDL_GetPerformanceCounter()
     accumElapsedMsec = 0

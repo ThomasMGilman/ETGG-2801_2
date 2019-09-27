@@ -1,10 +1,5 @@
-from sdl2.sdlmixer import *
-from utilityLibs import  glCommands
 import random
-import array
 import math
-import globs
-
 
 def seedRandom():
     random.seed()
@@ -33,8 +28,9 @@ def createRandPoints(array, numPoints):
     return array
 
 
-"""create circle points surrounding the center point"""
+
 def createCircle(array, radius, cx=None, cy=None):
+    """create circle points surrounding the center point"""
     centerX = cx if cx != None else random.uniform(-1 + radius, 1 - radius)
     centerY = cy if cy != None else random.uniform(-1 + radius, 1 - radius)
     appendVec2(array, centerX, centerY)
@@ -67,8 +63,8 @@ def createTriangleIndexArray(array):
     appendVec3(array, 0, 1, 2)
 
 
-"""To specify a rectangle, pass a value for the width"""
 def createSquare(array, Height, Width = None, cx = None, cy = None):
+    """To specify a rectangle, pass a value for the width"""
     if Width == None:
         Width = Height
     halfHeight = Height * .5
@@ -82,8 +78,8 @@ def createSquare(array, Height, Width = None, cx = None, cy = None):
     appendVec2(array, originX, originY + Height)  # TopLeft corner
 
 
-"""Square/Rectangle is comprised of two triangles which is made up of 4 vertices"""
 def createSquareIndexArray(array):
+    """Square/Rectangle is comprised of two triangles which is made up of 4 vertices"""
     appendVec3(array, 0, 1, 2)
     appendVec3(array, 0, 2, 3)
 
@@ -95,9 +91,9 @@ def createSquareTextureArray(array):
     appendVec2(array, 0, 1)
 
 
-"""size cant be any larger than 1 as the size of the screen is from -1 to 1
-    Hexagon is made of 6 triangles, so needs 7 points"""
 def createHexagon(array, size, x=None, y=None):
+    """size cant be any larger than 1 as the size of the screen is from -1 to 1
+        Hexagon is made of 6 triangles, so needs 7 points"""
     midPointDis = size# * 1.25
     cornerDis = size * .60
 
@@ -115,24 +111,24 @@ def createHexagon(array, size, x=None, y=None):
     appendVec2(array, centerX - cornerDis, centerY + size)      #TopLeft
 
 
-""" Hexagon vArray is size 7
-      6 ____________ 1
-      //\\       // \\
-     //  \\     //   \\
-    //    \\   //     \\
-4  //______\\ //_______\\  3
-  //________ 0 _________\\
-   \\      // \\       //
-    \\    //   \\     //
-     \\  //     \\   //
-    2 \\//_______\\ // 5
-      
-"""
 def createHexIndexArray(Iarray):
-        appendVec3(Iarray, 0, 1, 6) #TopTriangle
-        appendVec3(Iarray, 0, 3, 1) #TopRight
-        appendVec3(Iarray, 0, 5, 3) #BottomRight
-        appendVec3(Iarray, 0, 2, 5) #Bottom
-        appendVec3(Iarray, 0, 4, 2) #BottomLeft
-        appendVec3(Iarray, 0, 6, 4) #TopLeft
+    """ Hexagon vArray is size 7
+          6 ____________ 1
+          //\\       // \\
+         //  \\     //   \\
+        //    \\   //     \\
+    4  //______\\ //_______\\  3
+      //________ 0 _________\\
+       \\      // \\       //
+        \\    //   \\     //
+         \\  //     \\   //
+        2 \\//_______\\ // 5
+
+    """
+    appendVec3(Iarray, 0, 1, 6) #TopTriangle
+    appendVec3(Iarray, 0, 3, 1) #TopRight
+    appendVec3(Iarray, 0, 5, 3) #BottomRight
+    appendVec3(Iarray, 0, 2, 5) #Bottom
+    appendVec3(Iarray, 0, 4, 2) #BottomLeft
+    appendVec3(Iarray, 0, 6, 4) #TopLeft
 

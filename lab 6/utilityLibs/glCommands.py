@@ -1,5 +1,6 @@
 from Program import *
 from utilityLibs import Buffer
+from toolLibs import math3d
 import array
 
 def bindVao(vArray, iArray = None, tArray = None):
@@ -47,6 +48,10 @@ def setup(vertexBuff, indexBuff = None, textureBuff = None):
 def clear():
     glClear(GL_COLOR_BUFFER_BIT)
 
+def changeUniform(translationVec, scalingVec = math3d.vec2(1,1)):
+    Program.setUniform("translation", translationVec)
+    Program.setUniform("scaling", scalingVec)
+    Program.updateUniforms()
 
 def draw(mode, numToDraw, array):
     bindVao(array)
