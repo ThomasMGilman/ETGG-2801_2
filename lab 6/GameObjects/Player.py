@@ -5,6 +5,11 @@ from GameObjects import Bullet, Shapes
 import array, globs
 
 class Player:
+    vbuff = None
+    tbuff = None
+    ibuff = None
+    vao = None
+    tex = None
     def __init__(self, x, y, size):
         self.pos = math3d.vec2(x, y)    #set players start position
         self.crouchScale = math3d.vec2(1, .5)
@@ -15,15 +20,16 @@ class Player:
         self.life = 10                  #amount of life left
         self.size = size                #Scale of player
         self.halfSize = size / 2        #half scale of player
-        self.vbuff = array.array("f")
-        self.tbuff = array.array("f")
-        self.ibuff = array.array("I")
-        self.tex = ImageTexture2DArray.ImageTexture2DArray(*globs.playerTextures);
 
-        Shapes.createSquare(self.vbuff, size, size, x, y)
-        Shapes.createSquareTextureArray(self.tbuff)
-        Shapes.createSquareIndexArray(self.ibuff)
-        self.vao = glCommands.setup(self.vbuff, self.tbuff, self.ibuff)
+        if Player.vao == None:
+            Player.vbuff = array.array("f")
+            Player.tbuff = array.array("f")
+            Player.ibuff = array.array("I")
+            Player.tex = ImageTexture2DArray.ImageTexture2DArray(*globs.playerTextures);
+            Shapes.createSquare(Player.vbuff, size, size, x, y)
+            Shapes.createSquareTextureArray(Player.tbuff)
+            Shapes.createSquareIndexArray(Player.ibuff)
+            Player.vao = glCommands.setup(Player.vbuff, Player.tbuff, Player.ibuff)
 
     def draw(self):
         #print(str(self.pos))
@@ -31,7 +37,7 @@ class Player:
             glCommands.changeUniform(self.pos, self.crouchScale)
         else:
             glCommands.changeUniform(self.pos)
-        glCommands.drawElement(glCommands.GL_TRIANGLES, len(self.ibuff), self.vao, self.tex, 0)
+        glCommands.drawElement(glCommands.GL_TRIANGLES, len(Player.ibuff), Player.vao, Player.tex, 0, 0)
 
     def update(self, elapsedTime):
         if (SDLK_d or SDLK_RIGHT) in globs.keyset:

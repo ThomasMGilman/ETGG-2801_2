@@ -19,9 +19,10 @@ class Bullet:
             Bullet.vbuff    = array.array("f")
             Bullet.tbuff    = array.array("f")
             Bullet.ibuff    = array.array("I")
-            Bullet.tex      = ImageTexture2DArray.ImageTexture2DArray("Bullet.png")
-            Shapes.createCircle(Bullet.vbuff, size, 0, 0+size)
-            Shapes.createCircleIndexArray(Bullet.ibuff)
+            Bullet.tex      = ImageTexture2DArray.ImageTexture2DArray(globs.bulletTextures[0])
+            Shapes.createSquare(Bullet.vbuff, size, size, x, y)
+            Shapes.createSquareTextureArray(Bullet.tbuff)
+            Shapes.createSquareIndexArray(Bullet.ibuff)
             Bullet.vao = glCommands.setup(Bullet.vbuff, Bullet.tbuff, Bullet.ibuff)
 
         self.playSound()
@@ -36,7 +37,7 @@ class Bullet:
 
     def draw(self):
         glCommands.changeUniform(self.pos)
-        glCommands.drawElement(glCommands.GL_TRIANGLES, len(Bullet.ibuff), Bullet.vao, self.tex, 0)
+        glCommands.drawElement(glCommands.GL_TRIANGLES, len(Bullet.ibuff), Bullet.vao, self.tex, 0, 0)
 
     def alive(self):
         return self.life > 0

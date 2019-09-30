@@ -1,4 +1,4 @@
-from GameObjects import Player, StarBackground, Shapes
+from GameObjects import Player, StarBackground, tilemap, Shapes
 from utilityLibs import Sampler
 from sdl2 import *
 from sdl2.sdlmixer import *
@@ -53,19 +53,18 @@ def setupFrameRateGlobals(fps):
     globs.UPDATE_QUANTUM_MSEC = 5
 
 
+def setTextures(array, folderName):
+    TexturesFolder = listdir(os.path.join("assets", folderName))
+    for texName in TexturesFolder:
+        array.append(os.path.join(folderName, texName))
+
+
 def setupTextures():
     """Setup Textures"""
-    mapTexturesFolder = listdir(os.path.join("assets", "mapTextures"))
-    for texName in mapTexturesFolder:
-        globs.mapTextures.append(os.path.join("mapTextures", texName))
-
-    playerTexturesFolder = listdir(os.path.join("assets", "playerTextures"))
-    for texName in playerTexturesFolder:
-        globs.playerTextures.append(os.path.join("playerTextures", texName))
-
-    starTexturesFolder = listdir(os.path.join("assets", "starTextures"))
-    for texName in starTexturesFolder:
-        globs.starTextures.append(os.path.join("starTextures", texName))
+    setTextures(globs.mapTextures, "mapTextures")
+    setTextures(globs.playerTextures, "playerTextures")
+    setTextures(globs.starTextures, "starTextures")
+    setTextures(globs.bulletTextures, "bulletTextures")
 
 
 def setupGlobals():
@@ -82,4 +81,5 @@ def setupGlobals():
 def setupObjects():
     """Setup global objects for drawing"""
     globs.StarBackground = StarBackground.StarBackground(0, 0)
+    globs.MapBackground = tilemap.Map()
     globs.objectsToDraw.append(Player.Player(0, 0, .25))

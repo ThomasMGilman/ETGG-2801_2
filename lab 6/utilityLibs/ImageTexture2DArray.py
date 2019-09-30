@@ -15,11 +15,11 @@ class ImageTexture2DArray(Texture2DArray):
                 tmp = open(os.path.join("assets", fname), "rb").read()
                 pw, ph, fmt, pix = image.decode(tmp)
                 pix = image.flipY(pw, ph, pix)
-
+                #print(fname,pw,ph)
                 #print(fname + " imageW: " + str(pw) + " imageH: " + str(ph))
                 if width == None:
-                    width = pw;
-                    height = ph;
+                    width = pw
+                    height = ph
                 else:
                     if width != pw or height != ph:
                         raise RuntimeError("Size mismatch"+

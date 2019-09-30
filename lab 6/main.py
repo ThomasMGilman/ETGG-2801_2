@@ -16,8 +16,8 @@ def buryTheDead(List):
 
 def draw(elapsedMSec):
     clear()
+    globs.MapBackground.draw()
     globs.StarBackground.draw()  # draw background
-
     for obj in globs.objectsToDraw:
         obj.draw()
         obj.update(elapsedMSec)

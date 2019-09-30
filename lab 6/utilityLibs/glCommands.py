@@ -60,16 +60,25 @@ def changeUniform(translationVec, scalingVec = math3d.vec2(1,1)):
     Program.updateUniforms()
 
 def draw(mode, numToDraw, vao, tex):
-    glBindVertexArray(vao)
     tex.bind(0)
-    glDrawArrays(mode, 0, numToDraw)
+    glBindVertexArray(vao)
+
+    glDrawArrays(mode,      #GLenum Mode [GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY and GL_PATCHES]
+                 0,         #Pointer to start of index in enabled array
+                 numToDraw) #num indicies to render
+
     glBindVertexArray(0)
     tex.unbind(0)
 
 
-def drawElement(mode, numToDraw, vao, tex, index):
+def drawElement(mode, numToDraw, vao, tex, index, slice):
+    tex.bind(slice)
     glBindVertexArray(vao)
-    tex.bind(0)
-    glDrawElements(mode, numToDraw, GL_UNSIGNED_INT, index)
+
+    glDrawElements(mode,            #GLenum Mode [GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY and GL_PATCHES]
+                   numToDraw,       #Number of elements to be rendered
+                   GL_UNSIGNED_INT, #Type of values in indicies
+                   index)           #Pointer to start of indicies
+
     glBindVertexArray(0)
-    tex.unbind(0)
+    tex.unbind(slice)

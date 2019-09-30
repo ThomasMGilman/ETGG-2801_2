@@ -7,12 +7,14 @@ UPDATE_QUANTUM_MSEC = 0
 
 #point count for stars and starObject
 numStars = 100
-StarBackground = None;
+StarBackground = None
+MapBackground = None
 
 #textures
 mapTextures = []
 playerTextures = []
 starTextures = []
+bulletTextures = []
 
 win = None
 objectsToDraw = []
