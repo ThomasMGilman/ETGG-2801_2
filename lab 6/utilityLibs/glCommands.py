@@ -3,7 +3,7 @@ from utilityLibs import Buffer
 from toolLibs import math3d
 import array
 
-def bindVao(vArray, iArray = None, tArray = None):
+def bindVao(vArray, tArray, iArray = None):
     vBuff = Buffer.Buffer(vArray)
     # GenerateVAO
     tmp = array.array("I", [0])
@@ -26,12 +26,16 @@ def bindVao(vArray, iArray = None, tArray = None):
     glVertexAttribPointer(0, 2, GL_FLOAT, False, 2 * 4, 0)
 
     # If a texture is passed, apply it to be associated to the vbuff
-    if tArray != None:
+    if tArray == None:
+        SystemError("Need to provide texture for object")
+    else:
         tbuff = Buffer.Buffer(tArray)
         tbuff.bind(GL_ARRAY_BUFFER)
         glEnableVertexAttribArray(1)
         glVertexAttribPointer(1, 2, GL_FLOAT, False, 2*4, 0)
         glBindVertexArray(0)
+
+    return vao
 
 
 
@@ -39,10 +43,12 @@ def setup(vertexBuff, indexBuff = None, textureBuff = None):
     glEnable(GL_MULTISAMPLE)
     glClearColor(0, 0, 0, 1.0)
 
-    bindVao(vertexBuff, indexBuff, textureBuff)
+    vao = bindVao(vertexBuff, indexBuff, textureBuff)
 
     prog = Program("vs.txt", "fs.txt")
     prog.use()
+
+    return vao
 
 
 def clear():
@@ -53,13 +59,17 @@ def changeUniform(translationVec, scalingVec = math3d.vec2(1,1)):
     Program.setUniform("scaling", scalingVec)
     Program.updateUniforms()
 
-def draw(mode, numToDraw, array):
-    bindVao(array)
+def draw(mode, numToDraw, vao, tex):
+    glBindVertexArray(vao)
+    tex.bind(0)
     glDrawArrays(mode, 0, numToDraw)
     glBindVertexArray(0)
+    tex.unbind(0)
 
 
-def drawElement(mode, numToDraw, varray, iarray, index):
-    bindVao(varray, iarray)
+def drawElement(mode, numToDraw, vao, tex, index):
+    glBindVertexArray(vao)
+    tex.bind(0)
     glDrawElements(mode, numToDraw, GL_UNSIGNED_INT, index)
     glBindVertexArray(0)
+    tex.unbind(0)

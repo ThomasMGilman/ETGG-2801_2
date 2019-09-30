@@ -8,6 +8,7 @@ class Bullet:
     vbuff = None
     tbuff = None
     ibuff = None
+    vao = None
     tex = None
     def __init__(self, x, y, direction, size = .05):
         self.pos = math3d.vec2(x, y)
@@ -21,7 +22,7 @@ class Bullet:
             Bullet.tex      = ImageTexture2DArray.ImageTexture2DArray("Bullet.png")
             Shapes.createCircle(Bullet.vbuff, size, 0, 0+size)
             Shapes.createCircleIndexArray(Bullet.ibuff)
-            glCommands.setup(Bullet.vbuff, Bullet.ibuff, Bullet.tbuff)
+            Bullet.vao = glCommands.setup(Bullet.vbuff, Bullet.tbuff, Bullet.ibuff)
 
         self.playSound()
 
@@ -34,9 +35,8 @@ class Bullet:
         self.life -= elapsedTime
 
     def draw(self):
-        Bullet.tex.bind(0)
         glCommands.changeUniform(self.pos)
-        glCommands.drawElement(glCommands.GL_TRIANGLES, len(Bullet.ibuff), Bullet.vbuff, Bullet.ibuff, 0)
+        glCommands.drawElement(glCommands.GL_TRIANGLES, len(Bullet.ibuff), Bullet.vao, self.tex, 0)
 
     def alive(self):
         return self.life > 0

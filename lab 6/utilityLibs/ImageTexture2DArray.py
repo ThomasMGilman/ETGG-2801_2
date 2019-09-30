@@ -5,10 +5,11 @@ import os.path, zipfile, io
 class ImageTexture2DArray(Texture2DArray):
     def __init__(self, *files):
         membuf = io.BytesIO()
-        width, height = None
+        width = None
+        height = None
         slices = 0
 
-        #print(str(files))
+        print(str(files))
         for fname in files:
             if fname.endswith(".png") or fname.endswith(".jpg"):
                 tmp = open(os.path.join("assets", fname), "rb").read()
@@ -54,7 +55,14 @@ class ImageTexture2DArray(Texture2DArray):
         self.tex = tmp[0]
         self.bind(0)            #set superclass tex as the active tex object
 
-        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, width, height, slices,
-                     0, GL_RGBA, GL_UNSIGNED_BYTE, membuf.getbuffer())
+        glTexImage3D(
+            GL_TEXTURE_2D_ARRAY,    #Type of Texture
+            0,                      #Mip Level
+            GL_RGBA,                #Internal Format
+            width, height, slices,  #Size
+            0,                      #Border
+            GL_RGBA,                #In Data Format
+            GL_UNSIGNED_BYTE,       #In Data type
+            membuf.getbuffer())     #In Data
 
         self.unbind(0)

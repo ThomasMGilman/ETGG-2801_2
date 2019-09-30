@@ -6,18 +6,21 @@ import globs, array
 class StarBackground:
     vbuff = None
     tbuff = None
+    vao = None
     tex = None
     def __init__(self, x, y):
         self.pos = math3d.vec2(x, y)
         if StarBackground.vbuff == None:
             StarBackground.vbuff = array.array("f")
             StarBackground.tbuff = array.array("f")
-            StarBackground.vbuff = Shapes.createRandPoints(StarBackground.vbuff, globs.numStars)
-            glCommands.setup(StarBackground.vbuff)
+            Shapes.createRandPoints(StarBackground.vbuff, globs.numStars)
+            Shapes.createSquareTextureArray(self.tbuff)
+            StarBackground.vao = glCommands.setup(StarBackground.vbuff)
+            StarBackground.tex = ImageTexture2DArray.ImageTexture2DArray(*globs.starTextures)
 
     def draw(self):
         glCommands.changeUniform(self.pos)
-        glCommands.draw(glCommands.GL_POINTS, len(StarBackground.vbuff), StarBackground.vbuff)
+        glCommands.draw(glCommands.GL_POINTS, len(StarBackground.vbuff), StarBackground.vao, StarBackground.tex)
 
     def alive(self):
         return True

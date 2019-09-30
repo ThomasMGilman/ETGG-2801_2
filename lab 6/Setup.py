@@ -57,11 +57,15 @@ def setupTextures():
     """Setup Textures"""
     mapTexturesFolder = listdir(os.path.join("assets", "mapTextures"))
     for texName in mapTexturesFolder:
-        globs.mapTextures.append(os.path.join("mapTextures",texName))
+        globs.mapTextures.append(os.path.join("mapTextures", texName))
 
     playerTexturesFolder = listdir(os.path.join("assets", "playerTextures"))
     for texName in playerTexturesFolder:
-        globs.playerTextures.append(os.path.join("playerTextures",texName))
+        globs.playerTextures.append(os.path.join("playerTextures", texName))
+
+    starTexturesFolder = listdir(os.path.join("assets", "starTextures"))
+    for texName in starTexturesFolder:
+        globs.starTextures.append(os.path.join("starTextures", texName))
 
 
 def setupGlobals():

@@ -25,8 +25,6 @@ def createRandPoints(array, numPoints):
     while i < numPoints:
         appendVec2(array, random.uniform(-1, 1), random.uniform(-1, 1))
         i += 1
-    return array
-
 
 
 def createCircle(array, radius, cx=None, cy=None):

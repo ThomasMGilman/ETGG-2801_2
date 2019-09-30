@@ -12,6 +12,7 @@ StarBackground = None;
 #textures
 mapTextures = []
 playerTextures = []
+starTextures = []
 
 win = None
 objectsToDraw = []

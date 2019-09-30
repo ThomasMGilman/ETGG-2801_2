@@ -51,8 +51,8 @@ def update(elapsedMsec):
         elif ev.type == SDL_MOUSEBUTTONUP:
             print("mouse up:", ev.button.button, ev.button.x, ev.button.y)
 
-        elif ev.type == SDL_MOUSEMOTION:
-            print("mouse move:", ev.motion.x, ev.motion.y)
+        #elif ev.type == SDL_MOUSEMOTION:
+            #print("mouse move:", ev.motion.x, ev.motion.y)
 
 
 def main():

@@ -23,16 +23,15 @@ class Player:
         Shapes.createSquare(self.vbuff, size, size, x, y)
         Shapes.createSquareTextureArray(self.tbuff)
         Shapes.createSquareIndexArray(self.ibuff)
-        glCommands.setup(self.vbuff, self.ibuff, self.tbuff)
+        self.vao = glCommands.setup(self.vbuff, self.tbuff, self.ibuff)
 
     def draw(self):
         #print(str(self.pos))
-        self.tex.bind(0)
         if self.crouching:
             glCommands.changeUniform(self.pos, self.crouchScale)
         else:
             glCommands.changeUniform(self.pos)
-        glCommands.drawElement(glCommands.GL_TRIANGLES, len(self.ibuff), self.vbuff, self.ibuff, 0)
+        glCommands.drawElement(glCommands.GL_TRIANGLES, len(self.ibuff), self.vao, self.tex, 0)
 
     def update(self, elapsedTime):
         if (SDLK_d or SDLK_RIGHT) in globs.keyset:
