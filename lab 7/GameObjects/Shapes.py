@@ -71,7 +71,7 @@ def createSquare(array, Height, Width = None, cx = None, cy = None):
     originY = cy if cy != None else random.uniform(-1 + halfHeight, 1 - halfHeight)
 
     appendVec2(array, originX, originY)  # Bottom Left corner
-    appendVec2(array, originX + Width, originY)  # Bottom Right cornera
+    appendVec2(array, originX + Width, originY)  # Bottom Right corner
     appendVec2(array, originX + Width, originY + Height)  # TopRight corner
     appendVec2(array, originX, originY + Height)  # TopLeft corner
 
@@ -82,11 +82,11 @@ def createSquareIndexArray(array):
     appendVec3(array, 0, 2, 3)
 
 
-def createSquareTextureArray(array):
+def createSquareTextureArray(array, maxCoord = 1):
     appendVec2(array, 0, 0)
-    appendVec2(array, 1, 0)
-    appendVec2(array, 1, 1)
-    appendVec2(array, 0, 1)
+    appendVec2(array, maxCoord, 0)
+    appendVec2(array, maxCoord, maxCoord)
+    appendVec2(array, 0, maxCoord)
 
 
 def createHexagon(array, size, x=None, y=None):

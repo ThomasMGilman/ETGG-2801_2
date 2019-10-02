@@ -15,7 +15,7 @@ def debugCallback( source, msgType, msgId, severity, length, message, param ):
             print(x, end="")
 
 
-def enableDebugging(enabled = False):
+def enableDebugging(enabled):
     """Enables debugging, disabled by default for performance"""
     if enabled:
         glDebugMessageCallback(debugCallback, None)
@@ -65,6 +65,7 @@ def setupTextures():
     setTextures(globs.playerTextures,   "playerTextures")
     setTextures(globs.starTextures,     "starTextures")
     setTextures(globs.bulletTextures,   "bulletTextures")
+    setTextures(globs.enemyTextures,    "enemyTextures")
 
 
 def setupGlobals():
@@ -82,4 +83,4 @@ def setupObjects():
     """Setup global objects for drawing"""
     globs.StarBackground = StarBackground.StarBackground(0, 0)
     globs.MapBackground = tilemap.Map()
-    globs.objectsToDraw.append(Player.Player(0, 0, .25))
+    globs.objectsToDraw.append(Player.Player(0, 0, .25, .25))

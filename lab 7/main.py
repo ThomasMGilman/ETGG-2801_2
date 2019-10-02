@@ -67,7 +67,7 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    enableDebugging()#True)                  #enables debugging messages, DISABLED BY DEFAULT for performance
+    enableDebugging(0)                  #enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
     setupObjects()
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)

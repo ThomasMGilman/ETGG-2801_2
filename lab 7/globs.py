@@ -15,6 +15,7 @@ mapTextures = []
 playerTextures = []
 starTextures = []
 bulletTextures = []
+enemyTextures = []
 
 win = None
 objectsToDraw = []
@@ -41,6 +42,10 @@ RISING = 1
 FALLING = 2
 FACING_LEFT = 3
 FACING_RIGHT = 4
+FACING_UP = 5
+FACING_DOWN = 6
+SHOOTING_UP = 7
+SHOOTING_DOWN = 8
 
 #playerImages parameters
 jumpPeak = .3
@@ -48,4 +53,10 @@ playerSpeed = .002
 playerFireRate = 500
 
 #bullet parameters
+enemySpeed = 0.002
 bulletSpeed = 0.002 + playerSpeed
+
+#Entity Life
+playerLife = 10
+enemyLife = 1
+bulletLife = 750        #in mil sec

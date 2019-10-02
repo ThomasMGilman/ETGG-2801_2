@@ -1,5 +1,6 @@
 from toolLibs import math3d
-from utilityLibs import glCommands, ImageTexture2DArray
+from utilityLibs import glCommands
+from utilityLibs.ImageTexture2DArray import *
 from GameObjects import Shapes
 import globs, array
 
@@ -16,7 +17,7 @@ class StarBackground:
             Shapes.createRandPoints(StarBackground.vbuff, globs.numStars)
             Shapes.createSquareTextureArray(self.tbuff)
             StarBackground.vao = glCommands.setup(StarBackground.vbuff, StarBackground.tbuff)
-            StarBackground.tex = ImageTexture2DArray.ImageTexture2DArray(*globs.starTextures)
+            StarBackground.tex = ImageTexture2DArray(*globs.starTextures)
 
     def draw(self):
         glCommands.changeUniform(self.pos)
@@ -37,7 +38,7 @@ class mapSquare:
             mapSquare.vbuff     = array.array("f")
             mapSquare.tbuff     = array.array("f")
             mapSquare.ibuff     = array.array("I")
-            mapSquare.tex = ImageTexture2DArray.ImageTexture2DArray(globs.mapTextures)
+            mapSquare.tex = ImageTexture2DArray(globs.mapTextures)
             Shapes.createSquare(mapSquare.vbuff, self.size, self.pox.x, self.pos.y)
             Shapes.createSquareIndexArray(mapSquare.ibuff)
             glCommands.setup(mapSquare.vbuff, mapSquare.ibuff, mapSquare.tbuff)

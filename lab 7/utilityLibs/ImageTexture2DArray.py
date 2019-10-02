@@ -65,4 +65,6 @@ class ImageTexture2DArray(Texture2DArray):
             GL_UNSIGNED_BYTE,       #In Data type
             membuf.getbuffer())     #In Data
 
+        glGenerateMipmap(GL_TEXTURE_2D_ARRAY)   #enable mipMapping
+
         self.unbind(0)
