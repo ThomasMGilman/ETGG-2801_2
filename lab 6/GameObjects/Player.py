@@ -2,9 +2,10 @@ from sdl2.keycode import *
 from utilityLibs import glCommands, ImageTexture2DArray
 from toolLibs import math3d
 from GameObjects import Bullet, Shapes
+#from GameObjects.Entity import *
 import array, globs
 
-class Player:
+class Player:#(Entity):
     vbuff = None
     tbuff = None
     ibuff = None
@@ -21,15 +22,20 @@ class Player:
         self.size = size                #Scale of player
         self.halfSize = size / 2        #half scale of player
 
+        #'''
         if Player.vao == None:
             Player.vbuff = array.array("f")
             Player.tbuff = array.array("f")
             Player.ibuff = array.array("I")
-            Player.tex = ImageTexture2DArray.ImageTexture2DArray(*globs.playerTextures);
             Shapes.createSquare(Player.vbuff, size, size, x, y)
             Shapes.createSquareTextureArray(Player.tbuff)
             Shapes.createSquareIndexArray(Player.ibuff)
             Player.vao = glCommands.setup(Player.vbuff, Player.tbuff, Player.ibuff)
+        #'''
+        #super().__init__()
+
+        if Player.tex == None:
+            Player.tex = ImageTexture2DArray.ImageTexture2DArray(*globs.playerTextures);
 
     def draw(self):
         #print(str(self.pos))
@@ -37,6 +43,7 @@ class Player:
             glCommands.changeUniform(self.pos, self.crouchScale)
         else:
             glCommands.changeUniform(self.pos)
+        #super().draw(Player.tex)
         glCommands.drawElement(glCommands.GL_TRIANGLES, len(Player.ibuff), Player.vao, Player.tex, 0, 0)
 
     def update(self, elapsedTime):
