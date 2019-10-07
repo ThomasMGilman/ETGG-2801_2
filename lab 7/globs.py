@@ -27,6 +27,9 @@ keyset = set()
 pulseSound          = "Pulse-gun-07.wav"    #http://www.soundescapestudios.com/SESAudio/SES%20Site%20Sounds/Laser%20Sci%20Fi/Pulse-gun-07.wav
 pulseSoundTime      = 1000
 
+#for debugging use
+lastListCount = 0
+
 #Window RGBA
 RED     = 0.0
 GREEN   = 0.0
@@ -53,8 +56,13 @@ playerSpeed = .002
 playerFireRate = 500
 
 #bullet parameters
-enemySpeed = 0.002
 bulletSpeed = 0.002 + playerSpeed
+
+#enemy parameters
+enemySize = .25
+enemySpeed = 0.0005
+spawnTimer = 2000   #spawn enemy variant every second
+lastSpawned = 0
 
 #Entity Life
 playerLife = 10

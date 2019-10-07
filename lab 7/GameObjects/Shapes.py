@@ -4,7 +4,6 @@ import math
 def seedRandom():
     random.seed()
 
-
 def appendVec2(array, x, y):
     array.append(x)
     array.append(y)

@@ -1,11 +1,11 @@
-from GameObjects import Player, StarBackground, tilemap, Shapes
+from GameObjects import Player, Enemy, StarBackground, tilemap, Shapes
 from utilityLibs import Sampler
 from sdl2 import *
 from sdl2.sdlmixer import *
 from glLibs.gl import *
 from glLibs.glconstants import *
 from os import listdir
-import os.path, globs, traceback
+import os.path, globs, traceback, random
 
 
 def debugCallback( source, msgType, msgId, severity, length, message, param ):
@@ -84,3 +84,32 @@ def setupObjects():
     globs.StarBackground = StarBackground.StarBackground(0, 0)
     globs.MapBackground = tilemap.Map()
     globs.objectsToDraw.append(Player.Player(0, 0, .25, .25))
+
+
+def putEnemy(x, y, direction, Width, Height, textureNum):
+    #print("spawning enemy: ",x,y,direction, Width, Height,textureNum)
+    globs.objectsToDraw.append(Enemy.Enemy(x, y, direction, Width, Height, textureNum))
+
+
+def spawnEnemy(elapsedMsec):
+    if globs.lastSpawned <= 0:
+        enemyType = random.randint(0,1)
+        tmp = random.randint(-1, 1)
+        x = 0
+        y = 0
+        direction = 0
+        if enemyType == 0:
+            x = tmp if tmp != 0 else 1
+            direction = globs.FACING_RIGHT if x < 0 else globs.FACING_LEFT
+        elif enemyType == 1:
+            y = 1
+            direction = globs.FACING_DOWN
+            x = random.uniform(-1, 1)
+
+        x = globs.enemySize+1*x if (x < -1+globs.enemySize or x > 1-globs.enemySize) and y != 0 else x  #keep enemy image in bounds
+        texNum = 1 if direction == globs.FACING_DOWN and len(globs.enemyTextures) > 1 else 0            #pick texture
+
+        putEnemy(x, y, direction, globs.enemySize, globs.enemySize, texNum)
+        globs.lastSpawned = globs.spawnTimer
+    else:
+        globs.lastSpawned -= elapsedMsec
