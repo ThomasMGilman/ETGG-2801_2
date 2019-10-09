@@ -9,23 +9,24 @@ class ParticleSystem:
     prog = None
     vao = None
     tex = None
-    pointCount = None
-    position = None
+    vSize = None
     def __init__(self, startPos = None):
         self.life = globs.particleLife
         self.currentTime = 0
         self.startTime = 0
+        self.startPos = startPos
         if startPos != None:
             ParticleSystem.position = startPos
 
         if ParticleSystem.vao == None:
-            ParticleSystem.prog = Program(os.path.join("shaders", "particleVS.txt"), os.path.join("shaders", "particleFS.txt"))
+            ParticleSystem.prog = Program("particleVS.txt", "particleFS.txt")
             vbuff = array.array("f")
             tbuff = array.array("f")
             Shapes.createRandPoints(vbuff, globs.particleCount)  #Create randomVelocities
             tbuff = Shapes.createSquareTextureArray(tbuff)
             ParticleSystem.vao = glCommands.setup(vbuff, tbuff)
-            ParticleSystem.pointCount = len(vbuff)
+            ParticleSystem.vSize = len(vbuff)
+            ParticleSystem.tex = ImageTexture2DArray(globs.starTextures[0])
 
     def update(self, elapsedTime):
         self.currentTime += elapsedTime
@@ -33,9 +34,22 @@ class ParticleSystem:
             self.life = 0
 
     def draw(self):
+        oldprog = Program.current
+        ParticleSystem.prog.use()
+
+        Program.setUniform("totalElapsed", self.currentTime)
+        Program.setUniform("pointSize", globs.particleSize)
+        Program.setUniform("startingPoint", self.startPos)
+        Program.setUniform("speedDivisor", globs.speedDivisor)
+        Program.updateUniforms()
+
         glEnable(GL_BLEND)
-        glCommands.drawElement(glCommands.GL_POINTS, ParticleSystem.pointCount, ParticleSystem.vao, ParticleSystem.tex)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+        glCommands.drawElement(glCommands.GL_POINTS, ParticleSystem.vSize, ParticleSystem.vao, ParticleSystem.tex)
         glDisable(GL_BLEND)
+
+        if oldprog != None:
+            oldprog.use()
 
     def alive(self):
         return self.life > 0

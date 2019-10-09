@@ -75,6 +75,7 @@ def main():
     enableDebugging(0)                  #enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
     setupObjects()
+    enablePointSize()
     #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
     lastTicks = SDL_GetPerformanceCounter()

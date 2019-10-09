@@ -45,7 +45,7 @@ def setup(vertexBuff, textureBuff, indexBuff = None):
 
     vao = bindVao(vertexBuff, textureBuff, indexBuff)
 
-    prog = Program(os.path.join("shaders", "vs.txt"), os.path.join("shaders", "fs.txt"))
+    prog = Program("vs.txt", "fs.txt")
     prog.use()
 
     return vao

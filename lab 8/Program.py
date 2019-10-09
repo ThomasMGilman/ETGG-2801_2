@@ -6,7 +6,7 @@ import array, os
 class Program:
     uniforms            = {}
     ubo                 = None
-
+    current             = None
     def __init__(self, vsfname, fsfname):
         vs = self.compile(vsfname, GL_VERTEX_SHADER)
         fs = self.compile(fsfname, GL_FRAGMENT_SHADER)
@@ -25,6 +25,7 @@ class Program:
 
     def use(self):
         glUseProgram(self.prog)
+        Program.current = self
 
     def compile(self, fname, shaderType):
         s = glCreateShader(shaderType)

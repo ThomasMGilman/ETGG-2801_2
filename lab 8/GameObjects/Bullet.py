@@ -17,9 +17,15 @@ class Bullet(Entity):
     def update(self, elapsedTime):
         super().update(elapsedTime)
         self.life -= elapsedTime
+        if not self.alive():
+            self.kill()
 
     def draw(self):
         super().draw(self.pos, self.scale, Bullet.tex, 0)
 
     def playSound(self):
         Mix_FadeInChannelTimed(-1, globs.pulseSound, 0, 0, globs.pulseSoundTime)  #sounds found in globs.py
+
+    def kill(self):
+        globs.objectsToDraw.append(ParticleSystem(self.pos))
+        super().kill()

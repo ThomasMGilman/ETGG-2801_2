@@ -74,6 +74,8 @@ def setupTextures():
     setTextures(globs.bulletTextures,   "bulletTextures")
     setTextures(globs.enemyTextures,    "enemyTextures")
 
+def enablePointSize():
+    glEnable(GL_PROGRAM_POINT_SIZE)
 
 def setupGlobals():
     """Setup Random, Sounds, FrameRate, Textures, and Sampler"""

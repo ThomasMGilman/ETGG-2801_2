@@ -7,6 +7,7 @@ UPDATE_QUANTUM_MSEC = 0
 
 #point count for stars and starObject
 numStars = 100
+starSize = 1
 StarBackground = None
 MapBackground = None
 
@@ -67,8 +68,10 @@ lastSpawned = 0
 #Entity Life
 playerLife = 10
 enemyLife = 1
-bulletLife = 750        #in mil sec
+bulletLife = 250        #in mil sec
 
 #Particle parameters
-particleLife = 100
-particleCount = 50
+particleLife = 500
+particleCount = 100
+particleSize = 20
+speedDivisor = .001

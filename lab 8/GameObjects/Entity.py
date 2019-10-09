@@ -33,6 +33,8 @@ class Entity:
             Entity.ibuffStart = 0
 
     def draw(self, position, scale, texture, slice):
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glCommands.changeUniform(position, scale)           #setPosition and Scale
         glCommands.drawElement(glCommands.GL_TRIANGLES,     #Mode
                                Entity.ibuffSize,            #number of indicies
@@ -40,6 +42,7 @@ class Entity:
                                texture,                     #texture passed
                                Entity.ibuffStart,           #start in indicies
                                slice)                       #slice of image
+        glDisable(GL_BLEND)
 
     def alive(self):
         return self.life > 0
@@ -55,3 +58,5 @@ class Entity:
         elif self.dir == (globs.FACING_DOWN or globs.FALLING or globs.SHOOTING_DOWN):
             self.pos[1] -= MovRate
 
+    def kill(self):
+        self.life = 0
