@@ -2,7 +2,9 @@ vec2 translation;
 vec2 scaling;
 
 //particleSystem
+vec2 startingPoint;
+
 float totalElapsed;
 float pointSize;
-vec2 startingPoint;
 float speedDivisor;
+float alpha;

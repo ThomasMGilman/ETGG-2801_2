@@ -76,3 +76,10 @@ def drawElement(mode, numToDraw, vao, tex, index = None, slice = 0):
 
     glBindVertexArray(0)
     tex.unbind(slice)
+
+
+def setClassicOpacity(classic = True):
+    """Opacity is set to classic by default, pass False or 0 for Premultiplied Alpha"""
+    mode = GL_SRC_ALPHA if classic else GL_ONE
+    glBlendFunc(mode, GL_ONE_MINUS_SRC_ALPHA)
+    glBlendEquation(GL_FUNC_ADD)

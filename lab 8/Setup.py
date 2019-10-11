@@ -5,6 +5,7 @@ from sdl2.sdlmixer import *
 from glLibs.gl import *
 from glLibs.glconstants import *
 from os import listdir
+from utilityLibs import glCommands
 import os.path, globs, traceback, random
 
 
@@ -53,13 +54,6 @@ def setupFrameRateGlobals(fps):
     globs.UPDATE_QUANTUM_MSEC = 5
 
 
-def setOpacity(classic = True):
-    """Opacity is set to classic by default, pass False or 0 for Premultiplied Alpha"""
-    mode = GL_SRC_ALPHA if classic else GL_ONE
-    glBlendFunc(mode, GL_ONE_MINUS_SRC_ALPHA)
-    glBlendEquation(GL_FUNC_ADD)
-
-
 def setTextures(array, folderName):
     TexturesFolder = listdir(os.path.join("assets", folderName))
     for texName in TexturesFolder:
@@ -83,7 +77,9 @@ def setupGlobals():
     globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
     setupTextures()
-    setOpacity(False)
+
+    glEnable(GL_BLEND)
+    glCommands.setClassicOpacity(False)
     if(globs.sampler == None):
         globs.sampler = Sampler.Sampler()
     globs.sampler.bind(0)

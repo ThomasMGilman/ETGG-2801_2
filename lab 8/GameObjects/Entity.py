@@ -1,10 +1,10 @@
 from utilityLibs import glCommands
 from utilityLibs.ImageTexture2DArray import *
 from toolLibs import math3d
-from GameObjects import Shapes
+from GameObjects import Shapes, BoundingBox
 import array, globs
 
-class Entity:
+class Entity(BoundingBox):
     vao = None
     ibuffSize = None
     ibuffStart = None

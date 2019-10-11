@@ -43,10 +43,8 @@ class ParticleSystem:
         Program.setUniform("speedDivisor", globs.speedDivisor)
         Program.updateUniforms()
 
-        glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+        glCommands.setClassicOpacity(False)
         glCommands.drawElement(glCommands.GL_POINTS, ParticleSystem.vSize, ParticleSystem.vao, ParticleSystem.tex)
-        glDisable(GL_BLEND)
 
         if oldprog != None:
             oldprog.use()
