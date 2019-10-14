@@ -44,10 +44,6 @@ def setup(vertexBuff, textureBuff, indexBuff = None):
     glClearColor(0, 0, 0, 1.0)
 
     vao = bindVao(vertexBuff, textureBuff, indexBuff)
-
-    prog = Program("vs.txt", "fs.txt")
-    prog.use()
-
     return vao
 
 
@@ -78,8 +74,19 @@ def drawElement(mode, numToDraw, vao, tex, index = None, slice = 0):
     tex.unbind(slice)
 
 
+def setBlendEquation(op):
+    ''' :param op:
+    GL_FUNC_ADD                 = src + dest
+    GL_FUNC_SUBTRACT            = src - dest
+    GL_FUNC_REVERSE_SUBTRACT    = dest - src
+    GL_MIN                      = min(src,dest)
+    GL_MAX                      = max(src,dest)
+    '''
+    glBlendEquation(op)
+
+
 def setClassicOpacity(classic = True):
     """Opacity is set to classic by default, pass False or 0 for Premultiplied Alpha"""
     mode = GL_SRC_ALPHA if classic else GL_ONE
     glBlendFunc(mode, GL_ONE_MINUS_SRC_ALPHA)
-    glBlendEquation(GL_FUNC_ADD)
+    setBlendEquation(GL_FUNC_ADD)

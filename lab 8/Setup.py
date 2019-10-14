@@ -68,8 +68,6 @@ def setupTextures():
     setTextures(globs.bulletTextures,   "bulletTextures")
     setTextures(globs.enemyTextures,    "enemyTextures")
 
-def enablePointSize():
-    glEnable(GL_PROGRAM_POINT_SIZE)
 
 def setupGlobals():
     """Setup Random, Sounds, FrameRate, Textures, and Sampler"""
@@ -79,7 +77,9 @@ def setupGlobals():
     setupTextures()
 
     glEnable(GL_BLEND)
-    glCommands.setClassicOpacity(False)
+    glEnable(GL_PROGRAM_POINT_SIZE)
+    glCommands.setClassicOpacity()
+
     if(globs.sampler == None):
         globs.sampler = Sampler.Sampler()
     globs.sampler.bind(0)
@@ -89,16 +89,16 @@ def setupObjects():
     """Setup global objects for drawing"""
     globs.StarBackground = StarBackground.StarBackground(0, 0)
     globs.MapBackground = tilemap.Map()
-    globs.objectsToDraw.append(Player.Player(0, 0, .25, .25))
+    globs.Player = Player.Player(0, 0, .25, .25)
 
 
 def putEnemy(x, y, direction, Width, Height, textureNum):
     #print("spawning enemy: ",x,y,direction, Width, Height,textureNum)
-    globs.objectsToDraw.append(Enemy.Enemy(x, y, direction, Width, Height, textureNum))
+    globs.Enemies.append(Enemy.Enemy(x, y, direction, Width, Height, textureNum))
 
 
 def spawnEnemy(elapsedMsec):
-    if globs.lastSpawned <= 0:
+    if globs.lastSpawned <= 0 and len(globs.Enemies) < 1:
         enemyType = random.randint(0,1)
         tmp = random.randint(-1, 1)
         x = 0
@@ -119,3 +119,10 @@ def spawnEnemy(elapsedMsec):
         globs.lastSpawned = globs.spawnTimer
     else:
         globs.lastSpawned -= elapsedMsec
+
+
+def setup():
+    enableDebugging(0)  # enables debugging messages, DISABLED BY DEFAULT for performance
+    setupGlobals()
+    setupObjects()
+    # glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)

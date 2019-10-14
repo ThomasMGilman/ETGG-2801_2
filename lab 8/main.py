@@ -18,8 +18,36 @@ def buryTheDead(List):
         globs.lastListCount = len(List)'''
     return List
 
+def updateAndDraw(objList, elapsedMsec):
+    for obj in objList:
+        obj.update(elapsedMsec)
+        obj.draw()
 
 def draw(elapsedMSec):
+    clear()
+    globs.MapBackground.draw()
+    globs.StarBackground.draw()  # draw background
+
+    globs.Player.update(elapsedMSec)
+    globs.Player.draw()
+
+    for bullet in globs.Bullets:
+        for enemy in globs.Enemies:
+            if bullet.checkCollision(enemy.hitBox):
+                enemy.kill()
+                break
+
+    updateAndDraw(globs.Particles, elapsedMSec)
+    updateAndDraw(globs.Bullets, elapsedMSec)
+    updateAndDraw(globs.Enemies, elapsedMSec)
+
+    buryTheDead(globs.Particles)
+    buryTheDead(globs.Bullets)
+    buryTheDead(globs.Enemies)
+    SDL_GL_SwapWindow(globs.win)
+
+
+def draw2(elapsedMSec):
     clear()
     globs.MapBackground.draw()
     globs.StarBackground.draw()  # draw background
@@ -72,11 +100,7 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    enableDebugging(0)                  #enables debugging messages, DISABLED BY DEFAULT for performance
-    setupGlobals()
-    setupObjects()
-    enablePointSize()
-    #glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+    setup()
 
     lastTicks = SDL_GetPerformanceCounter()
     accumElapsedMsec = 0

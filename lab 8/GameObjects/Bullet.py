@@ -1,7 +1,7 @@
 from sdl2.sdlmixer import Mix_FadeInChannelTimed
 from GameObjects.Entity import *
 from GameObjects.ParticleSystem import *
-import  globs, random
+import globs, random
 
 class Bullet(Entity):
     tex = None
@@ -27,5 +27,5 @@ class Bullet(Entity):
         Mix_FadeInChannelTimed(-1, globs.pulseSound, 0, 0, globs.pulseSoundTime)  #sounds found in globs.py
 
     def kill(self):
-        globs.objectsToDraw.append(ParticleSystem(self.pos))
+        globs.Particles.append(ParticleSystem(self.pos))
         super().kill()

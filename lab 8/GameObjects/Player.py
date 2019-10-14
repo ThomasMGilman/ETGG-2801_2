@@ -41,7 +41,7 @@ class Player(Entity):
 
         if SDLK_SPACE in globs.keyset and self.lastFired <= 0:               #fireBullet
             bulletPosY = self.pos[1]+(self.scale[1] * .25)
-            globs.objectsToDraw.append(Bullet.Bullet(self.pos[0], bulletPosY, self.dir))
+            globs.Bullets.append(Bullet.Bullet(self.pos[0], bulletPosY, self.dir))
             self.lastFired = globs.playerFireRate
 
         if SDLK_w in globs.keyset and self.state == globs.ON_GROUND:

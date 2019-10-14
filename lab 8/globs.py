@@ -7,7 +7,7 @@ UPDATE_QUANTUM_MSEC = 0
 
 #point count for stars and starObject
 numStars = 100
-starSize = 1
+starSize = 2
 StarBackground = None
 MapBackground = None
 
@@ -19,7 +19,10 @@ bulletTextures = []
 enemyTextures = []
 
 win = None
-objectsToDraw = []
+Player = None
+Bullets = []
+Enemies = []
+Particles = []
 
 #keys input
 keyset = set()
@@ -51,6 +54,10 @@ FACING_DOWN = 6
 SHOOTING_UP = 7
 SHOOTING_DOWN = 8
 
+ALIVE = 9
+DYING = 10
+DEAD = 11
+
 #playerImages parameters
 jumpPeak = .3
 playerSpeed = .002
@@ -71,7 +78,9 @@ enemyLife = 1
 bulletLife = 250        #in mil sec
 
 #Particle parameters
-particleLife = 500
+particleLife = 1000
 particleCount = 100
 particleSize = 20
 speedDivisor = .001
+
+particleAlpha = 1

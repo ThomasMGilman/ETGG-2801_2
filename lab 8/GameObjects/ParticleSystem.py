@@ -1,5 +1,4 @@
 from Program import *
-from toolLibs import math3d
 from GameObjects import Shapes
 from utilityLibs import glCommands
 from utilityLibs.ImageTexture2DArray import *
@@ -19,7 +18,6 @@ class ParticleSystem:
             ParticleSystem.position = startPos
 
         if ParticleSystem.vao == None:
-            ParticleSystem.prog = Program("particleVS.txt", "particleFS.txt")
             vbuff = array.array("f")
             tbuff = array.array("f")
             Shapes.createRandPoints(vbuff, globs.particleCount)  #Create randomVelocities
@@ -28,26 +26,32 @@ class ParticleSystem:
             ParticleSystem.vSize = len(vbuff)
             ParticleSystem.tex = ImageTexture2DArray(globs.starTextures[0])
 
+            ParticleSystem.prog = Program("particleVS.txt", "particleFS.txt")
+
     def update(self, elapsedTime):
         self.currentTime += elapsedTime
         if self.currentTime > self.life:
             self.life = 0
 
     def draw(self):
-        oldprog = Program.current
-        ParticleSystem.prog.use()
+        if self.alive():
+            oldprog = ParticleSystem.prog.current
+            ParticleSystem.prog.use()
+            alpha = 1 - (self.currentTime / self.life)
 
-        Program.setUniform("totalElapsed", self.currentTime)
-        Program.setUniform("pointSize", globs.particleSize)
-        Program.setUniform("startingPoint", self.startPos)
-        Program.setUniform("speedDivisor", globs.speedDivisor)
-        Program.updateUniforms()
+            Program.setUniform("totalElapsed", self.currentTime)
+            Program.setUniform("pointSize", globs.particleSize)
+            Program.setUniform("startingPoint", self.startPos)
+            Program.setUniform("speedDivisor", globs.speedDivisor)
+            Program.setUniform("alpha", alpha)
+            Program.updateUniforms()
 
-        glCommands.setClassicOpacity(False)
-        glCommands.drawElement(glCommands.GL_POINTS, ParticleSystem.vSize, ParticleSystem.vao, ParticleSystem.tex)
+            glEnable(GL_BLEND)
+            glCommands.drawElement(glCommands.GL_POINTS, ParticleSystem.vSize, ParticleSystem.vao, ParticleSystem.tex)
+            glDisable(GL_BLEND)
 
-        if oldprog != None:
-            oldprog.use()
+            if oldprog != None:
+                oldprog.use()
 
     def alive(self):
         return self.life > 0
