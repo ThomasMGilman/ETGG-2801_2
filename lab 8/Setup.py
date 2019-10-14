@@ -98,7 +98,7 @@ def putEnemy(x, y, direction, Width, Height, textureNum):
 
 
 def spawnEnemy(elapsedMsec):
-    if globs.lastSpawned <= 0 and len(globs.Enemies) < 1:
+    if globs.lastSpawned <= 0:
         enemyType = random.randint(0,1)
         tmp = random.randint(-1, 1)
         x = 0

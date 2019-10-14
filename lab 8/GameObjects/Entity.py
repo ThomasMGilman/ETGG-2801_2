@@ -22,7 +22,7 @@ class Entity:
         self.hitBox     = BoundingBox(self.pos, math3d.vec2(x+Width, y+Height))
 
         self.deathFadeT = globs.bulletLife
-        self.state      = globs.ALIVE
+        self.State      = globs.ALIVE
         self.fadeTime   = 0
 
         if Entity.vao == None:
@@ -71,7 +71,7 @@ class Entity:
         return self.life > 0
 
     def update(self, elapsedTime):
-        if self.state == globs.ALIVE:
+        if self.State == globs.ALIVE:
             MovRate = (self.speed * elapsedTime)
             if self.dir == globs.FACING_LEFT:
                 self.pos[0] -= MovRate
@@ -89,10 +89,11 @@ class Entity:
                 self.pos[1] -= MovRate
                 self.hitBox.moveY(-MovRate)
 
-        elif self.state == globs.DYING:
+        elif self.State == globs.DYING:
             self.fadeTime += elapsedTime
             if self.fadeTime >= self.deathFadeT:
                 self.life = 0
+                print("dead")
 
     def kill(self):
-        self.state = globs.DYING
+        self.State = globs.DYING

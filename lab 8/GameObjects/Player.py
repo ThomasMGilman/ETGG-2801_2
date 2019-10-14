@@ -9,7 +9,7 @@ class Player(Entity):
         self.pos = math3d.vec2(x, y)    #set players start position
         self.halfHeight = Width / 2
         self.lastFired = 0              #Time since last Fired
-        self.state = globs.ON_GROUND    #State player is in
+        self.jumpState = globs.ON_GROUND#State player is in
 
         super().__init__(x, y, 0, Width, Height, globs.playerLife, globs.playerSpeed)
         if Player.tex == None:
@@ -33,10 +33,10 @@ class Player(Entity):
         elif self.scale[1] != self.Width:
             self.scale = math3d.vec2(self.Height, self.Width)
 
-        if self.state == globs.RISING:
+        if self.jumpState == globs.RISING:
             self.pos[1] += self.speed * elapsedTime
 
-        elif self.state == globs.FALLING:
+        elif self.jumpState == globs.FALLING:
             self.pos[1] -= self.speed * elapsedTime
 
         if SDLK_SPACE in globs.keyset and self.lastFired <= 0:               #fireBullet
@@ -44,15 +44,15 @@ class Player(Entity):
             globs.Bullets.append(Bullet.Bullet(self.pos[0], bulletPosY, self.dir))
             self.lastFired = globs.playerFireRate
 
-        if SDLK_w in globs.keyset and self.state == globs.ON_GROUND:
-            self.state = globs.RISING
+        if SDLK_w in globs.keyset and self.jumpState == globs.ON_GROUND:
+            self.jumpState = globs.RISING
 
-        elif self.pos[1] >= globs.jumpPeak and self.state == globs.RISING:
+        elif self.pos[1] >= globs.jumpPeak and self.jumpState == globs.RISING:
             self.pos[1] = globs.jumpPeak
-            self.state = globs.FALLING
+            self.jumpState = globs.FALLING
 
-        elif self.pos[1] <= 0 and self.state == globs.FALLING:
+        elif self.pos[1] <= 0 and self.jumpState == globs.FALLING:
             self.pos[1] = 0
-            self.state = globs.ON_GROUND
+            self.jumpState = globs.ON_GROUND
 
         self.lastFired -= elapsedTime
