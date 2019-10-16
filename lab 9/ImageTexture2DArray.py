@@ -53,4 +53,5 @@ class ImageTexture2DArray(Texture2DArray):
         glTexImage3D( GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, 
             w,h,slices, 0, GL_RGBA, GL_UNSIGNED_BYTE, 
             membuf.getbuffer() )
+        glGenerateMipmap(GL_TEXTURE_2D_ARRAY)
         self.unbind(0)

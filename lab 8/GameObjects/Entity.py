@@ -93,7 +93,6 @@ class Entity:
             self.fadeTime += elapsedTime
             if self.fadeTime >= self.deathFadeT:
                 self.life = 0
-                print("dead")
 
     def kill(self):
         self.State = globs.DYING
