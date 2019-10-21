@@ -41,10 +41,10 @@ class Car:
         self.checkAngle(self.tireRot)
 
     def draw(self):
+        angleOfmov = vec2(math.cos(self.carAngle), math.sin(self.carAngle))
         transPos    = translation2(self.pos)
         rotAngle    = rotation2(self.carAngle)
-        movAngle    = rotation2(math.sin(self.carAngle))
-        carAnglePos = rotAngle * transPos * movAngle
+        carAnglePos = rotAngle * transPos
         Program.setUniform("worldMatrix", carAnglePos)
         Program.updateUniforms()
         self.body.draw()

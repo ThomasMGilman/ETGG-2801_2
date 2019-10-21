@@ -1,0 +1,12 @@
+mat3 worldMatrix;
+
+vec2 translation;
+vec2 scaling;
+
+//particleSystem
+vec2 startingPoint;
+
+float totalElapsed;
+float pointSize;
+float speedDivisor;
+float alpha;
