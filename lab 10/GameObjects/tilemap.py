@@ -42,5 +42,5 @@ class Map(Entity):
             yVal = self.pos.y + (i * (2 / tileHeight))
             for j in range(tileWidth):
                 xVal = self.pos.x + (j * (2 / tileWidth))
-                super().draw(math3d.vec2(xVal, yVal), self.scale, self.texList[row[j]-1], 0)
+                super().draw(vec2(xVal, yVal), self.scale, self.texList[row[j]-1], 0)
         

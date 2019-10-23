@@ -24,8 +24,7 @@ class StarBackground:
 
     def draw(self):
         StarBackground.prog.use()
-
-        glCommands.changeUniform(self.pos)
+        Program.setUniform("worldMatrix", math3d.translation2(self.pos))
         glCommands.drawElement(glCommands.GL_POINTS, len(StarBackground.vbuff), StarBackground.vao, StarBackground.tex)
 
     def alive(self):

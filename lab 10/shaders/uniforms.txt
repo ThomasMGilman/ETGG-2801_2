@@ -1,7 +1,5 @@
+//Contains Objects Rotation, Translation, and Scale
 mat3 worldMatrix;
-
-vec2 translation;
-vec2 scaling;
 
 //particleSystem
 vec2 startingPoint;

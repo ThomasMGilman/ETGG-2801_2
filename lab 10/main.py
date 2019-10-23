@@ -18,10 +18,12 @@ def buryTheDead(List):
         globs.lastListCount = len(List)'''
     return List
 
+
 def updateAndDraw(objList, elapsedMsec):
     for obj in objList:
         obj.update(elapsedMsec)
         obj.draw()
+
 
 def draw(elapsedMSec):
     clear()
@@ -44,18 +46,6 @@ def draw(elapsedMSec):
     buryTheDead(globs.Particles)
     buryTheDead(globs.Bullets)
     buryTheDead(globs.Enemies)
-    SDL_GL_SwapWindow(globs.win)
-
-
-def draw2(elapsedMSec):
-    clear()
-    globs.MapBackground.draw()
-    globs.StarBackground.draw()  # draw background
-    for obj in globs.objectsToDraw:
-        obj.draw()
-        obj.update(elapsedMSec)
-
-    buryTheDead(globs.objectsToDraw)
     SDL_GL_SwapWindow(globs.win)
 
 

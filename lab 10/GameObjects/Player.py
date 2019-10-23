@@ -6,7 +6,6 @@ import globs
 class Player(Entity):
     tex = None
     def __init__(self, x, y, Width, Height):
-        self.pos = math3d.vec2(x, y)    #set players start position
         self.halfHeight = Width / 2
         self.lastFired = 0              #Time since last Fired
         self.jumpState = globs.ON_GROUND#State player is in
@@ -21,23 +20,25 @@ class Player(Entity):
     def update(self, elapsedTime):
         if (SDLK_d or SDLK_RIGHT) in globs.keyset:
             self.dir = globs.FACING_RIGHT
-            self.pos[0] += self.speed * elapsedTime
+            super().updateHorizontalPos(self.speed * elapsedTime)
 
         if (SDLK_a or SDLK_LEFT) in globs.keyset:
             self.dir = globs.FACING_LEFT
-            self.pos[0] -= self.speed * elapsedTime
+            super().updateHorizontalPos(-self.speed * elapsedTime)
 
         if (SDLK_s or SDLK_DOWN) in globs.keyset:
             if self.scale[1] != self.halfHeight:
-                self.scale = math3d.vec2(self.Height, self.halfHeight)
+                self.scale = vec2(self.Height, self.halfHeight)
+                super().setWorldMatrix()
         elif self.scale[1] != self.Width:
-            self.scale = math3d.vec2(self.Height, self.Width)
+            self.scale = vec2(self.Height, self.Width)
+            super().setWorldMatrix()
 
         if self.jumpState == globs.RISING:
-            self.pos[1] += self.speed * elapsedTime
+            super().updateVerticalPos(self.speed * elapsedTime)
 
         elif self.jumpState == globs.FALLING:
-            self.pos[1] -= self.speed * elapsedTime
+            super().updateVerticalPos(-self.speed * elapsedTime)
 
         if SDLK_SPACE in globs.keyset and self.lastFired <= 0:               #fireBullet
             bulletPosY = self.pos[1]+(self.scale[1] * .25)

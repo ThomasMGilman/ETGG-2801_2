@@ -50,12 +50,6 @@ def setup(vertexBuff, textureBuff, indexBuff = None):
 def clear():
     glClear(GL_COLOR_BUFFER_BIT)
 
-def changeUniform(translationVec, scalingVec = math3d.vec2(1,1)):
-    Program.setUniform("translation", translationVec)
-    Program.setUniform("scaling", scalingVec)
-    Program.updateUniforms()
-
-
 def drawElement(mode, numToDraw, vao, tex, index = None, slice = 0):
     tex.bind(slice)
     glBindVertexArray(vao)
