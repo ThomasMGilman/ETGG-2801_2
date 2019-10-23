@@ -10,7 +10,7 @@ class Bullet(Entity):
             Bullet.tex = ImageTexture2DArray(globs.bulletTextures[0])
 
         direction = direction if direction != 0 else random.randint(3, 8)
-        super().__init__(x, y, direction, size, size, globs.bulletLife, globs.bulletSpeed)
+        super().__init__(x, y, direction, size, size, globs.bulletLife, globs.bulletSpeed, "Bullet")
 
         self.playSound()
 
@@ -21,7 +21,7 @@ class Bullet(Entity):
             self.kill()
 
     def draw(self):
-        super().draw(self.pos, self.scale, Bullet.tex, 0)
+        super().draw(Bullet.tex, 0)
 
     def playSound(self):
         Mix_FadeInChannelTimed(-1, globs.pulseSound, 0, 0, globs.pulseSoundTime)  #sounds found in globs.py

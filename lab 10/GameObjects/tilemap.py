@@ -1,7 +1,5 @@
 from GameObjects.Entity import *
 from Program import *
-from glLibs.gl import *
-from glLibs.glconstants import *
 import globs, os.path
 
 class Map(Entity):
@@ -25,8 +23,9 @@ class Map(Entity):
 
         self.tileList = outputList
         self.size = 2 / len(self.tileList)
+        self.originPos = vec2(-1, -1)
 
-        super().__init__(-1, -1, 0, self.size, self.size, 1, 0)
+        super().__init__(-1, -1, 0, self.size, self.size, 1, 0, "TileMap")
 
         if Map.texList == None:
             Map.texList = []
@@ -39,8 +38,8 @@ class Map(Entity):
             tmpI = tileHeight-i-1
             row = self.tileList[tmpI]
             tileWidth = len(row)
-            yVal = self.pos.y + (i * (2 / tileHeight))
+            self.pos.y = self.originPos.y + (i * (2 / tileHeight))
             for j in range(tileWidth):
-                xVal = self.pos.x + (j * (2 / tileWidth))
-                super().draw(vec2(xVal, yVal), self.scale, self.texList[row[j]-1], 0)
-        
+                self.pos.x = self.originPos.x + (j * (2 / tileWidth))
+                self.setWorldMatrix()
+                super().draw(self.texList[row[j]-1], 0)

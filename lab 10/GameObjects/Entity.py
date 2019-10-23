@@ -11,7 +11,8 @@ class Entity:
     vao = None
     ibuffSize = None
     ibuffStart = None
-    def __init__(self, x, y, direction, Width, Height, life, speed):
+    def __init__(self, x, y, direction, Width, Height, life, speed, name):
+        self.name = name
         self.pos        = vec2(x,y)
         self.scale      = vec2(Width, Height)
         self.rotation   = 0
@@ -47,16 +48,19 @@ class Entity:
             Entity.prog = Program("vs.txt", "fs.txt")
 
     def setWorldMatrix(self):
-        self.worldMatrix = rotation2(self.rotation) * translation2(self.pos) * scaling2(self.scale)
+        self.worldMatrix = scaling2(self.scale) * translation2(self.pos)#rotation2(self.rotation) * translation2(self.pos)
+        #print(self.name, self.worldMatrix)
 
-    def draw(self, position, scale, texture, slice):
+    def setProgUniforms(self):
+        alpha = 1 - (self.fadeTime / self.deathFadeT)
+        Entity.prog.use()
+        Program.setUniform("worldMatrix", self.worldMatrix)
+        Program.setUniform("alpha", alpha)
+        Program.updateUniforms()
+
+    def draw(self, texture, slice):
         if self.alive():
-            alpha = 1 - (self.fadeTime / self.deathFadeT)
-
-            Entity.prog.use()
-            Program.setUniform("worldMatrix", self.worldMatrix)
-            Program.setUniform("alpha", alpha)
-            Program.updateUniforms()
+            self.setProgUniforms()
 
             glEnable(GL_BLEND)
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)

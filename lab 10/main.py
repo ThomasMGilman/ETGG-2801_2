@@ -28,7 +28,7 @@ def updateAndDraw(objList, elapsedMsec):
 def draw(elapsedMSec):
     clear()
     globs.MapBackground.draw()
-    globs.StarBackground.draw()  # draw background
+    #globs.StarBackground.draw()  # draw background
 
     globs.Player.update(elapsedMSec)
     globs.Player.draw()

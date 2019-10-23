@@ -9,7 +9,7 @@ class Enemy(Entity):
                 Enemy.tex.append(ImageTexture2DArray(tex))
 
         self.texNum = texNum if texNum < len(Enemy.tex) else 0
-        super().__init__(x, y, direction, Width, Height, globs.enemyLife, globs.enemySpeed)
+        super().__init__(x, y, direction, Width, Height, globs.enemyLife, globs.enemySpeed, "Enemy"+str(self.texNum))
 
     def update(self, elapsedTime):
         super().update(elapsedTime)
@@ -18,7 +18,7 @@ class Enemy(Entity):
             self.life = 0
 
     def draw(self):
-        super().draw(self.pos, self.scale, Enemy.tex[self.texNum], 0)
+        super().draw(Enemy.tex[self.texNum], 0)
 
     def alive(self):
         if (self.pos.x < -1 - self.Width and self.dir == globs.FACING_LEFT) \

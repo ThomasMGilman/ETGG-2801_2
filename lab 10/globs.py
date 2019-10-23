@@ -17,9 +17,11 @@ playerTextures = []
 starTextures = []
 bulletTextures = []
 enemyTextures = []
+backgroundTextures = []
 
 win = None
 Player = None
+Camera = None
 Bullets = []
 Enemies = []
 Particles = []

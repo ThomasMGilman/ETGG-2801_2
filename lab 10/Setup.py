@@ -62,11 +62,12 @@ def setTextures(array, folderName):
 
 def setupTextures():
     """Setup Textures"""
-    setTextures(globs.mapTextures,      "mapTextures")
-    setTextures(globs.playerTextures,   "playerTextures")
-    setTextures(globs.starTextures,     "starTextures")
-    setTextures(globs.bulletTextures,   "bulletTextures")
-    setTextures(globs.enemyTextures,    "enemyTextures")
+    setTextures(globs.mapTextures,          "mapTextures")
+    setTextures(globs.playerTextures,       "playerTextures")
+    setTextures(globs.starTextures,         "starTextures")
+    setTextures(globs.bulletTextures,       "bulletTextures")
+    setTextures(globs.enemyTextures,        "enemyTextures")
+    setTextures(globs.backgroundTextures,   "backgroundTextures")
 
 
 def setupGlobals():
@@ -87,7 +88,7 @@ def setupGlobals():
 
 def setupObjects():
     """Setup global objects for drawing"""
-    globs.StarBackground = StarBackground.StarBackground(0, 0)
+    #globs.StarBackground = StarBackground.StarBackground(0, 0, .1, .1)
     globs.MapBackground = tilemap.Map()
     globs.Player = Player.Player(0, 0, .25, .25)
 
