@@ -74,6 +74,9 @@ def update(elapsed):
 
 def main():
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO)
+    Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3)
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 1, 4096)
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE)
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24)
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8)

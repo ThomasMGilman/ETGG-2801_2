@@ -2,6 +2,7 @@ from Program import *
 from GameObjects import Shapes
 from utilityLibs import glCommands
 from utilityLibs.ImageTexture2DArray import *
+from toolLibs.math3d import *
 import globs
 
 class ParticleSystem:
@@ -9,13 +10,12 @@ class ParticleSystem:
     vao = None
     tex = None
     vSize = None
-    def __init__(self, startPos = None):
+    def __init__(self, startPos):
         self.life = globs.particleLife
         self.currentTime = 0
         self.startTime = 0
-        self.startPos = startPos
-        if startPos != None:
-            ParticleSystem.position = startPos
+        self.worldMatrix = translation2(startPos)
+        print("particle System at", startPos)
 
         if ParticleSystem.vao == None:
             vbuff = array.array("f")
@@ -41,7 +41,7 @@ class ParticleSystem:
 
             Program.setUniform("totalElapsed", self.currentTime)
             Program.setUniform("pointSize", globs.particleSize)
-            Program.setUniform("startingPoint", self.startPos)
+            Program.setUniform("worldMatrix", self.worldMatrix)
             Program.setUniform("speedDivisor", globs.speedDivisor)
             Program.setUniform("alpha", alpha)
             Program.updateUniforms()

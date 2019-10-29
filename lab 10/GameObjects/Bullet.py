@@ -27,5 +27,5 @@ class Bullet(Entity):
         Mix_FadeInChannelTimed(-1, globs.pulseSound, 0, 0, globs.pulseSoundTime)  #sounds found in globs.py
 
     def kill(self):
-        globs.Particles.append(ParticleSystem(self.pos))
+        globs.Particles.append(ParticleSystem(self.pos.xy))
         super().kill()

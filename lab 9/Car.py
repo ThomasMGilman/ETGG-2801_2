@@ -1,5 +1,6 @@
 from math3d import *
 from sdl2.keycode import *
+from sdl2.sdlmixer import *
 from ImageTexture2DArray import *
 from Program import *
 import utils, math
@@ -16,26 +17,50 @@ class Car:
         self.frontTirePos = vec2(.345, -.12)
         self.backTirePos = vec2(-.3, -.12)
         self.twoPi = 2 * math.pi
-
+        self.horn = Mix_LoadWAV(os.path.join("assets", "dixie-horn_daniel-simion.wav").encode())
+        self.hornTime = 3000
+        self.driving = Mix_LoadWAV(os.path.join("assets", "old-car-engine-edit.wav").encode())
+        self.driveTime = 4000
+        self.playingHorn = False
+        self.soundTimer = 0
         self.tireRot = 0
 
     def checkAngle(self, angle):
         if(angle > self.twoPi):
             angle -= self.twoPi
 
+    def updatePos(self, amount):
+        self.pos.x += amount
+        self.tireRot -= amount
+        if not Mix_Playing(-1) and self.playingHorn == False and self.soundTimer <= 0:
+            print("play VroomVRoom",Mix_Playing(-1))
+            Mix_FadeInChannelTimed(-1, self.driving, 0, 0, self.driveTime)
+            self.soundTimer = self.driveTime
+
     def update(self, elapsed, keyset):
+        print("SoundPlaying", Mix_Playing(-1))
+
         if SDLK_w in keyset:
-            self.pos.x += self.speed * elapsed
-            self.tireRot -= self.tireSpeed * elapsed
-        if SDLK_s in keyset:
-            self.pos.x -= self.speed*elapsed
-            self.tireRot += self.tireSpeed*elapsed
+            self.updatePos(self.speed * elapsed)
+        elif SDLK_s in keyset:
+            self.updatePos(-self.speed * elapsed)
+        elif self.playingHorn == False and Mix_Playing(-1) and self.playingHorn == False:
+            self.soundTimer = 0
+            Mix_HaltChannel(-1)
         if SDLK_SPACE in keyset:
-            print("vroom! Vroom! VROOM!")
+            self.soundTimer = 0
+            self.playingHorn = True
+            Mix_FadeInChannelTimed(-1, self.horn, 0, 0, 3000)
         if SDLK_d in keyset:
             self.carAngle -= self.speed * elapsed
         if SDLK_a in keyset:
             self.carAngle += self.speed * elapsed
+
+        if self.soundTimer > 0:
+            self.soundTimer -= elapsed
+
+        if not Mix_Playing(-1) and self.playingHorn == True:
+            self.playingHorn = False
 
         self.checkAngle(self.carAngle)
         self.checkAngle(self.tireRot)
