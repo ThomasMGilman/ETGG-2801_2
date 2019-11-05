@@ -74,16 +74,16 @@ def createSquare(array, Height, Width = None, cx = None, cy = None, centerOrigin
     originY = cy if cy != None else random.uniform(-1 + halfHeight, 1 - halfHeight)
 
     if not centerOrigin:
-        appendVec2(array, originX, originY)                             # Bottom Left corner
-        appendVec2(array, originX + Width, originY)                     # Bottom Right corner
-        appendVec2(array, originX + Width, originY + Height)            # TopRight corner
-        appendVec2(array, originX, originY + Height)                    # TopLeft corner
+        appendVec2(array, originX, originY)                             # Bottom Left corner    0
+        appendVec2(array, originX + Width, originY)                     # Bottom Right corner   1
+        appendVec2(array, originX + Width, originY + Height)            # TopRight corner       2
+        appendVec2(array, originX, originY + Height)                    # TopLeft corner        3
     else:
-        appendVec2(array, originX, originY)                             # Center Point
-        appendVec2(array, originX + halfWidth, originY + halfHeight)    # TopRight corner
-        appendVec2(array, originX - halfWidth, originY + halfHeight)    # TopLeft corner
-        appendVec2(array, originX - halfWidth, originY - halfHeight)    # BottomLeft corner
-        appendVec2(array, originX + halfWidth, originY - halfHeight)    # BottomRight corner
+        appendVec2(array, originX, originY)                             # Center Point          0
+        appendVec2(array, originX + halfWidth, originY + halfHeight)    # TopRight corner       1
+        appendVec2(array, originX - halfWidth, originY + halfHeight)    # TopLeft corner        2
+        appendVec2(array, originX - halfWidth, originY - halfHeight)    # BottomLeft corner     3
+        appendVec2(array, originX + halfWidth, originY - halfHeight)    # BottomRight corner    4
 
 
 def createSquareIndexArray(array, centerOrigin = False):
@@ -99,10 +99,10 @@ def createSquareIndexArray(array, centerOrigin = False):
 
 
 def createSquareTextureArray(array, maxCoord = 1):
-    appendVec2(array, 0, 0)
-    appendVec2(array, maxCoord, 0)
-    appendVec2(array, maxCoord, maxCoord)
-    appendVec2(array, 0, maxCoord)
+    appendVec2(array, 0, 0)                 # Bottom LeftCorner origin
+    appendVec2(array, maxCoord, 0)          # Bottom RightCorner
+    appendVec2(array, maxCoord, maxCoord)   # Top RightCorner
+    appendVec2(array, 0, maxCoord)          # Top LeftCorner
 
 
 def createHexagon(array, size, x=None, y=None):

@@ -10,9 +10,10 @@ class Entity:
     prog = None
     vao = None
     centerVao = None
+    ibuffCenterSize = None
     ibuffSize = None
     ibuffStart = None
-    def __init__(self, x, y, direction, Width, Height, life, speed, name):
+    def __init__(self, x, y, direction, Width, Height, life, speed, name, centered = False):
         self.name = name
         self.pos        = vec2(x,y)
         self.scale      = vec2(Width, Height)
@@ -30,18 +31,27 @@ class Entity:
         self.deathFadeT = globs.bulletLife
         self.State      = globs.ALIVE
         self.fadeTime   = 0
+        self.centered = centered
 
         if Entity.vao == None:
             vbuff = array.array("f")
+            centerVbuff = array.array("f")
+
             tbuff = array.array("f")
+
             ibuff = array.array("I")
+            centerIBuff = array.array("I")
 
             Shapes.createSquare(vbuff, 1, 1, 0, 0)        #create vbuff of square that is 1 by 1 at center of screen
+            Shapes.createSquare(centerVbuff, 1, 1, 0, 0, True)
             Shapes.createSquareIndexArray(ibuff)
+            Shapes.createSquareIndexArray(centerIBuff, True)
             Shapes.createSquareTextureArray(tbuff)
             Entity.vao = glCommands.setup(vbuff, tbuff, ibuff)
+            Entity.centerVao = glCommands.setup(centerVbuff, tbuff, centerIBuff)
 
             Entity.ibuffSize = len(ibuff)
+            Entity.ibuffCenterSize = len(centerIBuff)
             Entity.ibuffStart = 0
 
             Entity.prog = Program("vs.txt", "fs.txt")
@@ -62,13 +72,22 @@ class Entity:
             self.setProgUniforms()
 
             glEnable(GL_BLEND)
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-            glCommands.drawElement(glCommands.GL_TRIANGLES,     #Mode
-                                   Entity.ibuffSize,            #number of indicies
-                                   Entity.vao,                  #vao
-                                   texture,                     #texture passed
-                                   Entity.ibuffStart,           #start in indicies
-                                   slice)                       #slice of image
+            if not self.centered:
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+                glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
+                                       Entity.ibuffSize,            # number of indicies
+                                       Entity.vao,                  # vao
+                                       texture,                     # texture passed
+                                       Entity.ibuffStart,           # start in indicies
+                                       slice)                       # slice of image
+            else:
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+                glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
+                                       Entity.ibuffCenterSize,      # number of indicies
+                                       Entity.centerVao,            # vao
+                                       texture,                     # texture passed
+                                       Entity.ibuffStart,           # start in indicies
+                                       slice)                       # slice of image
             glDisable(GL_BLEND)
 
     def checkCollision(self, otherBox):
