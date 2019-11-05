@@ -1,3 +1,6 @@
+#CONSTANTS
+TWO_PI = 0
+
 #Frame rates for drawing
 DESIRED_FRAMES_PER_SEC = 60
 DESIRED_SEC_PER_FRAME = 0
@@ -22,6 +25,7 @@ backgroundTextures = []
 win = None
 Player = None
 Camera = None
+Background = None
 Bullets = []
 Enemies = []
 Particles = []
@@ -60,13 +64,18 @@ ALIVE = 9
 DYING = 10
 DEAD = 11
 
-#playerImages parameters
+#player parameters
+startPosX = 0
+startPosY = 0
+playerWidth = .1
+playerHeight = .1
 jumpPeak = .3
-playerSpeed = .002
+playerSpeed = .001
 playerFireRate = 500
 
 #bullet parameters
 bulletSpeed = 0.002 + playerSpeed
+bulletSize = .05
 
 #enemy parameters
 enemySize = .25
@@ -92,3 +101,6 @@ minWorldX = -1
 minWorldY = -1
 worldWidth  = 4
 worldHeight = 4
+
+#Background
+backgroundRotationSpeed = .0002

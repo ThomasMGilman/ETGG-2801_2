@@ -22,7 +22,7 @@ class Map(Entity):
             )
 
         self.tileList = outputList
-        self.size = 2 / len(self.tileList)
+        self.size = 2 / 8
         self.originPos = vec2(-1, -1)
 
         super().__init__(-1, -1, 0, self.size, self.size, 1, 0, "TileMap")
@@ -32,14 +32,14 @@ class Map(Entity):
             for i in range(len(globs.mapTextures)):
                 Map.texList.append(ImageTexture2DArray(globs.mapTextures[i]))
 
-    def draw(self):#FIX HERE
+    def draw(self):
         tileHeight = len(self.tileList)
         for i in range(tileHeight):
             tmpI = tileHeight-i-1
             row = self.tileList[tmpI]
             tileWidth = len(row)
-            self.pos.y = self.originPos.y + (i * (2 / tileHeight))
+            self.pos.y = self.originPos.y + (i * self.Height)
             for j in range(tileWidth):
-                self.pos.x = self.originPos.x + (j * (2 / tileWidth))
+                self.pos.x = self.originPos.x + (j * self.Width)
                 self.setWorldMatrix()
                 super().draw(self.texList[row[j]-1], 0)

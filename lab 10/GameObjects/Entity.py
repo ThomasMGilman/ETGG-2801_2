@@ -9,6 +9,7 @@ import array, globs
 class Entity:
     prog = None
     vao = None
+    centerVao = None
     ibuffSize = None
     ibuffStart = None
     def __init__(self, x, y, direction, Width, Height, life, speed, name):
@@ -34,8 +35,6 @@ class Entity:
             vbuff = array.array("f")
             tbuff = array.array("f")
             ibuff = array.array("I")
-            Entity.ibuffSize = len(ibuff)
-            Entity.ibuffStart = 0
 
             Shapes.createSquare(vbuff, 1, 1, 0, 0)        #create vbuff of square that is 1 by 1 at center of screen
             Shapes.createSquareIndexArray(ibuff)
@@ -48,7 +47,7 @@ class Entity:
             Entity.prog = Program("vs.txt", "fs.txt")
 
     def setWorldMatrix(self):
-        self.worldMatrix = scaling2(self.scale) * translation2(self.pos)#rotation2(self.rotation) * translation2(self.pos)
+        self.worldMatrix = rotation2(self.rotation) * scaling2(self.scale) * translation2(self.pos)#rotation2(self.rotation) * translation2(self.pos)
         #print(self.name, self.worldMatrix)
 
     def setProgUniforms(self):
@@ -58,7 +57,7 @@ class Entity:
         Program.setUniform("alpha", alpha)
         Program.updateUniforms()
 
-    def draw(self, texture, slice):
+    def draw(self, texture, slice = 0):
         if self.alive():
             self.setProgUniforms()
 

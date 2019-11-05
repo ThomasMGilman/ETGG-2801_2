@@ -1,4 +1,4 @@
-from GameObjects import Player, Enemy, StarBackground, tilemap, Shapes
+from GameObjects import Player, Enemy, Background, tilemap, Shapes
 from utilityLibs import Sampler
 from sdl2 import *
 from sdl2.sdlmixer import *
@@ -6,7 +6,7 @@ from glLibs.gl import *
 from glLibs.glconstants import *
 from os import listdir
 from utilityLibs import glCommands
-import os.path, globs, traceback, random
+import os.path, globs, traceback, random, math
 
 
 def debugCallback( source, msgType, msgId, severity, length, message, param ):
@@ -81,6 +81,7 @@ def setupGlobals():
     glEnable(GL_PROGRAM_POINT_SIZE)
     glCommands.setClassicOpacity()
 
+    globs.TWO_PI = 2 * math.pi
     if(globs.sampler == None):
         globs.sampler = Sampler.Sampler()
     globs.sampler.bind(0)
@@ -90,7 +91,8 @@ def setupObjects():
     """Setup global objects for drawing"""
     #globs.StarBackground = StarBackground.StarBackground(0, 0, .1, .1)
     globs.MapBackground = tilemap.Map()
-    globs.Player = Player.Player(0, 0, .25, .25)
+    globs.Player = Player.Player(globs.startPosX, globs.startPosY, globs.playerWidth, globs.playerHeight)
+    globs.Background = Background.Background()
 
 def setupWorldSpace(worldWidth, worldHeight):
     globs.worldWidth = worldWidth

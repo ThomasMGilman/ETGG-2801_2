@@ -64,7 +64,7 @@ def createTriangleIndexArray(array):
     appendVec3(array, 0, 1, 2)
 
 
-def createSquare(array, Height, Width = None, cx = None, cy = None):
+def createSquare(array, Height, Width = None, cx = None, cy = None, centerOrigin = False):
     """To specify a rectangle, pass a value for the width"""
     if Width == None:
         Width = Height
@@ -73,16 +73,29 @@ def createSquare(array, Height, Width = None, cx = None, cy = None):
     originX = cx if cx != None else random.uniform(-1 + halfWidth, 1 - halfWidth)
     originY = cy if cy != None else random.uniform(-1 + halfHeight, 1 - halfHeight)
 
-    appendVec2(array, originX, originY)  # Bottom Left corner
-    appendVec2(array, originX + Width, originY)  # Bottom Right corner
-    appendVec2(array, originX + Width, originY + Height)  # TopRight corner
-    appendVec2(array, originX, originY + Height)  # TopLeft corner
+    if not centerOrigin:
+        appendVec2(array, originX, originY)                             # Bottom Left corner
+        appendVec2(array, originX + Width, originY)                     # Bottom Right corner
+        appendVec2(array, originX + Width, originY + Height)            # TopRight corner
+        appendVec2(array, originX, originY + Height)                    # TopLeft corner
+    else:
+        appendVec2(array, originX, originY)                             # Center Point
+        appendVec2(array, originX + halfWidth, originY + halfHeight)    # TopRight corner
+        appendVec2(array, originX - halfWidth, originY + halfHeight)    # TopLeft corner
+        appendVec2(array, originX - halfWidth, originY - halfHeight)    # BottomLeft corner
+        appendVec2(array, originX + halfWidth, originY - halfHeight)    # BottomRight corner
 
 
-def createSquareIndexArray(array):
+def createSquareIndexArray(array, centerOrigin = False):
     """Square/Rectangle is comprised of two triangles which is made up of 4 vertices"""
-    appendVec3(array, 0, 1, 2)
-    appendVec3(array, 0, 2, 3)
+    if not centerOrigin:
+        appendVec3(array, 0, 1, 2)
+        appendVec3(array, 0, 2, 3)
+    else:
+        appendVec3(array, 0, 1, 2)
+        appendVec3(array, 0, 2, 3)
+        appendVec3(array, 0, 3, 4)
+        appendVec3(array, 0, 4, 1)
 
 
 def createSquareTextureArray(array, maxCoord = 1):

@@ -5,7 +5,7 @@ import globs, random
 
 class Bullet(Entity):
     tex = None
-    def __init__(self, x, y, direction, size = .1):
+    def __init__(self, x, y, direction, size = globs.bulletSize):
         if Bullet.tex == None:
             Bullet.tex = ImageTexture2DArray(globs.bulletTextures[0])
 
