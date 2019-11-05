@@ -38,17 +38,22 @@ class Entity:
             centerVbuff = array.array("f")
 
             tbuff = array.array("f")
+            centerTBuff = array.array("f")
 
             ibuff = array.array("I")
             centerIBuff = array.array("I")
 
             Shapes.createSquare(vbuff, 1, 1, 0, 0)        #create vbuff of square that is 1 by 1 at center of screen
             Shapes.createSquare(centerVbuff, 1, 1, 0, 0, True)
+
             Shapes.createSquareIndexArray(ibuff)
             Shapes.createSquareIndexArray(centerIBuff, True)
+
             Shapes.createSquareTextureArray(tbuff)
+            Shapes.createSquareTextureArray(centerTBuff, 1, True)
+
             Entity.vao = glCommands.setup(vbuff, tbuff, ibuff)
-            Entity.centerVao = glCommands.setup(centerVbuff, tbuff, centerIBuff)
+            Entity.centerVao = glCommands.setup(centerVbuff, centerTBuff, centerIBuff)
 
             Entity.ibuffSize = len(ibuff)
             Entity.ibuffCenterSize = len(centerIBuff)

@@ -98,11 +98,20 @@ def createSquareIndexArray(array, centerOrigin = False):
         appendVec3(array, 0, 4, 1)
 
 
-def createSquareTextureArray(array, maxCoord = 1):
-    appendVec2(array, 0, 0)                 # Bottom LeftCorner origin
-    appendVec2(array, maxCoord, 0)          # Bottom RightCorner
-    appendVec2(array, maxCoord, maxCoord)   # Top RightCorner
-    appendVec2(array, 0, maxCoord)          # Top LeftCorner
+def createSquareTextureArray(array, maxCoord = 1, useMid = False):
+    if not useMid:
+        appendVec2(array, 0, 0)                 # Bottom LeftCorner origin
+        appendVec2(array, maxCoord, 0)          # Bottom RightCorner
+        appendVec2(array, maxCoord, maxCoord)   # Top RightCorner
+        appendVec2(array, 0, maxCoord)          # Top LeftCorner
+    else:
+        print("using mid")
+        appendVec2(array, .5, .5)               # middle point origin
+        appendVec2(array, maxCoord, maxCoord)   # top Right
+        appendVec2(array, 0, maxCoord)          # top Left
+        appendVec2(array, 0, 0)                 # bottom Left
+        appendVec2(array, maxCoord, 0)          # bottom right
+
 
 
 def createHexagon(array, size, x=None, y=None):
