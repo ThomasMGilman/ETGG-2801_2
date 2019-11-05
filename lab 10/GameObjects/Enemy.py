@@ -22,8 +22,8 @@ class Enemy(Entity):
 
     def alive(self):
         if (self.pos.x < -1 - self.Width and self.dir == globs.FACING_LEFT) \
-            or (self.pos.x > 1 + self.Width  and self.dir == globs.FACING_RIGHT) \
-            or (self.pos.y > 1 + self.Height and self.dir == globs.FACING_UP) \
+            or (self.pos.x > globs.worldWidth + self.Width  and self.dir == globs.FACING_RIGHT) \
+            or (self.pos.y > globs.worldHeight + self.Height and self.dir == globs.FACING_UP) \
             or (self.pos.y < -1 - self.Height and self.dir == globs.FACING_DOWN):
                 self.life = 0
         return super().alive()

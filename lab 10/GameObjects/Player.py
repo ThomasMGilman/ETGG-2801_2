@@ -25,35 +25,43 @@ class Player(Entity):
         self.lastFired = globs.playerFireRate
 
     def updateCameraPos(self, x, y):
-        self.CameraObj.pan(x, y)
+        if not self.pos.x >= globs.minWorldX + 1:
+            x = globs.minWorldX + 1
+        if not self.pos.y >= globs.minWorldY + 1:
+            y = globs.minWorldY + 1
+        self.CameraObj.pan(x,y)
 
     def update(self, elapsedTime):
         movAmount = 0
-        if (SDLK_d or SDLK_RIGHT) in globs.keyset:                      #Move Right
+        if SDLK_d in globs.keyset or SDLK_RIGHT in globs.keyset:                                      #Move Right
             self.dir = globs.FACING_RIGHT
             movAmount = self.speed * elapsedTime
-            super().updateHorizontalPos(movAmount)
-            self.updateCameraPos(movAmount, 0)
+            if not self.pos.x + self.Width + movAmount > globs.worldWidth:      #BoundsCheckMaxX
+                super().updateHorizontalPos(movAmount)
+                self.updateCameraPos(movAmount, 0)
 
-        if (SDLK_a or SDLK_LEFT) in globs.keyset:                       #Move Left
+        if SDLK_a in globs.keyset or SDLK_LEFT in globs.keyset:                                       #Move Left
             self.dir = globs.FACING_LEFT
             movAmount = -self.speed * elapsedTime
-            super().updateHorizontalPos(movAmount)
-            self.updateCameraPos(movAmount, 0)
+            if not self.pos.x + movAmount < globs.minWorldX:                    #BoundsCheckMinX
+                super().updateHorizontalPos(movAmount)
+                self.updateCameraPos(movAmount, 0)
 
-        if (SDLK_w or SDLK_UP) in globs.keyset:                         #Move UP
+        if SDLK_w in globs.keyset or SDLK_UP in globs.keyset:                                         #Move UP
             self.dir = globs.FACING_UP
             movAmount = self.speed * elapsedTime
-            super().updateVerticalPos(movAmount)
-            self.updateCameraPos(0, movAmount)
+            if not self.pos.y + self.Height + movAmount > globs.worldHeight:    #BoundsCheckMaxY
+                super().updateVerticalPos(movAmount)
+                self.updateCameraPos(0, movAmount)
 
-        if (SDLK_s or SDLK_DOWN) in globs.keyset:                       #Move Down
+        if SDLK_s in globs.keyset or SDLK_DOWN in globs.keyset:                                       #Move Down
             self.dir = globs.FACING_DOWN
             movAmount = -self.speed * elapsedTime
-            super().updateVerticalPos(movAmount)
-            self.updateCameraPos(0, movAmount)
+            if not self.pos.y + movAmount < globs.minWorldY:                    #BoundsCheckMinY
+                super().updateVerticalPos(movAmount)
+                self.updateCameraPos(0, movAmount)
 
-        if (SDLK_LCTRL or SDLK_x) in globs.keyset:
+        if SDLK_LCTRL in globs.keyset or SDLK_x in globs.keyset:        #Crouch
             if self.scale[1] != self.halfHeight:
                 self.scale = vec2(self.Height, self.halfHeight)
                 super().setWorldMatrix()

@@ -32,7 +32,7 @@ class Map(Entity):
             for i in range(len(globs.mapTextures)):
                 Map.texList.append(ImageTexture2DArray(globs.mapTextures[i]))
 
-    def draw(self):
+    def draw(self):#FIX HERE
         tileHeight = len(self.tileList)
         for i in range(tileHeight):
             tmpI = tileHeight-i-1

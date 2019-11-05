@@ -71,7 +71,7 @@ bulletSpeed = 0.002 + playerSpeed
 #enemy parameters
 enemySize = .25
 enemySpeed = 0.0005
-spawnTimer = 2000   #spawn enemy variant every second
+spawnTimer = 1000   #spawn enemy variant every second
 lastSpawned = 0
 
 #Entity Life
@@ -86,3 +86,9 @@ particleSize = 20
 speedDivisor = .001
 
 particleAlpha = 1
+
+#World Space parameters
+minWorldX = -1
+minWorldY = -1
+worldWidth  = 4
+worldHeight = 4

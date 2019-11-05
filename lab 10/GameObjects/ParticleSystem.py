@@ -15,7 +15,6 @@ class ParticleSystem:
         self.currentTime = 0
         self.startTime = 0
         self.worldMatrix = translation2(startPos)
-        print("particle System at", startPos)
 
         if ParticleSystem.vao == None:
             vbuff = array.array("f")

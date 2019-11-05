@@ -92,6 +92,9 @@ def setupObjects():
     globs.MapBackground = tilemap.Map()
     globs.Player = Player.Player(0, 0, .25, .25)
 
+def setupWorldSpace(worldWidth, worldHeight):
+    globs.worldWidth = worldWidth
+    globs.worldHeight = worldHeight
 
 def putEnemy(x, y, direction, Width, Height, textureNum):
     #print("spawning enemy: ",x,y,direction, Width, Height,textureNum)
@@ -106,12 +109,12 @@ def spawnEnemy(elapsedMsec):
         y = 0
         direction = 0
         if enemyType == 0:
-            x = tmp if tmp != 0 else 1
+            x = tmp if tmp != 0 else globs.worldWidth
             direction = globs.FACING_RIGHT if x < 0 else globs.FACING_LEFT
         elif enemyType == 1:
-            y = 1
+            y = globs.worldHeight
             direction = globs.FACING_DOWN
-            x = random.uniform(-1, 1)
+            x = random.uniform(-1, globs.worldWidth)
 
         x = globs.enemySize+1*x if (x < -1+globs.enemySize or x > 1-globs.enemySize) and y != 0 else x  #keep enemy image in bounds
         texNum = 1 if direction == globs.FACING_DOWN and len(globs.enemyTextures) > 1 else 0            #pick texture
@@ -122,8 +125,9 @@ def spawnEnemy(elapsedMsec):
         globs.lastSpawned -= elapsedMsec
 
 
-def setup():
+def setup(worldWidth, worldHeight):
     enableDebugging(0)  # enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
     setupObjects()
+    setupWorldSpace(worldWidth, worldHeight)
     # glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)

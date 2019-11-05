@@ -10,7 +10,7 @@ class Car:
     def __init__(self):
         self.body = CarBody()
         self.tire = CarTire()
-        self.speed = .001
+        self.speed = .002
         self.tireSpeed = .005
         self.carAngle = 0
         self.pos = vec2(0, 0)
@@ -33,12 +33,12 @@ class Car:
         self.pos.x += amount
         self.tireRot -= amount
         if not Mix_Playing(-1) and self.playingHorn == False and self.soundTimer <= 0:
-            print("play VroomVRoom",Mix_Playing(-1))
+            #print("play VroomVRoom",Mix_Playing(-1))
             Mix_FadeInChannelTimed(-1, self.driving, 0, 0, self.driveTime)
             self.soundTimer = self.driveTime
 
     def update(self, elapsed, keyset):
-        print("SoundPlaying", Mix_Playing(-1))
+        #print("SoundPlaying", Mix_Playing(-1))
 
         if SDLK_w in keyset:
             self.updatePos(self.speed * elapsed)
@@ -48,9 +48,11 @@ class Car:
             self.soundTimer = 0
             Mix_HaltChannel(-1)
         if SDLK_SPACE in keyset:
+            self.tireRot -= self.speed * elapsed
             self.soundTimer = 0
             self.playingHorn = True
-            Mix_FadeInChannelTimed(-1, self.horn, 0, 0, 3000)
+            if not Mix_Playing(-1):
+                Mix_FadeInChannelTimed(-1, self.horn, 0, 0, 3000)
         if SDLK_d in keyset:
             self.carAngle -= self.speed * elapsed
         if SDLK_a in keyset:
