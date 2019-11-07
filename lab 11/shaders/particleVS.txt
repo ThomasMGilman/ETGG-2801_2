@@ -1,0 +1,6 @@
+layout(location=0) in vec2 velocity;
+void main(){
+    vec3 transform = vec3(velocity * totalElapsed * speedDivisor, 1) * worldMatrix * viewMatrix;
+    gl_Position = vec4(transform, 1);
+    gl_PointSize = pointSize;
+}

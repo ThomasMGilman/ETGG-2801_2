@@ -1,0 +1,11 @@
+//Contains Objects Rotation, Translation, and Scale
+mat3 worldMatrix;
+mat3 viewMatrix;
+
+//particleSystem
+vec2 startingPoint;
+
+float totalElapsed;
+float pointSize;
+float speedDivisor;
+float alpha;

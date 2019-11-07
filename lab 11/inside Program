@@ -1,0 +1,5 @@
+program.py
+
+def use(self):
+	glUseProgram(self.prog)
+	Program.current = self
