@@ -2,13 +2,17 @@ from GameObjects.Entity import *
 
 class Enemy(Entity):
     tex = None
-    def __init__(self, x, y, direction, Width, Height, texNum):
+    bossMesh = None
+    def __init__(self, x, y, direction, Width, Height, texNum, boss = 0):
         if Enemy.tex == None:
             Enemy.tex = []
             for tex in globs.enemyTextures:
                 Enemy.tex.append(ImageTexture2DArray(tex))
 
+            Enemy.bossMesh = Mesh(globs.bossFilePath)
+
         self.texNum = texNum if texNum < len(Enemy.tex) else 0
+        self.drawBoss = boss
         super().__init__(x, y, direction, Width, Height, globs.enemyLife, globs.enemySpeed, "Enemy"+str(self.texNum))
 
     def update(self, elapsedTime):
@@ -16,9 +20,15 @@ class Enemy(Entity):
 
         if (self.pos.x or self.pos.y) > 1 or (self.pos.x or self.pos.y) < -1:
             self.life = 0
+            if self.drawBoss:
+                globs.bossInGame = 0
 
     def draw(self):
-        super().draw(Enemy.tex[self.texNum], 0)
+        if not self.drawBoss:
+            super().draw(Enemy.tex[self.texNum], 0)
+        else:
+            self.setProgUniforms()
+            Enemy.bossMesh.draw()
 
     def alive(self):
         if (self.pos.x < -1 - self.Width and self.dir == globs.FACING_LEFT) \

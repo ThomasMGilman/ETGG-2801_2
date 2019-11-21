@@ -80,4 +80,10 @@ class Player(Entity):
         if SDLK_SPACE in globs.keyset and self.lastFired <= 0:          #fireBullet
             self.fire()
 
+        self.check_SpawnBoss()
+
         self.lastFired -= elapsedTime
+
+    def check_SpawnBoss(self):
+        if self.pos.x >= globs.worldWidth - .5 and self.pos.y >= globs.worldHeight - .5:
+            Setup.spawnBoss()

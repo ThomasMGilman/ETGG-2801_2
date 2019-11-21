@@ -4,23 +4,21 @@ from toolLibs.math3d import *
 import os
 
 class Mesh:
-
-    def __init__(self, fname):
-        self.fname = os.path.join("assets",fname)
-        self.materialDict
-        self.curMat
+    def __init__(self, f):
+        self.fname = os.path.join("assets",f)
+        self.materialDict = {}
+        curMat = None
         VertexPoints = []           # Vertex Vec3 Points for Mesh
         Normals = []
         TexturePoints = []          # Texture Vec2 Points for Mesh
-        IndexPoints = []            # Index Points in vertex points and texture points
-
-        with open(fname) as fp:
+        IndexPoints = {}            # Index Points in vertex points and texture points
+        with open(self.fname) as fp:
             for line in fp:
                 line = line.strip()
                 if  line.startswith("#"):           # line is a Comment ignore it
                     continue
 
-                elif line.startswith("mtlib"):      # Get Meshes material file name and get its textures
+                elif line.startswith("mtllib"):      # Get Meshes material file name and get its textures
                     matfname = line[7:]
                     self.materialDict = self.parseMtl(matfname)
 
@@ -56,24 +54,28 @@ class Mesh:
 
                         vi = int(pointPack[0]) - 1              # Set Vertice Index
                         ti = int(pointPack[1]) - 1              # Set Texture Index
-                        ni = int(pointPack[2]) - 1              # Set Normal Index
-                        IndexPoints[curMat].append((vi, ti, ni))
+                        #ni = int(pointPack[2]) - 1              # Set Normal Index
+                        IndexPoints[curMat].append((vi, ti))
 
-        tmp = array.array("IndexPoints", [0])       # Set vao
+        tmp = array.array("I", [0])       # Set vao
         glGenVertexArrays(1, tmp)
         self.vao = tmp[0]
 
-        vmap = {}               # key = (vi,ti,ni), Val = index
+        vmap = {}               # key = (vi,ti), Val = index
         p = []
         t = []
-        n = []
+        # n = []
         i = []
         numV = 0
         self.matDict = {}       # key = matName, Val = (startIndex, size)
 
         for matName in IndexPoints:                 # Foreach key
-            for vi, ti, ni in IndexPoints[matName]:     # Foreach value pair
-                key = (vi, ti, ni)
+
+            # Set Start starting point into point set, and number of indices for point set for material
+            self.matDict[matName] = (len(i) * 4, len(IndexPoints[matName]))
+
+            for vi, ti in IndexPoints[matName]:     # Foreach value pair
+                key = (vi, ti)
 
                 if key not in vmap:                         # Append key to dictionary if not already there
                     vmap[key] = numV
@@ -89,19 +91,19 @@ class Mesh:
                     t.append(TexturePoints[ti].y)
 
                     # Set Normal values, 3 floats per point
-                    n.append(Normals[ni].x)
-                    n.append(Normals[ni].y)
-                    n.append(Normals[ni].z)
+                    # n.append(Normals[ni].x)
+                    # n.append(Normals[ni].y)
+                    # n.append(Normals[ni].z)
 
                 i.append(vmap[key])                        # Append Index into dictionary for point value set
 
-            # Set Start starting point into point set, and number of indices for point set for material
-            self.matDict[matName] = (len(i) * 4, len(IndexPoints[matName]))
-
         pointBuf    = Buffer(array.array("f", p))           # Create Point Buffer
         texBuf      = Buffer(array.array("f", t))           # Create Texture Buffer
-        indexBuf    = Buffer(array.array("IndexPoints", i)) # Create Index buffer for index points
+        indexBuf    = Buffer(array.array("I", i))           # Create Index buffer for index points
         glBindVertexArray(self.vao)                         # Bind vao
+
+        print(self.materialDict)
+
 
     def parseMtl(self, fname):
         """Add the new Materail to the dictionary"""
@@ -113,14 +115,17 @@ class Mesh:
                     section = line[7:]
                 elif line.startswith("map_Kd"):
                     texfile = line[7:]
+                    #print("Texture of:", texfile + " added")
                     MeshColors[section] = ImageTexture2DArray(texfile)
         return MeshColors
 
     def draw(self):
         glBindVertexArray(self.vao)
+        print(self.matDict)
         for mname in self.matDict:
             self.materialDict[mname].bind(0)        # Bind Texture
             start, count = self.matDict[mname]      # Set start index, and len of indicies
+            print("start:",start,"count:",count)
 
             glDrawElements(
                 GL_TRIANGLES,

@@ -82,6 +82,8 @@ enemySize = .25
 enemySpeed = 0.0005
 spawnTimer = 1000   #spawn enemy variant every second
 lastSpawned = 0
+bossFilePath = "boss2.obj"
+bossInGame = 0
 
 #Entity Life
 playerLife = 10

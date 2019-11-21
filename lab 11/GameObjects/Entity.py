@@ -2,9 +2,10 @@ from utilityLibs import glCommands
 from utilityLibs.ImageTexture2DArray import *
 from toolLibs.math3d import *
 from GameObjects import Shapes
+from GameObjects.Mesh import *
 from GameObjects.BoundingBox import *
 from Program import *
-import array, globs
+import array, globs, Setup
 
 class Entity:
     prog = None

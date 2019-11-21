@@ -94,13 +94,15 @@ def setupObjects():
     globs.Player = Player.Player(globs.startPosX, globs.startPosY, globs.playerWidth, globs.playerHeight)
     globs.Background = Background.Background()
 
+
 def setupWorldSpace(worldWidth, worldHeight):
     globs.worldWidth = worldWidth
     globs.worldHeight = worldHeight
 
-def putEnemy(x, y, direction, Width, Height, textureNum):
+
+def putEnemy(x, y, direction, Width, Height, textureNum, bossOrNo = 0):
     #print("spawning enemy: ",x,y,direction, Width, Height,textureNum)
-    globs.Enemies.append(Enemy.Enemy(x, y, direction, Width, Height, textureNum))
+    globs.Enemies.append(Enemy.Enemy(x, y, direction, Width, Height, textureNum, bossOrNo))
 
 
 def spawnEnemy(elapsedMsec):
@@ -125,6 +127,15 @@ def spawnEnemy(elapsedMsec):
         globs.lastSpawned = globs.spawnTimer
     else:
         globs.lastSpawned -= elapsedMsec
+
+
+def spawnBoss():
+    if not globs.bossInGame:
+        x = globs.worldWidth
+        y = globs.worldHeight - .5
+        direction = globs.FACING_LEFT
+        putEnemy(x, y, direction, globs.enemySize, globs.enemySize, 0, 1)
+        globs.bossInGame = 1
 
 
 def setup(worldWidth, worldHeight):
