@@ -46,6 +46,15 @@ GREEN   = 0.0
 BLUE    = 0.0
 ALPHA   = 1.0
 
+#World Space parameters
+minWorldX = -1
+minWorldY = -1
+worldWidth  = 4
+worldHeight = 4
+
+#Background
+backgroundRotationSpeed = .0002
+
 #Sampler Object
 sampler = None
 
@@ -79,11 +88,19 @@ bulletSize = .05
 
 #enemy parameters
 enemySize = .25
+bossSize = .75
 enemySpeed = 0.0005
 spawnTimer = 1000   #spawn enemy variant every second
 lastSpawned = 0
 bossFilePath = "boss2.obj"
-bossInGame = 0
+bossInGame = False
+
+bossSpawnXOffset = .5
+bossSpawnYOffset = -.05
+bossSpawnZOffset = 0
+bossSpawnX = (worldWidth - minWorldX) / 2
+bossSpawnY = (worldHeight - minWorldY) / 2
+bossSpawnZ = 0
 
 #Entity Life
 playerLife = 10
@@ -98,11 +115,3 @@ speedDivisor = .001
 
 particleAlpha = 1
 
-#World Space parameters
-minWorldX = -1
-minWorldY = -1
-worldWidth  = 4
-worldHeight = 4
-
-#Background
-backgroundRotationSpeed = .0002

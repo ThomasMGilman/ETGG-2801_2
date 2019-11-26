@@ -131,11 +131,9 @@ def spawnEnemy(elapsedMsec):
 
 def spawnBoss():
     if not globs.bossInGame:
-        x = globs.worldWidth
-        y = globs.worldHeight - .5
         direction = globs.FACING_LEFT
-        putEnemy(x, y, direction, globs.enemySize, globs.enemySize, 0, 1)
-        globs.bossInGame = 1
+        putEnemy(globs.bossSpawnX + globs.bossSpawnXOffset, globs.bossSpawnY + globs.bossSpawnYOffset, direction, globs.bossSize, globs.bossSize, 0, 1)
+        globs.bossInGame = True
 
 
 def setup(worldWidth, worldHeight):

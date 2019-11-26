@@ -1,5 +1,5 @@
 from utilityLibs.ImageTexture2DArray import *
-from utilityLibs.Buffer import *
+from utilityLibs import glCommands
 from toolLibs.math3d import *
 import os
 
@@ -84,7 +84,7 @@ class Mesh:
                     # Set Vertex Values, 3 floats per point
                     p.append(VertexPoints[vi].x)
                     p.append(VertexPoints[vi].y)
-                    p.append(VertexPoints[vi].z)
+                    #p.append(VertexPoints[vi].z)
 
                     # Set Texture Values, 2 floats per point
                     t.append(TexturePoints[ti].x)
@@ -97,13 +97,10 @@ class Mesh:
 
                 i.append(vmap[key])                        # Append Index into dictionary for point value set
 
-        pointBuf    = Buffer(array.array("f", p))           # Create Point Buffer
-        texBuf      = Buffer(array.array("f", t))           # Create Texture Buffer
-        indexBuf    = Buffer(array.array("I", i))           # Create Index buffer for index points
-        glBindVertexArray(self.vao)                         # Bind vao
-
-        print(self.materialDict)
-
+        pointBuf    = array.array("f", p)           # Create Point Buffer
+        texBuf      = array.array("f", t)           # Create Texture Buffer
+        indexBuf    = array.array("I", i)           # Create Index buffer for index points
+        self.vao = glCommands.setup(pointBuf, texBuf, indexBuf)
 
     def parseMtl(self, fname):
         """Add the new Materail to the dictionary"""
@@ -121,11 +118,11 @@ class Mesh:
 
     def draw(self):
         glBindVertexArray(self.vao)
-        print(self.matDict)
+        #print(self.matDict)
         for mname in self.matDict:
             self.materialDict[mname].bind(0)        # Bind Texture
             start, count = self.matDict[mname]      # Set start index, and len of indicies
-            print("start:",start,"count:",count)
+            #print("start:",start,"count:",count)
 
             glDrawElements(
                 GL_TRIANGLES,
