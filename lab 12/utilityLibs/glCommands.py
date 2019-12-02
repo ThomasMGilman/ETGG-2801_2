@@ -23,7 +23,7 @@ def bindVao(vArray, tArray, iArray = None):
 
     # which pipe, items per vertex, type per item, auto-normalize, data size per item in bytes, start in buffer
     # numPoints = len(arrayOfPoints)
-    glVertexAttribPointer(0, 2, GL_FLOAT, False, 2 * 4, 0)
+    glVertexAttribPointer(0, 3, GL_FLOAT, False, 3 * 4, 0)
 
     # If a texture is passed, apply it to be associated to the vbuff
     if tArray == None:

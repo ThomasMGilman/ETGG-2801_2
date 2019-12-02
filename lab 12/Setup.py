@@ -78,7 +78,6 @@ def setupResources():
 def setupGlobals():
     """Setup Random, Sounds, FrameRate, Textures, and Sampler"""
     Shapes.seedRandom()
-    #globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
     setupResources()
 
@@ -99,7 +98,7 @@ def setupObjects():
     globs.MeshObjects.append(Map.MapRoom(math3d.vec3(0,0,0), "dungeon"))
 
 
-def setup(worldWidth, worldHeight):
+def setup():
     enableDebugging(0)  # enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
     setupObjects()

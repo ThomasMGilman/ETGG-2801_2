@@ -79,7 +79,7 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    setup(4, 4)
+    setup()
 
     lastTicks = SDL_GetPerformanceCounter()
     accumElapsedMsec = 0
