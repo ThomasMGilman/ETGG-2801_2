@@ -66,7 +66,7 @@ class Camera:
         self.updateViewMatrix()
 
     def tilt(self, amount):
-        M = rotation2(amount)
+        M = rotation3(self.look, amount)
         self.right = (vec4(self.right, 0)*M).xyz
         self.up = (vec4(self.up, 0)*M).xyz
         self.updateViewMatrix()

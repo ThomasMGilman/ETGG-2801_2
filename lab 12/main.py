@@ -28,7 +28,8 @@ def updateAndDraw(objList, elapsedMsec):
 def draw(elapsedMSec):
     clear()
 
-    globs.MeshObjects[1].draw()
+    for mesh in globs.MeshObjects:
+        mesh.draw()
 
     globs.Player.draw()
 

@@ -23,17 +23,42 @@ class Player(Entity):
         self.CameraObj.strafe(delta.x, delta.y, delta.z)
 
     def update(self, elapsedTime):
-        if SDLK_d in globs.keyset or SDLK_RIGHT in globs.keyset:                                      #Move Right
-            self.updatePos(vec3(self.speed * elapsedTime, 0, 0))
-
-        if SDLK_a in globs.keyset or SDLK_LEFT in globs.keyset:                                       #Move Left
+        if SDLK_d in globs.keyset or SDLK_RIGHT in globs.keyset:        #Move Right
             self.updatePos(vec3(-self.speed * elapsedTime, 0, 0))
 
-        if SDLK_w in globs.keyset or SDLK_UP in globs.keyset:                                         #Move Forward
+        if SDLK_a in globs.keyset or SDLK_LEFT in globs.keyset:         #Move Left
+            self.updatePos(vec3(self.speed * elapsedTime, 0, 0))
+
+        if SDLK_w in globs.keyset or SDLK_UP in globs.keyset:           #Move Forward
             self.updatePos(vec3(0, 0, self.speed * elapsedTime))
 
-        if SDLK_s in globs.keyset or SDLK_DOWN in globs.keyset:                                       #Move Backwards
+        if SDLK_s in globs.keyset or SDLK_DOWN in globs.keyset:         #Move Backwards
             self.updatePos(vec3(0, 0, -self.speed * elapsedTime))
+
+        if SDLK_r in globs.keyset or SDLK_o in globs.keyset:            #tilt clockwise
+            self.CameraObj.tilt(self.speed * elapsedTime)
+
+        if SDLK_e in globs.keyset or SDLK_u in globs.keyset:            #tilt counter-clockwise
+            self.CameraObj.tilt(-self.speed * elapsedTime)
+
+        if SDLK_RIGHT in globs.keyset or SDLK_l in globs.keyset:        #turn right
+            self.CameraObj.turn(self.speed * elapsedTime)
+
+        if SDLK_LEFT in globs.keyset or SDLK_j in globs.keyset:         #turn left
+            self.CameraObj.turn(-self.speed * elapsedTime)
+
+        if SDLK_UP in globs.keyset or SDLK_i in globs.keyset:           #look up
+            self.CameraObj.pitch(self.speed * elapsedTime)
+
+        if SDLK_DOWN in globs.keyset or SDLK_k in globs.keyset:         #look down
+            self.CameraObj.pitch(-self.speed * elapsedTime)
+
+        if SDLK_g in globs.keyset or SDLK_y in globs.keyset:            #roll right
+            self.CameraObj.roll(self.speed * elapsedTime)
+
+        if SDLK_f in globs.keyset or SDLK_t in globs.keyset:            #roll left
+            self.CameraObj.roll(-self.speed * elapsedTime)
+
 
         if SDLK_r in globs.keyset:
             print(self.pos)

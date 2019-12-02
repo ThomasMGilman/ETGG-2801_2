@@ -51,7 +51,9 @@ def clear():
     glClear(GL_COLOR_BUFFER_BIT)
 
 def drawElement(mode, numToDraw, vao, tex, index = None, slice = 0):
-    tex.bind(slice)
+    if tex != None:
+        tex.bind(slice)
+
     glBindVertexArray(vao)
 
     if index == None:
@@ -65,7 +67,8 @@ def drawElement(mode, numToDraw, vao, tex, index = None, slice = 0):
                        index)           # Pointer to start of indicies
 
     glBindVertexArray(0)
-    tex.unbind(slice)
+    if tex!= None:
+        tex.unbind(slice)
 
 
 def setBlendEquation(op):

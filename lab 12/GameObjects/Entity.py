@@ -78,7 +78,7 @@ class Entity:
         if self.alive():
             self.setProgUniforms()
 
-            """glEnable(GL_BLEND)
+            glEnable(GL_BLEND)
             if not self.centered:
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
                 glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
@@ -95,7 +95,7 @@ class Entity:
                                        texture,                     # texture passed
                                        Entity.ibuffStart,           # start in indicies
                                        slice)                       # slice of image
-            glDisable(GL_BLEND)"""
+            glDisable(GL_BLEND)
 
     def checkCollision(self, otherBox):
         #if self.hitBox.collidingWith(otherBox):

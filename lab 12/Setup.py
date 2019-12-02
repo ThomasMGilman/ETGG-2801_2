@@ -1,11 +1,11 @@
-from GameObjects import Player, Enemy, Background, tilemap, Shapes, Mesh
-from utilityLibs import Sampler
+from GameObjects import Player, Enemy, Background, tilemap, Shapes, Map
+from utilityLibs import Sampler, glCommands
 from sdl2 import *
 from sdl2.sdlmixer import *
 from glLibs.gl import *
 from glLibs.glconstants import *
 from os import listdir
-from utilityLibs import glCommands
+from toolLibs import math3d
 import os.path, globs, traceback, random, math
 
 
@@ -91,19 +91,12 @@ def setupGlobals():
         globs.sampler = Sampler.Sampler()
     globs.sampler.bind(0)
 
-def appendMeshesFromFiles():
-    for M in globs.Meshes:
-        for file in globs.Meshes[M]:
-            if file.endswith(".obj"):
-                globs.MeshObjects.append(Mesh.Mesh(file, path=globs.Meshes[M][-1]))
-                break
-
 
 def setupObjects():
     """Setup global objects for drawing"""
     globs.Player = Player.Player(globs.startPosX, globs.startPosY, globs.startPosZ,
                                  globs.playerWidth, globs.playerHeight, globs.playerDepth)
-    appendMeshesFromFiles()
+    globs.MeshObjects.append(Map.MapRoom(math3d.vec3(0,0,0), "dungeon"))
 
 
 def setup(worldWidth, worldHeight):

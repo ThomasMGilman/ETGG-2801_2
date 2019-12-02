@@ -4,7 +4,7 @@ out vec2 v_texCoord;
 
 void main(){
     vec4 transform = vec4(position, 1.0);
-    transform *= worldMatrix;
+    //transform *= worldMatrix;
     transform *= viewMatrix;
     transform *= projMatrix;
 
