@@ -74,27 +74,31 @@ class Entity:
         Program.setUniform("alpha", alpha)
         Program.updateUniforms()
 
-    def draw(self, texture, slice = 0):
+    def draw(self, texture, slice = 0, drawPoint = False):
         if self.alive():
             self.setProgUniforms()
 
             glEnable(GL_BLEND)
-            if not self.centered:
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
-                                       Entity.ibuffSize,            # number of indicies
-                                       Entity.vao,                  # vao
-                                       texture,                     # texture passed
-                                       Entity.ibuffStart,           # start in indicies
-                                       slice)                       # slice of image
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            if not drawPoint:
+                if not self.centered:
+
+                    glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
+                                           Entity.ibuffSize,            # number of indicies
+                                           Entity.vao,                  # vao
+                                           texture,                     # texture passed
+                                           Entity.ibuffStart,           # start in indicies
+                                           slice)                       # slice of image
+                else:
+                    glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
+                                           Entity.ibuffCenterSize,      # number of indicies
+                                           Entity.centerVao,            # vao
+                                           texture,                     # texture passed
+                                           Entity.ibuffStart,           # start in indicies
+                                           slice)                       # slice of image
             else:
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-                glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
-                                       Entity.ibuffCenterSize,      # number of indicies
-                                       Entity.centerVao,            # vao
-                                       texture,                     # texture passed
-                                       Entity.ibuffStart,           # start in indicies
-                                       slice)                       # slice of image
+                glCommands.drawElement(glCommands.GL_POINT, 1, Entity.centerVao, None)
+
             glDisable(GL_BLEND)
 
     def checkCollision(self, otherBox):

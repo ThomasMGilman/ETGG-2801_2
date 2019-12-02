@@ -4,19 +4,16 @@ from GameObjects.Entity import *
 import globs
 
 class Player(Entity):
-    tex = None
     def __init__(self, x, y, z, Width, Height, Depth):
         self.halfHeight = Width / 2
 
-        if Player.tex == None:
-            Player.tex = ImageTexture2DArray(globs.Textures["player"][0], path=globs.Textures["player"][-1]);
-
         super().__init__(x, y, z, Width, Height, Depth, globs.playerLife, globs.playerSpeed, "Player")
         self.CameraObj = Camera.Camera(self.pos)
+        self.CameraObj.roll(globs.TWO_PI/2)
 
     def draw(self):
         self.CameraObj.setUniforms()
-        super().draw(Player.tex, 0)
+        super().draw(None, 0, True)
 
     def updatePos(self, delta):
         #super().updatePos(delta)
@@ -65,6 +62,12 @@ class Player(Entity):
         if SDLK_s in globs.keyset or SDLK_DOWN in globs.keyset:         #Move Backwards
             self.updatePos(vec3(0, 0, -self.speed * elapsedTime))
 
+        if SDLK_SPACE in globs.keyset:                                  #Jump
+            self.updatePos(vec3(0, self.speed * elapsedTime, 0))
+
+        if SDLK_LCTRL in globs.keyset:
+            self.updatePos(vec3(0, -self.speed * elapsedTime, 0))       #Crouch
+
     def update(self, elapsedTime):
         self.pitch(elapsedTime)
         self.roll(elapsedTime)
@@ -72,5 +75,5 @@ class Player(Entity):
         self.turn(elapsedTime)
         self.translate(elapsedTime)
 
-        if SDLK_r in globs.keyset:
+        if SDLK_TAB in globs.keyset:
             print(self.pos)

@@ -1,0 +1,12 @@
+//Contains Objects Rotation, Translation, and Scale
+mat4 worldMatrix;
+mat4 viewMatrix;
+mat4 projMatrix;
+
+//particleSystem
+vec2 startingPoint;
+
+float totalElapsed;
+float pointSize;
+float speedDivisor;
+float alpha;

@@ -29,7 +29,7 @@ class Camera:
         )
 
     def setupProjMatrix(self):
-        self.hither = -1
+        self.hither = 0
         self.yon = 1
         self.fovH = (globs.WIN_WIDTH / globs.WIN_HEIGHT) * globs.FOV
         self.dH = 1 / (math.tan(self.fovH))

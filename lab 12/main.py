@@ -19,13 +19,7 @@ def buryTheDead(List):
     return List
 
 
-def updateAndDraw(objList, elapsedMsec):
-    for obj in objList:
-        obj.update(elapsedMsec)
-        obj.draw()
-
-
-def draw(elapsedMSec):
+def draw():
     clear()
 
     for mesh in globs.MeshObjects:
@@ -93,7 +87,7 @@ def main():
             update(elapsedMsec)
             accumElapsedMsec -= globs.UPDATE_QUANTUM_MSEC
 
-        draw(elapsedMsec)
+        draw()
 
         endTicks = SDL_GetPerformanceCounter()                                      #Get finale tick
         frameTicks = endTicks - nowTicks                                            #Get num ticks for frame
