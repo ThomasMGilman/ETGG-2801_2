@@ -4,8 +4,8 @@ from toolLibs.math3d import *
 import os
 
 class Mesh:
-    def __init__(self, f):
-        self.fname = os.path.join("assets",f)
+    def __init__(self, f, path="assets"):
+        self.fname = os.path.join(path,f)
         self.materialDict = {}
         curMat = None
         VertexPoints = []           # Vertex Vec3 Points for Mesh
@@ -20,7 +20,7 @@ class Mesh:
 
                 elif line.startswith("mtllib"):      # Get Meshes material file name and get its textures
                     matfname = line[7:]
-                    self.materialDict = self.parseMtl(matfname)
+                    self.materialDict = self.parseMtl(matfname, path)
 
                 elif line.startswith("v "):         # Get Meshes vertex points
                     vertices = line.split()
@@ -102,10 +102,10 @@ class Mesh:
         indexBuf    = array.array("I", i)           # Create Index buffer for index points
         self.vao = glCommands.setup(pointBuf, texBuf, indexBuf)
 
-    def parseMtl(self, fname):
+    def parseMtl(self, fname, path):
         """Add the new Materail to the dictionary"""
         MeshColors = {}
-        with open(os.path.join("assets", fname)) as fp:
+        with open(os.path.join(path, fname)) as fp:
             for line in fp:
                 line = line.strip()
                 if line.startswith("newmtl"):
@@ -113,7 +113,7 @@ class Mesh:
                 elif line.startswith("map_Kd"):
                     texfile = line[7:]
                     #print("Texture of:", texfile + " added")
-                    MeshColors[section] = ImageTexture2DArray(texfile)
+                    MeshColors[section] = ImageTexture2DArray(texfile, path=path)
         return MeshColors
 
     def draw(self):

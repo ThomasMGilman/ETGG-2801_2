@@ -5,7 +5,16 @@ import globs, os.path
 class Map(Entity):
     texList = None
     def __init__(self):
-        with open(os.path.join("assets","map.tmx")) as fp:
+        mapPath = None
+
+        for file,path in globs.Textures["map"]:
+            if file == "map.tmx":
+                mapPath = path
+                break
+        if mapPath == None:
+            Exception("Could not find File Map.tmx in textures folder of assets")
+
+        with open(mapPath) as fp:
             data = fp.read()
         i = data.find("<data ")
         j = data.find("</data>")
@@ -29,7 +38,7 @@ class Map(Entity):
 
         if Map.texList == None:
             Map.texList = []
-            for i in range(len(globs.mapTextures)):
+            for i in range(len(globs.Textures["map"])):
                 Map.texList.append(ImageTexture2DArray(globs.mapTextures[i]))
 
     def draw(self):

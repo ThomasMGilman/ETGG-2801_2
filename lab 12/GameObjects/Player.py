@@ -5,88 +5,35 @@ import globs
 
 class Player(Entity):
     tex = None
-    def __init__(self, x, y, Width, Height):
+    def __init__(self, x, y, z, Width, Height, Depth):
         self.halfHeight = Width / 2
-        self.lastFired = 0              #Time since last Fired
 
         if Player.tex == None:
-            Player.tex = ImageTexture2DArray(*globs.playerTextures);
+            Player.tex = ImageTexture2DArray(globs.Textures["player"][0], path=globs.Textures["player"][-1]);
 
-        super().__init__(x, y, 0, Width, Height, globs.playerLife, globs.playerSpeed, "Player")
+        super().__init__(x, y, z, Width, Height, Depth, globs.playerLife, globs.playerSpeed, "Player")
         self.CameraObj = Camera.Camera(self.pos)
 
     def draw(self):
         self.CameraObj.setUniforms()
         super().draw(Player.tex, 0)
 
-    def fire(self):
-        bulletPosY = self.pos[1] + (self.scale[1] * .25)
-        globs.Bullets.append(Bullet.Bullet(self.pos[0], bulletPosY, self.dir))
-        self.lastFired = globs.playerFireRate
-
-    def updateCameraPos(self, x, y):
-        if not self.pos.x >= globs.minWorldX + 1:
-            x = 0
-        elif not self.pos.x <= globs.worldWidth:
-            x = 0
-        elif self.CameraObj.coi.x != self.pos.x:
-            self.CameraObj.coi.x = self.pos.x
-        if not self.pos.y >= globs.minWorldY + 1:
-            y = 0
-        elif not self.pos.y <= globs.worldHeight:
-            y = 0
-        elif self.CameraObj.coi.y != self.pos.y:
-            self.CameraObj.coi.y = self.pos.y
-        self.CameraObj.pan(x, y)
+    def updatePos(self, delta):
+        super().updatePos(delta)
+        self.CameraObj.strafe(delta.x, delta.y, delta.z)
 
     def update(self, elapsedTime):
-        movAmount = 0
         if SDLK_d in globs.keyset or SDLK_RIGHT in globs.keyset:                                      #Move Right
-            self.dir = globs.FACING_RIGHT
-            movAmount = self.speed * elapsedTime
-            if not self.pos.x + self.Width + movAmount > globs.worldWidth:      #BoundsCheckMaxX
-                super().updateHorizontalPos(movAmount)
-                self.updateCameraPos(movAmount, 0)
+            self.updatePos(vec3(self.speed * elapsedTime, 0, 0))
 
         if SDLK_a in globs.keyset or SDLK_LEFT in globs.keyset:                                       #Move Left
-            self.dir = globs.FACING_LEFT
-            movAmount = -self.speed * elapsedTime
-            if not self.pos.x + movAmount < globs.minWorldX:                    #BoundsCheckMinX
-                super().updateHorizontalPos(movAmount)
-                self.updateCameraPos(movAmount, 0)
+            self.updatePos(vec3(-self.speed * elapsedTime, 0, 0))
 
-        if SDLK_w in globs.keyset or SDLK_UP in globs.keyset:                                         #Move UP
-            self.dir = globs.FACING_UP
-            movAmount = self.speed * elapsedTime
-            if not self.pos.y + self.Height + movAmount > globs.worldHeight:    #BoundsCheckMaxY
-                super().updateVerticalPos(movAmount)
-                self.updateCameraPos(0, movAmount)
+        if SDLK_w in globs.keyset or SDLK_UP in globs.keyset:                                         #Move Forward
+            self.updatePos(vec3(0, 0, self.speed * elapsedTime))
 
-        if SDLK_s in globs.keyset or SDLK_DOWN in globs.keyset:                                       #Move Down
-            self.dir = globs.FACING_DOWN
-            movAmount = -self.speed * elapsedTime
-            if not self.pos.y + movAmount < globs.minWorldY:                    #BoundsCheckMinY
-                super().updateVerticalPos(movAmount)
-                self.updateCameraPos(0, movAmount)
-
-        if SDLK_LCTRL in globs.keyset or SDLK_x in globs.keyset:        #Crouch
-            if self.scale[1] != self.halfHeight:
-                self.scale = vec2(self.Height, self.halfHeight)
-                super().setWorldMatrix()
-        elif self.scale[1] != self.Width:
-            self.scale = vec2(self.Height, self.Width)
-            super().setWorldMatrix()
-
-        if SDLK_SPACE in globs.keyset and self.lastFired <= 0:          #fireBullet
-            self.fire()
+        if SDLK_s in globs.keyset or SDLK_DOWN in globs.keyset:                                       #Move Backwards
+            self.updatePos(vec3(0, 0, -self.speed * elapsedTime))
 
         if SDLK_r in globs.keyset:
             print(self.pos)
-
-        self.check_SpawnBoss()
-
-        self.lastFired -= elapsedTime
-
-    def check_SpawnBoss(self):
-        if self.pos.x >= globs.bossSpawnX and self.pos.y >= globs.bossSpawnY - .5:
-            Setup.spawnBoss()

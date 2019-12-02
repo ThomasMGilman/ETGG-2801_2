@@ -1,4 +1,4 @@
-from GameObjects import Player, Enemy, Background, tilemap, Shapes
+from GameObjects import Player, Enemy, Background, tilemap, Shapes, Mesh
 from utilityLibs import Sampler
 from sdl2 import *
 from sdl2.sdlmixer import *
@@ -54,28 +54,33 @@ def setupFrameRateGlobals(fps):
     globs.UPDATE_QUANTUM_MSEC = 5
 
 
-def setTextures(array, folderName):
-    TexturesFolder = sorted(listdir(os.path.join("assets", folderName)))
-    for texName in TexturesFolder:
-        array.append(os.path.join(folderName, texName))
+def setupResourcesDict(Dict, FolderPath):
+    """Append the specified Resources Dictionary with the contents found inside the folder passed along with its path,
+        Follows the structure of folder of folders"""
+    ResourceFolder = sorted(listdir(FolderPath))
+    if len(ResourceFolder) > 0:
+        for dir in ResourceFolder:
+            Dict[dir] = []
+            location = os.path.join(FolderPath, dir)
+            resourcesDir = sorted(listdir(location))
+            for resource in resourcesDir:
+                Dict[dir].append(resource)
+            Dict[dir].append(location)
+    #print("Dict setup: ",Dict)
 
 
-def setupTextures():
-    """Setup Textures"""
-    setTextures(globs.mapTextures,          "mapTextures")
-    setTextures(globs.playerTextures,       "playerTextures")
-    setTextures(globs.starTextures,         "starTextures")
-    setTextures(globs.bulletTextures,       "bulletTextures")
-    setTextures(globs.enemyTextures,        "enemyTextures")
-    setTextures(globs.backgroundTextures,   "backgroundTextures")
+def setupResources():
+    setupResourcesDict(globs.Textures, os.path.join("assets", "Textures"))
+    setupResourcesDict(globs.Meshes, os.path.join("assets", "Meshes"))
+    setupResourcesDict(globs.Sounds, os.path.join("assets", "Audio"))
 
 
 def setupGlobals():
     """Setup Random, Sounds, FrameRate, Textures, and Sampler"""
     Shapes.seedRandom()
-    globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
+    #globs.pulseSound = Mix_LoadWAV(os.path.join("assets", globs.pulseSound).encode())  # load PulseSound file
     setupFrameRateGlobals(globs.DESIRED_FRAMES_PER_SEC)
-    setupTextures()
+    setupResources()
 
     glEnable(GL_BLEND)
     glEnable(GL_PROGRAM_POINT_SIZE)
@@ -86,58 +91,23 @@ def setupGlobals():
         globs.sampler = Sampler.Sampler()
     globs.sampler.bind(0)
 
+def appendMeshesFromFiles():
+    for M in globs.Meshes:
+        for file in globs.Meshes[M]:
+            if file.endswith(".obj"):
+                globs.MeshObjects.append(Mesh.Mesh(file, path=globs.Meshes[M][-1]))
+                break
+
 
 def setupObjects():
     """Setup global objects for drawing"""
-    #globs.StarBackground = StarBackground.StarBackground(0, 0, .1, .1)
-    #globs.MapBackground = tilemap.Map()
-    globs.Player = Player.Player(globs.startPosX, globs.startPosY, globs.playerWidth, globs.playerHeight)
-    #globs.Background = Background.Background()
+    globs.Player = Player.Player(globs.startPosX, globs.startPosY, globs.startPosZ,
+                                 globs.playerWidth, globs.playerHeight, globs.playerDepth)
+    appendMeshesFromFiles()
 
 
-def setupWorldSpace(worldWidth, worldHeight):
-    globs.worldWidth = worldWidth
-    globs.worldHeight = worldHeight
-
-
-def putEnemy(x, y, direction, Width, Height, textureNum, bossOrNo = 0):
-    #print("spawning enemy: ",x,y,direction, Width, Height,textureNum)
-    globs.Enemies.append(Enemy.Enemy(x, y, direction, Width, Height, textureNum, bossOrNo))
-
-
-def spawnEnemy(elapsedMsec):
-    if globs.lastSpawned <= 0:
-        enemyType = random.randint(0,1)
-        tmp = random.randint(-1, 1)
-        x = 0
-        y = 0
-        direction = 0
-        if enemyType == 0:
-            x = tmp if tmp != 0 else globs.worldWidth
-            direction = globs.FACING_RIGHT if x < 0 else globs.FACING_LEFT
-        elif enemyType == 1:
-            y = globs.worldHeight
-            direction = globs.FACING_DOWN
-            x = random.uniform(-1, globs.worldWidth)
-
-        x = globs.enemySize+1*x if (x < -1+globs.enemySize or x > 1-globs.enemySize) and y != 0 else x  #keep enemy image in bounds
-        texNum = 1 if direction == globs.FACING_DOWN and len(globs.enemyTextures) > 1 else 0            #pick texture
-
-        putEnemy(x, y, direction, globs.enemySize, globs.enemySize, texNum)
-        globs.lastSpawned = globs.spawnTimer
-    else:
-        globs.lastSpawned -= elapsedMsec
-
-
-def spawnBoss():
-    if not globs.bossInGame:
-        direction = globs.FACING_LEFT
-        putEnemy(globs.bossSpawnX + globs.bossSpawnXOffset, globs.bossSpawnY + globs.bossSpawnYOffset, direction, globs.bossSize, globs.bossSize, 0, 1)
-        globs.bossInGame = True
-
-def setup(worldWidth, worldHeight, worldDepth):
+def setup(worldWidth, worldHeight):
     enableDebugging(0)  # enables debugging messages, DISABLED BY DEFAULT for performance
     setupGlobals()
     setupObjects()
-    setupWorldSpace(worldWidth, worldHeight, worldDepth)
     # glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)

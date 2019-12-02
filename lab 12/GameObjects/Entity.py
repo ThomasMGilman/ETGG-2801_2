@@ -14,20 +14,20 @@ class Entity:
     ibuffCenterSize = None
     ibuffSize = None
     ibuffStart = None
-    def __init__(self, x, y, direction, Width, Height, life, speed, name, centered = False):
+    def __init__(self, x, y, z, Width, Height, Depth, life, speed, name, centered = False):
         self.name = name
-        self.pos        = vec2(x,y)
-        self.scale      = vec2(Width, Height)
+        self.pos        = vec3(x,y,z)
+        self.scale      = vec3(Width, Height, Depth)
         self.rotation   = 0
         self.worldMatrix= None
         self.setWorldMatrix()
 
         self.Width      = Width
         self.Height     = Height
-        self.dir        = direction
+        self.Depth      = Depth
         self.life       = life
         self.speed      = speed
-        self.hitBox     = BoundingBox(self.pos, vec2(x+Width, y+Height))
+        #self.hitBox     = BoundingBox(self.pos, vec3(x+Width, y+Height, z+Depth))
 
         self.deathFadeT = globs.bulletLife
         self.State      = globs.ALIVE
@@ -63,7 +63,8 @@ class Entity:
             Entity.prog = Program("vs.txt", "fs.txt")
 
     def setWorldMatrix(self):
-        self.worldMatrix = rotation2(self.rotation) * scaling2(self.scale) * translation2(self.pos)#rotation2(self.rotation) * translation2(self.pos)
+        #rotation2(self.rotation) *
+        self.worldMatrix = scaling3(self.scale) * translation3(self.pos)#rotation2(self.rotation) * translation2(self.pos)
         #print(self.name, self.worldMatrix)
 
     def setProgUniforms(self):
@@ -77,7 +78,7 @@ class Entity:
         if self.alive():
             self.setProgUniforms()
 
-            glEnable(GL_BLEND)
+            """glEnable(GL_BLEND)
             if not self.centered:
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
                 glCommands.drawElement(glCommands.GL_TRIANGLES,     # Mode
@@ -94,25 +95,20 @@ class Entity:
                                        texture,                     # texture passed
                                        Entity.ibuffStart,           # start in indicies
                                        slice)                       # slice of image
-            glDisable(GL_BLEND)
+            glDisable(GL_BLEND)"""
 
     def checkCollision(self, otherBox):
-        if self.hitBox.collidingWith(otherBox):
-            self.kill()
-            return True
+        #if self.hitBox.collidingWith(otherBox):
+            #self.kill()
+            #return True
         return False
 
     def alive(self):
         return self.life > 0
 
-    def updateVerticalPos(self, amount):
-        self.pos[1] += amount
-        self.hitBox.moveY(amount)
-        self.setWorldMatrix()
-
-    def updateHorizontalPos(self, amount):
-        self.pos[0] += amount
-        self.hitBox.moveX(amount)
+    def updatePos(self, delta):
+        self.pos += delta
+        #self.hitBox.move(delta)
         self.setWorldMatrix()
 
     def update(self, elapsedTime):

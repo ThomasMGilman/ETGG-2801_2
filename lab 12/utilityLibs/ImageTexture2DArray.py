@@ -3,7 +3,7 @@ from toolLibs import image
 import os.path, zipfile, io
 
 class ImageTexture2DArray(Texture2DArray):
-    def __init__(self, *files):
+    def __init__(self, *files, path="assets"):
         membuf = io.BytesIO()
         width = None
         height = None
@@ -12,7 +12,7 @@ class ImageTexture2DArray(Texture2DArray):
         #print(str(files))
         for fname in files:
             if fname.endswith(".png") or fname.endswith(".jpg"):
-                tmp = open(os.path.join("assets", fname), "rb").read()
+                tmp = open(os.path.join(path, fname), "rb").read()
                 pw, ph, fmt, pix = image.decode(tmp)
                 pix = image.flipY(pw, ph, pix)
                 #print(fname,pw,ph)
@@ -28,7 +28,7 @@ class ImageTexture2DArray(Texture2DArray):
                 membuf.write(pix)
 
             elif fname.endswith(".ora") or fname.endswith(".zip"):
-                z = zipfile.ZipFile(os.path.join("assets"), fname)
+                z = zipfile.ZipFile(os.path.join(path, fname))
                 for n in sorted(z.namelist()):
                     if "thumbnail" in n:
                         continue

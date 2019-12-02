@@ -27,27 +27,11 @@ def updateAndDraw(objList, elapsedMsec):
 
 def draw(elapsedMSec):
     clear()
-    globs.Background.update(elapsedMSec)
-    globs.Background.draw()
-    globs.MapBackground.draw()
-    #globs.StarBackground.draw()  # draw background
 
-    globs.Player.update(elapsedMSec)
+    globs.MeshObjects[1].draw()
+
     globs.Player.draw()
 
-    for bullet in globs.Bullets:
-        for enemy in globs.Enemies:
-            if bullet.checkCollision(enemy.hitBox):
-                enemy.kill()
-                break
-
-    updateAndDraw(globs.Particles, elapsedMSec)
-    updateAndDraw(globs.Bullets, elapsedMSec)
-    updateAndDraw(globs.Enemies, elapsedMSec)
-
-    buryTheDead(globs.Particles)
-    buryTheDead(globs.Bullets)
-    buryTheDead(globs.Enemies)
     SDL_GL_SwapWindow(globs.win)
 
 
@@ -79,6 +63,8 @@ def update(elapsedMsec):
         #elif ev.type == SDL_MOUSEMOTION:
             #print("mouse move:", ev.motion.x, ev.motion.y)
 
+    globs.Player.update(elapsedMsec)
+
 
 def main():
     globs.win = setupWindow()                 #Setup SDL_GL_Attributes and get SDL_Window
@@ -92,7 +78,7 @@ def main():
         print("Cannot create GL context")
         raise RuntimeError()
 
-    setup(globs.worldWidth, globs.worldHeight, globs.worldDepth)
+    setup(4, 4)
 
     lastTicks = SDL_GetPerformanceCounter()
     accumElapsedMsec = 0
@@ -106,7 +92,6 @@ def main():
             update(elapsedMsec)
             accumElapsedMsec -= globs.UPDATE_QUANTUM_MSEC
 
-        #spawnEnemy(elapsedMsec)
         draw(elapsedMsec)
 
         endTicks = SDL_GetPerformanceCounter()                                      #Get finale tick

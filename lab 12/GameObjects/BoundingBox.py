@@ -1,8 +1,8 @@
 class BoundingBox:
     """Bounding Box takes 2 points for a box object"""
     def __init__(self, llPoint, urPoint):
-        self.lowerLeftPoint = llPoint.xy
-        self.upperRightPoint = urPoint.xy
+        self.lowerLeftPoint = llPoint.xyz
+        self.upperRightPoint = urPoint.xyz
 
     def collidingWith(self, otherBox):
         if(self.rangeOverlapX(self.lowerLeftPoint.x, self.upperRightPoint.x,
@@ -12,13 +12,9 @@ class BoundingBox:
             return True
         return False
 
-    def moveX(self, delta):
-        self.lowerLeftPoint.x += delta
-        self.upperRightPoint.x += delta
-
-    def moveY(self, delta):
-        self.lowerLeftPoint.y += delta
-        self.upperRightPoint.y += delta
+    def move(self, delta):
+        self.lowerLeftPoint += delta
+        self.upperRightPoint += delta
 
     """Grid of Window
      _______1_______

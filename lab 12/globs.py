@@ -1,9 +1,8 @@
 #CONSTANTS
 TWO_PI = 0
-
-#Window
 WIN_WIDTH = 512
 WIN_HEIGHT = 512
+FOV = 90
 
 #Frame rates for drawing
 DESIRED_FRAMES_PER_SEC = 60
@@ -18,18 +17,20 @@ starSize = 2
 StarBackground = None
 MapBackground = None
 
-#textures
-mapTextures = []
-playerTextures = []
-starTextures = []
-bulletTextures = []
-enemyTextures = []
-backgroundTextures = []
+#Textures
+Textures = {}
+
+#Sounds
+Sounds = {}
+
+#Meshes
+Meshes = {}
 
 win = None
 Player = None
 Camera = None
 Background = None
+MeshObjects = []
 Bullets = []
 Enemies = []
 Particles = []
@@ -50,13 +51,16 @@ GREEN   = 0.0
 BLUE    = 0.0
 ALPHA   = 1.0
 
+#States
+DEAD = 0
+ALIVE = 1
+DYING = 2
+
 #World Space parameters
 minWorldX = -1
 minWorldY = -1
-minWorldZ = -1
 worldWidth  = 4
 worldHeight = 4
-worldDepth = 4
 
 #Background
 backgroundRotationSpeed = .0002
@@ -64,27 +68,13 @@ backgroundRotationSpeed = .0002
 #Sampler Object
 sampler = None
 
-#playerStates
-ON_GROUND = 0
-RISING = 1
-FALLING = 2
-FACING_LEFT = 3
-FACING_RIGHT = 4
-FACING_UP = 5
-FACING_DOWN = 6
-SHOOTING_UP = 7
-SHOOTING_DOWN = 8
-
-ALIVE = 9
-DYING = 10
-DEAD = 11
-
 #player parameters
-fov = 90
 startPosX = 0
 startPosY = 0
+startPosZ = 0
 playerWidth = .1
 playerHeight = .1
+playerDepth = .1
 jumpPeak = .3
 playerSpeed = .001
 playerFireRate = 500
@@ -122,5 +112,3 @@ speedDivisor = .001
 
 particleAlpha = 1
 
-#DungeonMeshs
-dungeonMesh = "dungeon.obj"
