@@ -6,15 +6,15 @@ in vec3 v_normal;
 
 out vec4 color;
 void main(){
-    vec4 texColor = texture(tex, vec3(texCoord, 0.0));
+    vec4 texColor = texture(tex, vec3(v_texCoord, 0.0));
 
     ////////////////////////////////////////////////////////////////////// Calculate AmbientColor
-    vec3 N = normalize(v_normal);
+    vec3 N = v_normal;
     float mappedY = 0.5 * (N.y + 1.0);                                  // ranged from 0 -> 1
-    float ambientColor = mix(ambientColor0, ambientColor1, mappedY);
+    vec3 ambientColor = mix(ambientColor0, ambientColor1, mappedY);
 
     ////////////////////////////////////////////////////////////////////// Calculate illumination
-    L = normalize(lightPosition - v_worldPos);
+    vec3 L = normalize(lightPosition - v_worldPos);
     float diffusePct = max(dot(N,L), 0.0);
 
     ////////////////////////////////////////////////////////////////////// Calculate Reflection
@@ -22,12 +22,12 @@ void main(){
 
     ////////////////////////////////////////////////////////////////////// Calculate Specular
     vec3 V = normalize(eyePos - v_worldPos);    //View
-    vec3 specularPct = (0.0, 0.0, 0.0);
+    float specularPct = 0.0;
     if(diffusePct != 0.0)
-        specularPct = pow( max(dot(V, R), (0.0, 0.0, 0.0)), shininess);
+        specularPct = pow(max(dot(V,R), 0.0), shininess);
 
     ////////////////////////////////////////////////////////////////////// Set Color
-    color.rgb = texColor.rgb * (ambientColor + lightColor * diffusePct) + (specularPct * lightColor);
+    color.rgb = texColor.rgb * (ambientColor + lightColor * diffusePct * (specularPct * lightColor));
     color.a = texColor.a;
-    color *= alpha;
+    //color *= alpha;
 }

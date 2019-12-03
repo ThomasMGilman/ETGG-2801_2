@@ -20,6 +20,7 @@ class Player(Entity):
         #super().updatePos(delta)
         self.CameraObj.strafe(delta.x, delta.y, delta.z)
         self.pos = self.CameraObj.eye
+        Program.setUniform("eyePos", self.pos)
         super().setWorldMatrix()
 
     def pitch(self, elapsedTime):

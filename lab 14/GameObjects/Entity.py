@@ -72,8 +72,8 @@ class Entity:
         Program.updateUniforms()
 
     def draw(self, texture, slice = 0, drawPoint = False):
+        self.setProgUniforms()
         if self.alive():
-            self.setProgUniforms()
 
             glEnable(GL_BLEND)
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -113,7 +113,7 @@ class Entity:
         self.setWorldMatrix()
 
     def update(self, elapsedTime):
-        if self.State == globs.ALIVE:
+        if self.State == globs.ALIVE and self.name == "Bullet":
             if self.life > 0:
                 self.life -= elapsedTime
             else:

@@ -9,8 +9,8 @@ vec2 startingPoint;
 //Lighting
 vec3 lightPosition;
 vec3 lightColor;
-vec3 ambientColor0 = (0.1, 0.1, 0.1);
-vec3 ambientColor1 = (0.2, 0.3, 0.1);
+vec3 ambientColor0;
+vec3 ambientColor1;
 
 //playerPos
 vec3 eyePos;

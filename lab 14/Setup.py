@@ -101,7 +101,7 @@ def setupGlobals():
 def setupObjects():
     """Setup global objects for drawing"""
     globs.Player = Player.Player(globs.playerStartPos, globs.playerScale)
-    globs.MeshObjects.append(Map.MapRoom(math3d.vec3(0,0,0), "dungeon"))
+    globs.MeshObjects.append(Map.MapRoom(math3d.vec3(0,0,0), "dungeon", 2))
 
 
 def setup():

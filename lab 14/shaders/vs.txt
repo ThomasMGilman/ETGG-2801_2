@@ -9,7 +9,7 @@ out vec3 v_normal;
 void main(){
     vec4 transform = vec4(position, 1.0);
     transform *= worldMatrix;
-    v_worldPos = transform.xyz;
+    v_worldPos = vec3(transform.xyz);
 
     transform *= viewMatrix;
     transform *= projMatrix;
@@ -18,7 +18,7 @@ void main(){
     gl_PointSize = 1;
     v_texCoord = texCoord;
 
-    vec4 n = vec4(normal, 0.0);
+    vec4 n = vec4(normal, 1.0);
     n = n * worldMatrix;
-    v_normal = n;
+    v_normal = n.xyz;
 }

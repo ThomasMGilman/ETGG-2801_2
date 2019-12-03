@@ -23,13 +23,13 @@ def buryTheDead(List):
 def draw():
     clear()                                             #Clear Screen
 
-    for mesh in globs.MeshObjects:
-        mesh.draw()
+    globs.Player.draw()
 
     for bullet in globs.Bullets:
         bullet.draw()
 
-    globs.Player.draw()
+    for mesh in globs.MeshObjects:
+        mesh.draw()
 
     SDL_GL_SwapWindow(globs.win)
 

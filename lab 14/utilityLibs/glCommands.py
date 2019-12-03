@@ -5,7 +5,7 @@ from sdl2.sdlmixer import *
 from toolLibs import math3d
 import array, globs
 
-def bindVao(vArray, tArray, iArray = None, nArray = None):
+def bindVao(vArray, tArray = None, iArray = None, nArray = None):
     vBuff = Buffer.Buffer(vArray)
     # GenerateVAO
     tmp = array.array("I", [0])
@@ -28,9 +28,7 @@ def bindVao(vArray, tArray, iArray = None, nArray = None):
     glVertexAttribPointer(0, 3, GL_FLOAT, False, 3 * 4, 0)
 
     # If a texture is passed, apply it to be associated to the vbuff
-    if tArray == None:
-        SystemError("Need to provide texture for object")
-    else:
+    if tArray != None:
         tbuff = Buffer.Buffer(tArray)
         tbuff.bind(GL_ARRAY_BUFFER)
         glEnableVertexAttribArray(1)
@@ -47,7 +45,7 @@ def bindVao(vArray, tArray, iArray = None, nArray = None):
     return vao
 
 
-def setup(vertexBuff, textureBuff, indexBuff = None, normalBuff = None):
+def setup(vertexBuff, textureBuff = None, indexBuff = None, normalBuff = None):
     glEnable(GL_MULTISAMPLE)
     glClearColor(0, 0, 0, 1.0)
 
@@ -58,7 +56,7 @@ def setup(vertexBuff, textureBuff, indexBuff = None, normalBuff = None):
 def clear():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # Clear Depth Buffer
 
-def drawElement(mode, numToDraw, vao, tex, index = None, slice = 0):
+def drawElement(mode, numToDraw, vao, tex = None, index = None, slice = 0):
     if tex != None:
         tex.bind(slice)
 

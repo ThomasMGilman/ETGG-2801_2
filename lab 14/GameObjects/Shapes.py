@@ -19,8 +19,10 @@ def mirrorAppendVec2(array, x, y):
     appendVec2(array, -x, -y)
 
 
-def createPoint(array, x, y):
+def createPoint(array, x, y, z=None):
     appendVec2(array, x, y)
+    if z != None:
+        array.append(z)
 
 
 def createRandPoints(array, numPoints, min = -1, max = 1):

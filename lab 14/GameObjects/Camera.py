@@ -80,4 +80,5 @@ class Camera:
         # assuming shader does p * M and not M * p
         Program.setUniform("viewMatrix", self.viewMatrix)
         Program.setUniform("projMatrix", self.projMatrix)
+        Program.setUniform("eyePos", self.eye)
 
