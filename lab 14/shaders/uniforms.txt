@@ -1,0 +1,22 @@
+//Contains Objects Rotation, Translation, and Scale
+mat4 worldMatrix;
+mat4 viewMatrix;
+mat4 projMatrix;
+
+//particleSystem
+vec2 startingPoint;
+
+//Lighting
+vec3 lightPosition;
+vec3 lightColor;
+vec3 ambientColor0 = (0.1, 0.1, 0.1);
+vec3 ambientColor1 = (0.2, 0.3, 0.1);
+
+//playerPos
+vec3 eyePos;
+
+float totalElapsed;
+float pointSize;
+float speedDivisor;
+float alpha;
+float shininess;

@@ -1,7 +1,9 @@
 from Program import *
+from GameObjects.Mesh import *
 from utilityLibs import Buffer
+from sdl2.sdlmixer import *
 from toolLibs import math3d
-import array
+import array, globs
 
 def bindVao(vArray, tArray, iArray = None):
     vBuff = Buffer.Buffer(vArray)
@@ -38,7 +40,6 @@ def bindVao(vArray, tArray, iArray = None):
     return vao
 
 
-
 def setup(vertexBuff, textureBuff, indexBuff = None):
     glEnable(GL_MULTISAMPLE)
     glClearColor(0, 0, 0, 1.0)
@@ -48,7 +49,7 @@ def setup(vertexBuff, textureBuff, indexBuff = None):
 
 
 def clear():
-    glClear(GL_COLOR_BUFFER_BIT)
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # Clear Depth Buffer
 
 def drawElement(mode, numToDraw, vao, tex, index = None, slice = 0):
     if tex != None:
@@ -87,3 +88,23 @@ def setClassicOpacity(classic = True):
     mode = GL_SRC_ALPHA if classic else GL_ONE
     glBlendFunc(mode, GL_ONE_MINUS_SRC_ALPHA)
     setBlendEquation(GL_FUNC_ADD)
+
+def setMesh(meshName):
+    if globs.Meshes.__contains__(meshName):
+        for file in globs.Meshes[meshName]:
+            if file.endswith(".obj"):
+                return Mesh(file, path=globs.Meshes[meshName][-1])
+        Exception("Could not find .obj in Mesh folder give!! FolderName: ", meshName, " Contents:",
+                  globs.Meshes[meshName])
+    else:
+        Exception("Mesh Dictionary does not contain a mesh folder named: ", meshName)
+
+def setSound(soundName):
+    if globs.Sounds.__contains__(soundName):
+        for file in globs.Sounds[soundName]:
+            if file.endswith((".mp3", ".mp4", ".wav")):
+                return Mix_LoadWAV(os.path.join(globs.Sounds[soundName][-1], file).encode())
+        Exception("Could not find a .mp3, .mp4, or .wav file!! FolderName: ", soundName, " Contents:",
+                  globs.Sounds[soundName])
+    else:
+        Exception("Sound Dictionary does not contain the sound folder named: ", soundName)

@@ -123,9 +123,14 @@ class Mesh:
             self.materialDict[mname].bind(0)        # Bind Texture
             start, count = self.matDict[mname]      # Set start index, and len of indicies
 
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
             glDrawElements(
                 GL_TRIANGLES,
                 count,
                 GL_UNSIGNED_INT,
                 start
             )
+
+            glDisable(GL_BLEND)
