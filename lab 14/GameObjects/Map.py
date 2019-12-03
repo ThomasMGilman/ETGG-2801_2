@@ -10,6 +10,7 @@ class MapRoom:
         self.worldMatrix = translation3(self.pos)
         self.mesh = None
         self.Light = LightObj(vec3(0, .5, 1), vec3(1, 1, 1))
+        self.alpha = 1
         self.shininess = shininess
         if MapRoom.prog == None:
             MapRoom.prog = Program("vs.txt", "fs.txt")
@@ -29,6 +30,7 @@ class MapRoom:
         MapRoom.prog.use()
         Program.setUniform("worldMatrix", self.worldMatrix)
         Program.setUniform("shininess", self.shininess)
+        Program.setUniform("alpha", self.alpha)
         Program.setUniform("ambientColor0", vec3(0.1, 0.1, 0.1))
         Program.setUniform("ambientColor1", vec3(.5, .5, .5))
 
@@ -38,4 +40,7 @@ class MapRoom:
         self.setUniforms()
         self.Light.setUniforms()
 
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         self.mesh.draw()
+        glDisable(GL_BLEND)

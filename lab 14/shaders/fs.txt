@@ -29,5 +29,5 @@ void main(){
     ////////////////////////////////////////////////////////////////////// Set Color
     color.rgb = texColor.rgb * (ambientColor + lightColor * diffusePct * (specularPct * lightColor));
     color.a = texColor.a;
-    //color *= alpha;
+    color *= alpha;
 }

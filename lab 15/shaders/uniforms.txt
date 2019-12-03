@@ -1,0 +1,29 @@
+//Contains Objects Rotation, Translation, and Scale
+mat4 worldMatrix;
+mat4 viewMatrix;
+mat4 projMatrix;
+
+//particleSystem
+vec2 startingPoint;
+
+//Lighting
+vec4 lightPosition;
+vec3 lightColor;
+vec3 ambientColor0;
+vec3 ambientColor1;
+
+//SpotLight
+vec3 spotDirection;
+float cosineMaxSpotAngle;
+
+//x : constant falloff, y : linear falloff, z : quadratic falloff
+vec3 attenuation;
+
+//playerPos
+vec3 eyePos;
+
+float totalElapsed;
+float pointSize;
+float speedDivisor;
+float alpha;
+float shininess;

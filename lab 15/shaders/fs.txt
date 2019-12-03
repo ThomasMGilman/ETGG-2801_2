@@ -1,0 +1,47 @@
+layout(binding = 0) uniform sampler2DArray tex;
+
+in vec3 v_worldPos;
+in vec2 v_texCoord;
+in vec3 v_normal;
+
+out vec4 color;
+void main(){
+    vec4 texColor = texture(tex, vec3(v_texCoord, 0.0));
+    vec3 lc = lightColor;
+    ////////////////////////////////////////////////////////////////////// Calculate AmbientColor
+    vec3 N = v_normal;
+    float mappedY = 0.5 * (N.y + 1.0);                                  // ranged from 0 -> 1
+    vec3 ambientColor = mix(ambientColor0, ambientColor1, mappedY);
+
+    ////////////////////////////////////////////////////////////////////// Calculate illumination
+    vec3 L = normalize(lightPosition.xyz - lightPosition.w * v_worldPos);
+    float lightDistance = distance(lightPosition.xyz, v_worldPos);
+
+    ////////////////////////////////////////////////////////////////////// Calculate Attenuation
+    float attenDiv = lightDistance * (lightDistance * attenuation.z + attenuation.y) + attenuation.z;
+    float attenVal = min(1.0, 1/attenDiv);
+
+    ////////////////////////////////////////////////////////////////////// Calculate LightAngle
+    float spotDot = dot(-L, spotDirection);
+    if(spotDot < cosineMaxSpotAngle)
+        lc = vec3(0,0,0);
+
+    ////////////////////////////////////////////////////////////////////// Calculate diffuse
+    float diffusePct = max(dot(N,L), 0.0);
+    diffusePct *= attenVal;
+
+    ////////////////////////////////////////////////////////////////////// Calculate Reflection
+    vec3 R = reflect(-L, N);                    //Reflection
+
+    ////////////////////////////////////////////////////////////////////// Calculate Specular
+    vec3 V = normalize(eyePos - v_worldPos);    //View
+    float specularPct = 0.0;
+    if(diffusePct != 0.0)
+        specularPct = pow(max(dot(V,R), 0.0), shininess);
+    specularPct *= attenVal;
+
+    ////////////////////////////////////////////////////////////////////// Set Color
+    color.rgb = texColor.rgb * (ambientColor + lc * diffusePct * (specularPct * lc));
+    color.a = texColor.a;
+    color *= alpha;
+}
